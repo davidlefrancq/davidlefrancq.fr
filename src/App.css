@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+
 }
 
 .App-logo {
@@ -35,4 +35,31 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.card-img-top{
+  max-height: 125px !important;
+  object-fit: cover;
+}
+
+.trainingCenter img{
+  max-height: 40px;
+}
+
+.card-title{
+  margin-top:-50px;
+  margin-bottom: 0;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  background-color: rgba(255,255,255,0.8);
+  min-height: 50px;
+}
+
+.qualification-date{
+  font-size: initial;
+}
+
+.experience-technology-logo{
+  max-height: 45px;
 }
