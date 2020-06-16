@@ -8,23 +8,23 @@ class OccurenceItem extends Component {
         super(props);
     }
 
-    renderOccurence(occurence){
-        if(occurence.experience){
+    renderOccurence(occurence) {
+        if (occurence.experience) {
 
             return this.renderExperience(occurence);
 
-        }else if(occurence.qualification){
+        } else if (occurence.qualification) {
 
             return this.renderQualification(occurence);
 
         }
     }
 
-    renderQualification(occurence){
+    renderQualification(occurence) {
         return <QualificationCard occurence={occurence}/>
     }
 
-    renderExperience(occurence){
+    renderExperience(occurence) {
         return <ExperienceCard occurence={occurence}/>
     }
 
@@ -32,9 +32,9 @@ class OccurenceItem extends Component {
         const {occurence} = this.props;
 
         return (
-            <div className={"col-4"}>
+            <Fragment>
                 {this.renderOccurence(occurence)}
-            </div>
+            </Fragment>
         );
     }
 }

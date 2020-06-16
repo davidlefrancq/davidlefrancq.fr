@@ -3,63 +3,148 @@
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
+}
+
+.jumbotron {
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-.card-img-top{
-  max-height: 125px !important;
-  object-fit: cover;
+.trainingCenter img {
+    max-height: 40px;
 }
 
-.trainingCenter img{
-  max-height: 40px;
+.qualification-date {
+    font-size: initial;
 }
 
-.card-title{
-  margin-top:-50px;
-  margin-bottom: 0;
-  color: black;
-  font-weight: bold;
-  text-align: center;
-  background-color: rgba(255,255,255,0.8);
-  min-height: 50px;
+.experience-technology-logo {
+    max-height: 45px;
 }
 
-.qualification-date{
-  font-size: initial;
+.occurence-card-rotate-on {
+    /*animation: occurence-card-rotate-on 1s ease-in forwards;*/
 }
 
-.experience-technology-logo{
-  max-height: 45px;
+
+@keyframes occurence-card-rotate-on {
+    0% {
+        transform: rotate(0deg);
+        margin-right: initial;
+    }
+    100% {
+        transform: rotate(-90deg);
+        /*margin-right: 73px;*/
+    }
+}
+
+.occurence-card-rotate-off {
+    /*animation: occurence-card-rotate-off 1s ease-in forwards;*/
+}
+
+@keyframes occurence-card-rotate-off {
+    0% {
+        transform: rotate(-90deg);
+        /*margin-right: 73px;*/
+    }
+    100% {
+        transform: rotate(0deg);
+        margin-right: initial;
+    }
+}
+
+
+.occurence-card-body-on {
+    animation: occurence-card-body-on 0.5s ease-in forwards;
+    overflow-y: hidden;
+}
+
+@keyframes occurence-card-body-on {
+    0% {
+        max-height: 0;
+    }
+    100% {
+        max-height: 1280px;
+    }
+}
+
+.occurence-card-body-off {
+    animation: occurence-card-body-off 0.5s ease-in forwards;
+    overflow-y: hidden;
+}
+
+@keyframes occurence-card-body-off {
+    0% {
+        max-height: 1280px;
+    }
+    100% {
+        max-height: 0;
+    }
+}
+
+.occurence-card-date-on {
+    animation: occurence-card-date-on 0.5s ease-in forwards;
+    overflow-y: hidden;
+}
+
+@keyframes occurence-card-date-on {
+    0% {
+        max-width: 0;
+        max-height: 0;
+    }
+    100% {
+        max-width: 250px;
+        max-height: 20px;
+    }
+}
+
+.occurence-card-date-off {
+    animation: occurence-card-date-off 0.5s ease-in forwards;
+    overflow-y: hidden;
+}
+
+@keyframes occurence-card-date-off {
+    0% {
+        max-width: 250px;
+        max-height: 20px;
+    }
+    100% {
+        max-width: 0;
+        max-height: 0;
+    }
+}
+.carousel-indicators{
+    margin-bottom: 0;
 }
