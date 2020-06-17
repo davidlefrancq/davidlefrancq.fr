@@ -10,47 +10,19 @@ import EditLink from "./EditLink";
 import Occurence from "../../bo/Occurence";
 import Qualification from "../../bo/Qualification";
 import TrainingCenter from "../../bo/TrainingCenter";
-
-// Progress Bar
-// https://www.npmjs.com/package/react-step-progress-bar
+import ProgressBar from "./ProgressBar";
+import OccurenceItem from "../OccurenceItem";
 
 class NewQualification extends Component {
 
     constructor(props) {
         super(props);
 
-        const trainingCenter = new TrainingCenter("","","","","","")
-        const qualification = new Qualification("","","",trainingCenter,"",{},{});
-        const occurence = new Occurence(null,"",qualification,"")
-
-        this.state = {
-
-            occurence: occurence,
-
-            edit: {
-                job: {
-                    key: null
-                },
-                link: {
-                    key: null,
-                },
-            },
-
-            style: {
-                qualification: {
-                    display: "block",
-                },
-                trainingCenter: {
-                    display: "none",
-                },
-                moreInformation: {
-                    display: "none",
-                },
-            },
-        };
         this.showQualification = this.showQualification.bind(this);
         this.showTrainingCenter = this.showTrainingCenter.bind(this);
         this.showMoreInformation = this.showMoreInformation.bind(this);
+        this.showAbstract = this.showAbstract.bind(this);
+        this.showValidate = this.showValidate.bind(this);
 
         this.handleAddJob = this.handleAddJob.bind(this);
         this.handleEditJob = this.handleEditJob.bind(this);
@@ -72,13 +44,73 @@ class NewQualification extends Component {
         this.updateTrainingCenterAddress = this.updateTrainingCenterAddress.bind(this);
         this.updateTrainingCenterPostalCode = this.updateTrainingCenterPostalCode.bind(this);
         this.updateTrainingCenterCity = this.updateTrainingCenterCity.bind(this);
+
+        const trainingCenter = new TrainingCenter("", "", "", "", "", "")
+        const qualification = new Qualification("", "", "", trainingCenter, "", {}, {});
+        const occurence = new Occurence(null, "", qualification, "")
+
+        this.state = {
+
+            occurence: occurence,
+
+            edit: {
+                job: {
+                    key: null
+                },
+                link: {
+                    key: null,
+                },
+            },
+
+            style: {
+                qualification: {
+                    display: "block",
+                },
+                trainingCenter: {
+                    display: "none",
+                },
+                abstract: {
+                    display: "none",
+                },
+                moreInformation: {
+                    display: "none",
+                },
+                validate: {
+                    display: "none",
+                },
+            },
+
+            steps: {
+                0: {
+                    title: "Diplome",
+                    action: this.showQualification,
+                    active: true,
+                },
+                1: {
+                    title: "Centre de formation",
+                    action: this.showTrainingCenter,
+                },
+                2: {
+                    title: "Résumé du diplome",
+                    action: this.showAbstract,
+                },
+                3: {
+                    title: "Informations complémentaires",
+                    action: this.showMoreInformation,
+                },
+                4: {
+                    title: "Valider",
+                    action: this.showValidate,
+                },
+            },
+        };
     }
 
     reset() {
 
-        const trainingCenter = new TrainingCenter("","","","","","")
-        const qualification = new Qualification("","","",trainingCenter,"",{},{});
-        const occurence = new Occurence(null,"",qualification,"")
+        const trainingCenter = new TrainingCenter("", "", "", "", "", "")
+        const qualification = new Qualification("", "", "", trainingCenter, "", {}, {});
+        const occurence = new Occurence(null, "", qualification, "")
 
         this.setState({
             occurence: occurence,
@@ -99,7 +131,13 @@ class NewQualification extends Component {
                 trainingCenter: {
                     display: "none",
                 },
+                abstract: {
+                    display: "none",
+                },
                 moreInformation: {
+                    display: "none",
+                },
+                validate: {
                     display: "none",
                 },
             },
@@ -112,60 +150,62 @@ class NewQualification extends Component {
         this.setState({occurence});
     }
 
-    updateQualificationTitle(e){
+    updateQualificationTitle(e) {
         const {value} = e.target;
-        this.updateStateQualification("title",value);
+        this.updateStateQualification("title", value);
     }
-    updateQualificationLogo(e){
+
+    updateQualificationLogo(e) {
         e.preventDefault();
         console.log(e);
         // const {value} = e.target;
         // this.updateStateQualification("logo",value);
     }
-    updateQualificationLevel(e){
+
+    updateQualificationLevel(e) {
         const {value} = e.target;
-        this.updateStateQualification("level",value);
+        this.updateStateQualification("level", value);
     }
 
-    updateStateQualification(key,value){
+    updateStateQualification(key, value) {
         const occurence = {...this.state.occurence};
         occurence.qualification[key] = value;
         this.setState({occurence});
     }
 
-    updateTrainingCenterName(e){
+    updateTrainingCenterName(e) {
         const {value} = e.target;
-        this.updateStateTrainingCenter("name",value);
+        this.updateStateTrainingCenter("name", value);
     }
 
-    updateTrainingCenterLogo(e){
+    updateTrainingCenterLogo(e) {
         e.preventDefault();
-        console.log("updateTrainingCenterLogo",e);
+        console.log("updateTrainingCenterLogo", e);
         // const {value} = e.target;
         // this.updateStateTrainingCenter("logo",value);
     }
 
-    updateTrainingCenterAddress(e){
+    updateTrainingCenterAddress(e) {
         const {value} = e.target;
-        this.updateStateTrainingCenter("address",value);
+        this.updateStateTrainingCenter("address", value);
     }
 
-    updateTrainingCenterPostalCode(e){
+    updateTrainingCenterPostalCode(e) {
         const {value} = e.target;
-        this.updateStateTrainingCenter("postalCode",value);
+        this.updateStateTrainingCenter("postalCode", value);
     }
 
-    updateTrainingCenterCity(e){
+    updateTrainingCenterCity(e) {
         const {value} = e.target;
-        this.updateStateTrainingCenter("city",value);
+        this.updateStateTrainingCenter("city", value);
     }
 
     updateTrainingCenterUrl(e) {
         const {value} = e.target;
-        this.updateStateTrainingCenter("url",value);
+        this.updateStateTrainingCenter("url", value);
     }
 
-    updateStateTrainingCenter(key,value){
+    updateStateTrainingCenter(key, value) {
         const occurence = {...this.state.occurence};
         occurence.qualification.trainingCenter[key] = value;
         this.setState({occurence});
@@ -187,7 +227,13 @@ class NewQualification extends Component {
                 trainingCenter: {
                     display: "none",
                 },
+                abstract: {
+                    display: "none",
+                },
                 moreInformation: {
+                    display: "none",
+                },
+                validate: {
                     display: "none",
                 },
             },
@@ -203,7 +249,35 @@ class NewQualification extends Component {
                 trainingCenter: {
                     display: "block",
                 },
+                abstract: {
+                    display: "none",
+                },
                 moreInformation: {
+                    display: "none",
+                },
+                validate: {
+                    display: "none",
+                },
+            },
+        });
+    }
+
+    showAbstract() {
+        this.setState({
+            style: {
+                qualification: {
+                    display: "none",
+                },
+                trainingCenter: {
+                    display: "none",
+                },
+                abstract: {
+                    display: "block",
+                },
+                moreInformation: {
+                    display: "none",
+                },
+                validate: {
                     display: "none",
                 },
             },
@@ -219,12 +293,41 @@ class NewQualification extends Component {
                 trainingCenter: {
                     display: "none",
                 },
+                abstract: {
+                    display: "none",
+                },
                 moreInformation: {
+                    display: "block",
+                },
+                validate: {
+                    display: "none",
+                },
+            },
+        });
+    }
+
+    showValidate() {
+        this.setState({
+            style: {
+                qualification: {
+                    display: "none",
+                },
+                trainingCenter: {
+                    display: "none",
+                },
+                abstract: {
+                    display: "none",
+                },
+                moreInformation: {
+                    display: "none",
+                },
+                validate: {
                     display: "block",
                 },
             },
         });
     }
+
 
     handleAddJob(job) {
 
@@ -433,33 +536,49 @@ class NewQualification extends Component {
         }
     }
 
+    renderProgressBar() {
+        const {steps} = this.state;
+        return (
+            <ProgressBar steps={steps}/>
+        );
+    }
+
     render() {
 
         const {occurence} = this.state;
         const {dateEnd, qualification} = occurence;
         const {title, img, level, trainingCenter, objectives, jobs, links} = qualification;
 
+        const occurenceValidate = {...occurence};
+        if(!(occurenceValidate.dateEnd instanceof Date) && occurenceValidate.dateEnd != ""){
+            occurenceValidate.dateEnd = new Date(occurenceValidate.dateEnd);
+        }
+
         return (
             <div className={"row"}>
 
-                <div className={"col-12"}>
-                    <h2>Nouveau Diplome</h2>
-                </div>
+                {/*<div className={"col-12"}>*/}
+                {/*    <h2>Nouveau Diplome</h2>*/}
+                {/*</div>*/}
 
-                <div className={"col-12"}>
+                {/*<div className={"col-12"}>*/}
 
-                    <button className={"btn btn-secondary m-1 pt-1 pb-2 pr-3 pl-3"} onClick={this.showQualification}>
-                        <BsFillInfoCircleFill/>
-                    </button>
+                {/*    <button className={"btn btn-secondary m-1 pt-1 pb-2 pr-3 pl-3"} onClick={this.showQualification}>*/}
+                {/*        <BsFillInfoCircleFill/>*/}
+                {/*    </button>*/}
 
-                    <button className={"btn btn-secondary m-1 pt-1 pb-2 pr-3 pl-3"} onClick={this.showTrainingCenter}>
-                        <MdWork/>
-                    </button>
+                {/*    <button className={"btn btn-secondary m-1 pt-1 pb-2 pr-3 pl-3"} onClick={this.showTrainingCenter}>*/}
+                {/*        <MdWork/>*/}
+                {/*    </button>*/}
 
-                    <button className={"btn btn-secondary m-1 pt-1 pb-2 pr-3 pl-3"} onClick={this.showMoreInformation}>
-                        <BsLink/>
-                    </button>
+                {/*    <button className={"btn btn-secondary m-1 pt-1 pb-2 pr-3 pl-3"} onClick={this.showMoreInformation}>*/}
+                {/*        <BsLink/>*/}
+                {/*    </button>*/}
 
+                {/*</div>*/}
+
+                <div className={"col-12 mt-4 mb-4"}>
+                    {this.renderProgressBar()}
                 </div>
 
                 <div className={"col-12"}>
@@ -482,12 +601,13 @@ class NewQualification extends Component {
                             </Form.Group>
 
                             <Form.Group controlId="qualificationForm.image">
-                                <Form.File label="Logo" onChange={this.updateQualificationLogo} custom />
+                                <Form.File label="Logo" onChange={this.updateQualificationLogo} custom/>
                             </Form.Group>
 
                             <Form.Group controlId="qualificationForm.level">
                                 <Form.Label>Niveau</Form.Label>
-                                <Form.Control type="text" value={level} onChange={this.updateQualificationLevel} placeholder={"ex : Bac"}/>
+                                <Form.Control type="text" value={level} onChange={this.updateQualificationLevel}
+                                              placeholder={"ex : Bac"}/>
                             </Form.Group>
 
                         </div>
@@ -499,7 +619,8 @@ class NewQualification extends Component {
 
                             <Form.Group controlId="qualificationForm.trainingCenterName">
                                 <Form.Label>Nom</Form.Label>
-                                <Form.Control type="text" value={trainingCenter.name} onChange={this.updateTrainingCenterName}/>
+                                <Form.Control type="text" value={trainingCenter.name}
+                                              onChange={this.updateTrainingCenterName}/>
                             </Form.Group>
 
                             <Form.Group controlId="qualificationForm.trainingCenterLogo">
@@ -508,36 +629,34 @@ class NewQualification extends Component {
 
                             <Form.Group controlId="qualificationForm.trainingCenterAddress">
                                 <Form.Label>Adresse</Form.Label>
-                                <Form.Control type="text" value={trainingCenter.address} onChange={this.updateTrainingCenterAddress}/>
+                                <Form.Control type="text" value={trainingCenter.address}
+                                              onChange={this.updateTrainingCenterAddress}/>
                             </Form.Group>
 
                             <Form.Group controlId="qualificationForm.trainingCenterPostalCode">
                                 <Form.Label>Code postale</Form.Label>
-                                <Form.Control type="text" value={trainingCenter.postalCode} onChange={this.updateTrainingCenterPostalCode}/>
+                                <Form.Control type="text" value={trainingCenter.postalCode}
+                                              onChange={this.updateTrainingCenterPostalCode}/>
                             </Form.Group>
 
                             <Form.Group controlId="qualificationForm.trainingCenterCity">
                                 <Form.Label>Ville</Form.Label>
-                                <Form.Control type="text" value={trainingCenter.city} onChange={this.updateTrainingCenterCity}/>
+                                <Form.Control type="text" value={trainingCenter.city}
+                                              onChange={this.updateTrainingCenterCity}/>
                             </Form.Group>
 
                             <Form.Group controlId="qualificationForm.trainingCenterUrl">
                                 <Form.Label>Site Web</Form.Label>
-                                <Form.Control type="text" value={trainingCenter.url} onChange={this.updateTrainingCenterUrl}/>
+                                <Form.Control type="text" value={trainingCenter.url}
+                                              onChange={this.updateTrainingCenterUrl}/>
                             </Form.Group>
 
                         </div>
 
                         <div style={{
-                            display: this.state.style.moreInformation.display
+                            display: this.state.style.abstract.display
                         }}>
-                            <h3>Compléments</h3>
-                        </div>
-
-                        <div style={{
-                            display: this.state.style.moreInformation.display
-                        }}>
-                            <h4>Résumé de la formation</h4>
+                            <h3>Résumé de la formation</h3>
 
                             <Form.Group controlId="qualificationForm.objectives">
                                 <Form.Control
@@ -572,47 +691,63 @@ class NewQualification extends Component {
                         </div>
                     </Form>
 
-                    <div style={{
-                        display: this.state.style.moreInformation.display
-                    }}>
+                    <div className={"row"}>
+                        <div className={"col-6 border border-top-0 border-left-0 border-bottom-0"} style={{
+                            display: this.state.style.moreInformation.display
+                        }}>
 
-                        <h4>Emploi(s) accessible(s)</h4>
+                            <h3>Emploi(s) accessible(s)</h3>
 
-                        <div className={"row"}>
-                            <div className={"col-12"}>
-                                {this.renderEditJob()}
-                            </div>
+                            <div className={"row"}>
+                                <div className={"col-12"}>
+                                    {this.renderEditJob()}
+                                </div>
 
-                            <div className={"col-12"}>
-                                <div className={"row"}>
-                                    {this.renderJobs()}
+                                <div className={"col-12"}>
+                                    <div className={"row"}>
+                                        {this.renderJobs()}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div style={{
-                        display: this.state.style.moreInformation.display
-                    }}>
+                        <div className={"col-6"} style={{
+                            display: this.state.style.moreInformation.display
+                        }}>
 
-                        <h4>Liens</h4>
+                            <h3>Liens</h3>
 
-                        <div className={"row"}>
+                            <div className={"row"}>
 
-                            <div className={"col-12"}>
-                                {this.renderEditLinks()}
-                            </div>
+                                <div className={"col-12"}>
+                                    {this.renderEditLinks()}
+                                </div>
 
-                            <div className={"col-12"}>
-                                <div className={"row"}>
-                                    {this.renderLinks()}
+                                <div className={"col-12"}>
+                                    <div className={"row"}>
+                                        {this.renderLinks()}
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
+                        <div className={"col-12"} style={{
+                            display: this.state.style.validate.display
+                        }}>
+                            <h3>Valider</h3>
+
+                            <div className={"text-center"}>
+                                <button className={"btn btn-success"}>Valider</button>
+                            </div>
+
+                            <OccurenceItem occurence={occurenceValidate}/>
+
+                        </div>
+
                     </div>
 
                 </div>
-
             </div>
         );
     }

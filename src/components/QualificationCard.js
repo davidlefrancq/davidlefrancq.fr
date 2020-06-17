@@ -5,6 +5,7 @@ import FirstCharUppercase from "../utils/FirstCharUppercase";
 import { BsFillInfoCircleFill, BsLink } from "react-icons/bs";
 import { MdWork } from "react-icons/md";
 import { FaCalendarAlt } from "react-icons/fa";
+import DOMPurify from 'dompurify';
 
 class QualificationCard extends Component {
 
@@ -137,8 +138,8 @@ class QualificationCard extends Component {
     renderObjectives(objectives) {
         if (objectives != undefined && objectives != null) {
             return (
-                <Card.Text className={"text-justify p-3"}>
-                    {objectives}
+                <Card.Text className={"text-justify p-3"} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(objectives)}}>
+                    {/*{objectives}*/}
                 </Card.Text>
             );
         }
