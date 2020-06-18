@@ -1,8 +1,8 @@
 import React, {Component, Fragment} from 'react';
-import "./progressBar.css";
+import "./dateBar.css";
 import Step from "../../bo/Step";
 
-class ProgressBar extends Component {
+class DateBar extends Component {
 
     constructor(props) {
         super(props);
@@ -93,9 +93,19 @@ class ProgressBar extends Component {
             }
 
             return (
-                <li key={key} id={key} className={"col " + classActive} onClick={this.handleStep}>
-                    {step.title}
-                    <div className={"link " + classActive}></div>
+                <li key={key} className={"col " + classActive}>
+                    <div
+                        id={key}
+                        className={"title"}
+                        onClick={this.handleStep}
+                        style={{cursor:"pointer"}}
+                    >
+                        {step.title}
+                    </div>
+
+                    {step.description}
+                    <div className={"link"}></div>
+                    <div className={"link-active"}></div>
                 </li>
             );
         });
@@ -156,15 +166,27 @@ class ProgressBar extends Component {
         return (
             <div className={"container"}>
 
-                <ul className={"progressbar row"}>
-                    {this.renderSteps()}
-                </ul>
+                <div className={"row"}>
 
-                {this.renderButtons()}
+                    <div className={"col-1 text-left p-0 m-0"}>
+                        {this.renderButtonBefore()}
+                    </div>
+
+                    <div className={"col-10"}>
+                        <ul className={"datebar row"}>
+                            {this.renderSteps()}
+                        </ul>
+                    </div>
+
+                    <div className={"col-1 text-right p-0 m-0"}>
+                        {this.renderButtonAfter()}
+                    </div>
+
+                </div>
 
             </div>
         );
     }
 }
 
-export default ProgressBar;
+export default DateBar;
