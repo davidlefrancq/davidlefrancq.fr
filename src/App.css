@@ -145,6 +145,15 @@
         max-height: 0;
     }
 }
-.carousel-indicators{
+
+.carousel-indicators {
     margin-bottom: 0;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    /*background-color: rgba(0,0,0,1);*/
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    top: 10px;
 }
