@@ -1,6 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import "./dateBar.css";
 import Step from "../../bo/Step";
+import {actions} from "../../actions";
+import {connect} from "react-redux";
 
 class DateBar extends Component {
 
@@ -43,7 +45,9 @@ class DateBar extends Component {
             return newStepObject;
         });
 
-        steps[0].active = true;
+        if (steps[0]) {
+            steps[0].active = true;
+        }
 
         this.setState({
             steps,
@@ -54,17 +58,98 @@ class DateBar extends Component {
 
         const {id} = e.target;
         const {steps} = {...this.state};
-        let {target} = {...this.state};
         const step = steps[id];
+        const fullYear = step.title;
+
+        this.props.setOccurencesDateTargeted(fullYear);
+
         step.active = !step.active;
-
         this.actualiseStepBeforeActive(id, steps);
-
-        this.setState({
+        const newState = {
             steps,
             target: eval(id),
+        };
+
+        this.updateOccurencesSelected(fullYear);
+
+        this.setState(newState);
+
+        step.onClick(e);
+    }
+
+    updateOccurencesSelected(fullYear) {
+
+        this.updateExperienceSelected(fullYear);
+        this.updateQualificationSelected(fullYear);
+    }
+
+    updateExperienceSelected(fullYear) {
+
+        const {experienceOccurences} = this.props;
+
+        let newId = this.getNewIdToFullYear(experienceOccurences, fullYear);
+
+        if (newId != null) {
+            this.props.setExperienceSelected(newId)
+        }
+    }
+
+    updateQualificationSelected(fullYear) {
+
+        const {qualificationOccurences} = this.props;
+
+        let newId = this.getNewIdToFullYear(qualificationOccurences, fullYear);
+
+        if (newId != null) {
+            this.props.setQualificationSelected(newId)
+        }
+    }
+
+    getNewIdToFullYear(occurences, fullYear) {
+
+        const occurencesKeys = Object.keys(occurences);
+        let newId = null;
+
+        occurencesKeys.map((key) => {
+            if (newId === null) {
+                const occurence = occurences[key];
+                const dateControl = this.getDateControl(occurence);
+
+                if (dateControl != null) {
+                    if (eval(dateControl) === eval(fullYear)) {
+                        newId = key;
+                    }
+                }
+            }
         });
-        step.action(e);
+
+        return newId;
+    }
+
+    getDateControl(occurence) {
+
+        const {dateStart, dateEnd} = occurence;
+        let dateControl = null;
+
+        if (dateStart != undefined && dateStart != null && dateStart !== "") {
+
+            if(dateStart instanceof Date){
+                dateControl = dateStart.getFullYear();
+            }else{
+                dateControl = dateStart;
+            }
+        }
+
+        if (dateEnd != undefined && dateEnd != null && dateEnd !== "") {
+
+            if(dateEnd instanceof Date){
+                dateControl = dateEnd.getFullYear();
+            }else{
+                dateControl = dateEnd;
+            }
+        }
+
+        return dateControl;
     }
 
     actualiseStepBeforeActive(idActive, steps) {
@@ -83,43 +168,34 @@ class DateBar extends Component {
         const {steps} = this.state;
         const stepsKeys = Object.keys(steps);
 
-        return stepsKeys.map((key) => {
+        if (steps[0]) {
+            return stepsKeys.map((key) => {
 
-            const step = steps[key];
+                const step = steps[key];
 
-            let classActive = "";
-            if (step.active == true) {
-                classActive = "active";
-            }
+                let classActive = "";
+                if (step.active == true) {
+                    classActive = "active";
+                }
 
-            return (
-                <li key={key} className={"col " + classActive}>
-                    <div
-                        id={key}
-                        className={"title"}
-                        onClick={this.handleStep}
-                        style={{cursor:"pointer"}}
-                    >
-                        {step.title}
-                    </div>
+                return (
+                    <li key={key} className={"col " + classActive}>
+                        <div
+                            id={key}
+                            className={"title"}
+                            onClick={this.handleStep}
+                            style={{cursor: "pointer"}}
+                        >
+                            {step.title}
+                        </div>
 
-                    {step.description}
-                    <div className={"link"}></div>
-                    <div className={"link-active"}></div>
-                </li>
-            );
-        });
-
-    }
-
-    renderButtons() {
-
-        return (
-            <div className={"text-center"}>
-                {this.renderButtonBefore()}
-                {this.renderButtonAfter()}
-            </div>
-        );
+                        {step.description}
+                        <div className={"link"}></div>
+                        <div className={"link-active"}></div>
+                    </li>
+                );
+            });
+        }
     }
 
     renderButtonBefore() {
@@ -127,18 +203,21 @@ class DateBar extends Component {
         const {steps, target} = this.state;
         let before = -1;
 
-        if (steps[target - 1] != undefined && steps[target - 1] != null) {
-            before = target - 1;
-        }
+        if (steps[0]) {
 
-        if (before >= 0) {
-            return (
-                <button id={before} className={"btn btn-light m-1"} onClick={this.handleStep}>{'<<'}</button>
-            );
-        } else {
-            return (
-                <button className={"btn btn-light m-1"} disabled>{'<<'}</button>
-            );
+            if (steps[target - 1] != undefined && steps[target - 1] != null) {
+                before = target - 1;
+            }
+
+            if (before >= 0) {
+                return (
+                    <button id={before} className={"btn btn-light m-1"} onClick={this.handleStep}>{'<<'}</button>
+                );
+            } else {
+                return (
+                    <button className={"btn btn-light m-1"} disabled>{'<<'}</button>
+                );
+            }
         }
     }
 
@@ -146,40 +225,43 @@ class DateBar extends Component {
         const {steps, target} = this.state;
         let after = -1;
 
+        if (steps[0]) {
 
-        if (steps[target + 1] != undefined && steps[target + 1] != null) {
-            after = target + 1;
-        }
+            if (steps[target + 1] != undefined && steps[target + 1] != null) {
+                after = target + 1;
+            }
 
-        if (after > target) {
-            return (
-                <button id={after} className={"btn btn-light m-1"} onClick={this.handleStep}>{'>>'}</button>
-            );
-        } else {
-            return (
-                <button className={"btn btn-light m-1"} disabled>{'>>'}</button>
-            );
+            if (after > target) {
+                return (
+                    <button id={after} className={"btn btn-light m-1"} onClick={this.handleStep}>{'>>'}</button>
+                );
+            } else {
+                return (
+                    <button className={"btn btn-light m-1"} disabled>{'>>'}</button>
+                );
+            }
         }
     }
 
     render() {
+
         return (
-            <div className={"container"}>
+            <div className={"container mt-0 mb-4"}>
 
-                <div className={"row"}>
+                <div className={"row p-0"}>
 
-                    <div className={"col-1 text-left p-0 m-0"}>
-                        {this.renderButtonBefore()}
+                    <div className={"col-1 text-left pt-2 pl-0 pr-0 pb-0 m-0"}>
+                        {/*{this.renderButtonBefore()}*/}
                     </div>
 
-                    <div className={"col-10"}>
-                        <ul className={"datebar row"}>
+                    <div className={"col-10 m-0 p-0"}>
+                        <ul className={"datebar row m-0 p-0"}>
                             {this.renderSteps()}
                         </ul>
                     </div>
 
-                    <div className={"col-1 text-right p-0 m-0"}>
-                        {this.renderButtonAfter()}
+                    <div className={"col-1 text-right pt-2 pl-0 pr-0 pb-0 m-0"}>
+                        {/*{this.renderButtonAfter()}*/}
                     </div>
 
                 </div>
@@ -189,4 +271,30 @@ class DateBar extends Component {
     }
 }
 
-export default DateBar;
+const mapStateToProps = (state) => {
+    const {target} = state.OccurencesReducer;
+    const qualificationOccurences = state.QualificationReducer.occurences;
+    const qualificationSeleted = state.QualificationReducer.selected;
+    const experienceOccurences = state.ExperienceReducer.occurences;
+    const experienceSelected = state.ExperienceReducer.selected;
+    const {occurences} = state.OccurencesReducer;
+    return {
+        target,
+        qualificationOccurences,
+        qualificationSeleted,
+        experienceOccurences,
+        experienceSelected,
+        occurences,
+    };
+};
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setQualificationSelected: (id) => dispatch(actions.qualification.setQualificationSelected(id)),
+        setExperienceSelected: (id) => dispatch(actions.experience.setExperienceSelected(id)),
+        setOccurencesDateTargeted: (date) => dispatch(actions.occurences.setOccurencesDateTargeted(date)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DateBar);

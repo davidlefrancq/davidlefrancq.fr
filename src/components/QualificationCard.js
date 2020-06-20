@@ -2,9 +2,9 @@ import React, {Component, Fragment} from 'react';
 import {Button, Card} from 'react-bootstrap';
 import MonthFr from "../utils/MonthFr";
 import FirstCharUppercase from "../utils/FirstCharUppercase";
-import { BsFillInfoCircleFill, BsLink } from "react-icons/bs";
-import { MdWork } from "react-icons/md";
-import { FaCalendarAlt } from "react-icons/fa";
+import {BsFillInfoCircleFill, BsLink} from "react-icons/bs";
+import {MdWork} from "react-icons/md";
+import {FaCalendarAlt} from "react-icons/fa";
 import DOMPurify from 'dompurify';
 
 class QualificationCard extends Component {
@@ -28,7 +28,7 @@ class QualificationCard extends Component {
     }
 
 
-    showObjectives(){
+    showObjectives() {
         this.setState({
             objectives: {
                 display: "block",
@@ -41,7 +41,8 @@ class QualificationCard extends Component {
             },
         });
     }
-    showJobs(){
+
+    showJobs() {
         this.setState({
             objectives: {
                 display: "none",
@@ -54,7 +55,8 @@ class QualificationCard extends Component {
             },
         });
     }
-    showLinks(){
+
+    showLinks() {
         this.setState({
             objectives: {
                 display: "none",
@@ -138,7 +140,8 @@ class QualificationCard extends Component {
     renderObjectives(objectives) {
         if (objectives != undefined && objectives != null) {
             return (
-                <Card.Text className={"text-justify p-3"} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(objectives)}}>
+                <Card.Text className={"text-justify p-3"}
+                           dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(objectives)}}>
                     {/*{objectives}*/}
                 </Card.Text>
             );
@@ -221,11 +224,18 @@ class QualificationCard extends Component {
                     width: "100%",
                     height: "75px",
                 }}>
-                    <FaCalendarAlt
-                        className={"mr-1"}
-                        style={{fontSize:"300%", color:"#034f84"}}
-                    />
-                    {FirstCharUppercase.convert(month)} {year}
+
+                    <div className={"row"}>
+                        <div className={"col-auto"}>
+                            <FaCalendarAlt
+                                className={"mr-1"}
+                                style={{fontSize: "300%", color: "#034f84"}}
+                            />
+                        </div>
+                        <div className={"col-auto p-2"}>
+                            {year} {"("} {FirstCharUppercase.convert(month)} {")"}
+                        </div>
+                    </div>
                 </div>
             );
         }
@@ -248,7 +258,7 @@ class QualificationCard extends Component {
 
                     <div className={"row"}>
                         <div className={"col-12"}>
-                            <Card.Text className={"mt-2 row"}>
+                            <div className={"mt-2 row"}>
 
                                 <div className={"col-4 text-left pl-5"}>
                                     {this.renderDate(dateEnd)}
@@ -256,12 +266,13 @@ class QualificationCard extends Component {
 
                                 {this.renderTrainingCenter(trainingCenter)}
 
-                            </Card.Text>
+                            </div>
                         </div>
 
                         <div className={"col-1 text-center pt-4"}>
 
-                            <button className={"btn btn-secondary m-1 pt-1 pb-2 pr-3 pl-3"} onClick={this.showObjectives}>
+                            <button className={"btn btn-secondary m-1 pt-1 pb-2 pr-3 pl-3"}
+                                    onClick={this.showObjectives}>
                                 <BsFillInfoCircleFill/>
                             </button>
 
@@ -277,26 +288,26 @@ class QualificationCard extends Component {
 
                         <div className={"col-11"}>
 
-                            <Card.Text className={"text-justify p-3"} style={{display:this.state.objectives.display}}>
+                            <div className={"text-justify p-3"} style={{display: this.state.objectives.display}}>
                                 <h4 className={"border border-top-0 border-right-0 border-left-0"}>
                                     Rôles
                                 </h4>
                                 {this.renderObjectives(objectives)}
-                            </Card.Text>
+                            </div>
 
-                            <Card.Text style={{display:this.state.jobs.display}}>
+                            <div style={{display: this.state.jobs.display}}>
                                 <h4 className={"border border-top-0 border-right-0 border-left-0"}>
                                     Emplois accessibles
                                 </h4>
                                 {this.renderJobs(jobs)}
-                            </Card.Text>
+                            </div>
 
-                            <Card.Text style={{display:this.state.links.display}}>
+                            <div style={{display: this.state.links.display}}>
                                 <h4 className={"border border-top-0 border-right-0 border-left-0"}>
                                     Liens
                                 </h4>
                                 {this.renderLinks(links)}
-                            </Card.Text>
+                            </div>
                         </div>
                     </div>
                 </Card.Body>

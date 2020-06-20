@@ -3,7 +3,7 @@ import {Card, Button} from 'react-bootstrap';
 import MonthFr from "../utils/MonthFr";
 import FirstCharUppercase from "../utils/FirstCharUppercase";
 import {BsLink} from "react-icons/bs";
-import { BsFillInfoCircleFill } from "react-icons/bs";
+import {BsFillInfoCircleFill} from "react-icons/bs";
 import {FaCalendarAlt} from "react-icons/fa";
 import {GiComputing} from "react-icons/gi";
 
@@ -154,26 +154,42 @@ class ExperienceCard extends Component {
                     width: "100%",
                     height: "75px",
                 }}>
-                    <FaCalendarAlt
-                        className={"mr-1"}
-                        style={{fontSize: "300%", color: "#034f84"}}
-                    />
-                    {this.formatDate(dateStart)}
-                    {dateStart instanceof Date && dateEnd instanceof Date ? " - " : ""}
-                    {this.formatDate(dateEnd)}
+
+                    <div className={"row"}>
+                        <div className={"col-auto"}>
+                            <FaCalendarAlt
+                                className={"mr-1"}
+                                style={{fontSize: "300%", color: "#034f84"}}
+                            />
+                        </div>
+                        <div className={"col-auto"}>
+                            <div className={"row"}>
+                                <div className={"col-12"}>
+                                    {this.formatDate(dateStart)}
+                                </div>
+                            </div>
+
+                            <div className={"row"}>
+                                <div className={"col-12"}>
+                                    {this.formatDate(dateEnd)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             );
         }
     }
 
-    formatDate(date){
+    formatDate(date) {
         if (date instanceof Date) {
             const month = MonthFr.convert(date.getMonth());
             const year = date.getFullYear();
 
             return (
                 <Fragment>
-                    {FirstCharUppercase.convert(month)} {year}
+                    {year} {"("} {FirstCharUppercase.convert(month)} {")"}
                 </Fragment>
             );
         }
@@ -239,12 +255,12 @@ class ExperienceCard extends Component {
         );
     }
 
-    renderComment(comment){
+    renderComment(comment) {
         if (comment != undefined && comment != null) {
             return (
-                <Card.Text className={"text-justify p-3"}>
+                <div className={"text-justify p-3"}>
                     {comment}
-                </Card.Text>
+                </div>
             );
         }
     }
@@ -274,15 +290,15 @@ class ExperienceCard extends Component {
 
                     <div className={"row"}>
                         <div className={"col-12"}>
-                            <Card.Text className={"mt-2 row"}>
+                            <div className={"mt-2 row"}>
 
                                 <div className={"col-4 text-left pl-5"}>
-                                    {this.renderDate(dateStart,dateEnd)}
+                                    {this.renderDate(dateStart, dateEnd)}
                                 </div>
 
                                 {this.renderEnterprise(enterprise)}
 
-                            </Card.Text>
+                            </div>
                         </div>
 
                         <div className={"col-1 text-center pt-4"}>
@@ -292,7 +308,8 @@ class ExperienceCard extends Component {
                                 <BsFillInfoCircleFill/>
                             </button>
 
-                            <button className={"btn btn-secondary m-1 pt-1 pb-2 pr-3 pl-3"} onClick={this.showTechnology}>
+                            <button className={"btn btn-secondary m-1 pt-1 pb-2 pr-3 pl-3"}
+                                    onClick={this.showTechnology}>
                                 <GiComputing/>
                             </button>
 
@@ -305,26 +322,26 @@ class ExperienceCard extends Component {
 
                         <div className={"col-11"}>
 
-                            <Card.Text className={"text-justify p-3"} style={{display:this.state.comment.display}}>
+                            <div className={"text-justify p-3"} style={{display: this.state.comment.display}}>
                                 <h4 className={"border border-top-0 border-right-0 border-left-0"}>
                                     Description du poste
                                 </h4>
                                 {this.renderComment(comment)}
-                            </Card.Text>
+                            </div>
 
-                            <Card.Text style={{display:this.state.technology.display}}>
+                            <div style={{display: this.state.technology.display}}>
                                 <h4 className={"border border-top-0 border-right-0 border-left-0"}>
                                     Techno(s)
                                 </h4>
                                 {this.renderTechnonogies(technologicalCategories)}
-                            </Card.Text>
+                            </div>
 
-                            <Card.Text className={"p-3"} style={{display:this.state.links.display}}>
+                            <div className={"p-3"} style={{display: this.state.links.display}}>
                                 <h4 className={"border border-top-0 border-right-0 border-left-0"}>
                                     Liens
                                 </h4>
                                 {this.renderLinks(links)}
-                            </Card.Text>
+                            </div>
 
                         </div>
                     </div>

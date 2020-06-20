@@ -1,0 +1,3 @@
+export const SET_OCCURENCES = "SET_OCCURENCES";
+export const SET_TARGET_DATE = "SET_TARGET_DATE";
+export const SET_OCCURENCE = "SET_OCCURENCE";
