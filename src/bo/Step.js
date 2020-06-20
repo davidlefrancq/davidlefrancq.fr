@@ -1,13 +1,15 @@
 class Step {
 
-    constructor(title, description) {
+    constructor(title, description, dateStart, dateEnd) {
         this.title = title;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
         this.description = description;
-        this.active = false;
+        this.image = "https://picsum.photos/1200/300";
     }
 
-    action(e) {
-        console.log(e.target.id)
+    onClick(e) {
+        e.preventDefault();
     }
 }
 

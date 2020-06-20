@@ -162,6 +162,49 @@ const data = {
                 },
             }
         },
+        occurence5: {
+            dateStart: "",
+            dateEnd: new Date("2014-12-02T00:00:00"),
+            experience: null,
+            qualification: {
+                title: "BTS SIO",
+                img: "https://edito.regionsjob.com/xjob/wp-content/uploads/sites/3/2016/02/code_developpeur.jpg",
+                level: "Bac+2",
+                trainingCenter: {
+                    name: "ENI Ecole Informatique",
+                    logo: "https://www.eni-ecole.fr/Content/Images/Static/logo-eni.png",
+                    address: "ZAC de, La Conterie, 8 Rue Léo Lagrange",
+                    postalCode:"35131",
+                    city:"Chartres-de-Bretagne",
+                    url: "https://www.eni-ecole.fr/",
+                },
+                objectives: "Bla bla bla.",
+                jobs: {
+                    job1: {
+                        name: "Développeur informatique",
+                    },
+                    job2: {
+                        name: "Développeur web",
+                    },
+                    job3: {
+                        name: "Analyste programmeur",
+                    },
+                    job4: {
+                        name: "Concepteur d'applications",
+                    },
+                    job5: {
+                        name: "Ingénieur d'études et développement",
+                    },
+                },
+                links: {
+                    link1: {
+                        title: "RNCP",
+                        url: "https://certificationprofessionnelle.fr/recherche/rncp/6255",
+                    }
+                },
+            }
+        },
+
     },
     jobs: {
         job1: {

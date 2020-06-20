@@ -78,27 +78,27 @@
     content: '';
     position: absolute;
     top: 30px;
-    left: -50%;
-    width: 100%;
+    left: -20%;
+    width: 40%;
     height: 1px;
     background-color: #ddd;
-    z-index: -1;
+    z-index: 1;
 }
 
 .datebar li .link-active{
     content: '';
     position: absolute;
     top: 30px;
-    left: -50%;
-    width: 100%;
+    left: -20%;
+    width: 40%;
     height: 1px;
     background-color: blue;
-    z-index: -1;
+    z-index: 1;
     animation: datebar-li-link 0.3s ease-in forwards;
 }
 @keyframes datebar-li-link {
     0% {
-        width: 100%;
+        width: 40%;
     }
     100% {
         width: 0%;
@@ -114,7 +114,7 @@
         width: 0%;
     }
     100% {
-        width: 100%;
+        width: 40%;
     }
 }
 

@@ -10,7 +10,7 @@ import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 function App() {
     return (
         <Router>
-            <Container className="App">
+            <Container className="App bg-white">
                 <Header/>
 
                 <Switch>
