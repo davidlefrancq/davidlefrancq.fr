@@ -1,7 +1,7 @@
 class Qualification {
 
-    constructor(title,img,level,trainingCenter,objectives,jobs,links) {
-        this.title = title;
+    constructor(name,img,level,trainingCenter,objectives,jobs,links) {
+        this.name = name;
         this.img = img;
         this.level = level;
         this.trainingCenter = trainingCenter;
@@ -11,12 +11,12 @@ class Qualification {
     }
 
 
-    getTitle() {
-        return this.title;
+    getName() {
+        return this.name;
     }
 
-    setTitle(value) {
-        this.title = value;
+    setName(value) {
+        this.name = value;
     }
 
     getImg() {

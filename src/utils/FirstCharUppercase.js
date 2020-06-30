@@ -1,6 +1,8 @@
 class FirstCharUppercase {
     static convert(string){
-        return string[0].toUpperCase() + string.slice(1);
+        if(string != undefined && string != null){
+            return string[0].toUpperCase() + string.slice(1);
+        }
     }
 }
 

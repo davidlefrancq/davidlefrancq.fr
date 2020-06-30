@@ -79,9 +79,9 @@ class EditLink extends Component {
 
     handleChange(e) {
 
-        const {id} = e.target;
+        const {id, value} = e.target;
         const link = {...this.state.link};
-        const {value} = e.target;
+
         // let validated = true;
 
         // if (id == "url") {
@@ -109,10 +109,10 @@ class EditLink extends Component {
                     <Col xs="auto">
                         <Form.Label htmlFor="linkInput" srOnly>Titre</Form.Label>
                         <Form.Control
-                            id={"title"}
+                            id={"name"}
                             type="text"
                             placeholder="ex: Google"
-                            value={this.state.link.title}
+                            value={this.state.link.name}
                             onChange={this.handleChange}
                         />
                     </Col>

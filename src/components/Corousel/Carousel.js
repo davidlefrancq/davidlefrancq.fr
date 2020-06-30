@@ -92,6 +92,10 @@ class Carousel extends Component {
         }
     }
 
+    firstCharUppercase = (string) => {
+        return string[0].toUpperCase() + string.slice(1);
+    }
+
     renderItems() {
 
         const {cssClassCenter, direction} = this.state;
@@ -128,7 +132,7 @@ class Carousel extends Component {
                             className={"title text-center p-2"}
                             onClick={item.onClick}
                         >
-                            {item.title}
+                            {this.firstCharUppercase(item.title)}
                             <div>
                                 {this.renderDate(item.dateStart)}
                                 {this.renderDate(item.dateEnd)}
@@ -188,9 +192,9 @@ class Carousel extends Component {
         }
     }
 
-    render() {
-        return (
-            <div className={"container-fluid"}>
+    renderCarousel(){
+        if(this.props.items.length > 0){
+            return(
                 <div className={"carousel"}>
 
                     {this.renderItems()}
@@ -219,6 +223,14 @@ class Carousel extends Component {
                         </div>
                     </div>
                 </div>
+            );
+        }
+    }
+
+    render() {
+        return (
+            <div className={"container-fluid"}>
+                {this.renderCarousel()}
             </div>
         );
     }

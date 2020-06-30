@@ -102,11 +102,13 @@ class QualificationCard extends Component {
     }
 
     renderJob(job) {
-        return (
-            <li key={job.name} className={""}>
-                {job.name}
-            </li>
-        );
+        if (job != undefined && job != null) {
+            return (
+                <li key={job.name} className={""}>
+                    {job.name}
+                </li>
+            );
+        }
     }
 
     renderLinks(links) {
@@ -131,8 +133,8 @@ class QualificationCard extends Component {
 
     renderLink(link) {
         return (
-            <a key={link.title} className={"btn btn-info m-1"} href={link.url}>
-                {link.title}
+            <a key={link.name} className={"btn btn-info m-1"} href={link.url}>
+                {link.name}
             </a>
         );
     }
@@ -214,8 +216,17 @@ class QualificationCard extends Component {
         }
     }
 
-    renderDate(date) {
-        if (date instanceof Date) {
+    renderDate(resDate) {
+
+        let date = resDate;
+        if (date != undefined && date != null) {
+            if(!(resDate instanceof Date)){
+                date = new Date(resDate);
+            }
+        }
+
+        if (date != undefined && date != null) {
+
             const month = MonthFr.convert(date.getMonth());
             const year = date.getFullYear();
 
@@ -243,14 +254,14 @@ class QualificationCard extends Component {
 
     render() {
         const {dateStart, dateEnd, qualification} = this.props.occurence;
-        const {title, img, level, trainingCenter, objectives, jobs, links} = qualification;
+        const {name, img, level, trainingCenter, objectives, jobs, links} = qualification;
 
         return (
             <Card className={"mt-3"}>
 
                 <Card.Header>
                     <Card.Title>
-                        <h4>{title}</h4>
+                        <h4>{FirstCharUppercase.convert(name)}</h4>
                     </Card.Title>
                 </Card.Header>
 

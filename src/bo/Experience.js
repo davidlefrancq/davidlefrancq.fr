@@ -1,8 +1,8 @@
 class Experience {
 
-    constructor(jobTitle, comment, img, enterprise, technologicalCategories, workstudy, links) {
+    constructor(name, comment, img, enterprise, technologicalCategories, workstudy, links) {
 
-        this.jobTitle = jobTitle;
+        this.name = name;
         this.comment = comment;
         this.img = img;
         this.enterprise = enterprise;
@@ -12,12 +12,12 @@ class Experience {
     }
 
 
-    getJobTitle() {
-        return this.jobTitle;
+    getName() {
+        return this.name;
     }
 
-    setJobTitle(value) {
-        this.jobTitle = value;
+    setName(value) {
+        this.name = value;
     }
 
     getComment() {

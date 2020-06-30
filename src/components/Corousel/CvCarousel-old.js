@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {Carousel} from "react-bootstrap";
 import {connect} from "react-redux";
-import {actions} from "../actions";
+import {actions} from "../../actions";
 
 const maxHeight = "250px";
 
@@ -186,11 +186,11 @@ class CvCarousel extends Component {
         let title = "";
 
         if (qualification != undefined && qualification != null) {
-            title = qualification.title;
+            title = qualification.name;
         }
 
         if (experience != undefined && experience != null) {
-            title = experience.jobTitle;
+            title = experience.name;
         }
 
         return (

@@ -1,4 +1,10 @@
-import {SET_OCCURENCE, SET_OCCURENCES, SET_TARGET_DATE} from "../actions/occurence-action-type";
+import {
+    ADD_OCCURENCE,
+    SET_OCCURENCE,
+    SET_OCCURENCE_EDIT,
+    SET_OCCURENCES,
+    SET_TARGET_DATE
+} from "../actions/occurence-action-type";
 
 const initialState = {
     occurences: {},
@@ -6,6 +12,24 @@ const initialState = {
     target: {
         date: null,
     },
+    edit: {
+        qualification: {
+            technology: {
+                key: null,
+            },
+            link: {
+                key: null,
+            },
+        },
+        experience: {
+            technology: {
+                key: null,
+            },
+            link: {
+                key: null,
+            },
+        }
+    }
 };
 
 export default function OccurencesReducer(state = initialState, action) {
@@ -24,6 +48,14 @@ export default function OccurencesReducer(state = initialState, action) {
 
         case SET_TARGET_DATE:
             newState.date = action.payload;
+            return newState;
+
+        case ADD_OCCURENCE:
+            newState.occurences.push(action.payload);
+            return newState;
+
+        case SET_OCCURENCE_EDIT:
+            newState.edit = action.payload;
             return newState;
 
         default:

@@ -5,7 +5,7 @@ const data = {
             dateEnd: new Date("2019-12-02T00:00:00"),
             experience: null,
             qualification: {
-                title: "Concepteur Développeur Informatique",
+                name: "Concepteur Développeur Informatique",
                 img: "https://pic.clubic.com/v1/images/1709696/raw?width=1200&fit=max&hash=b66a110eab5bfb759d547630534eb1be823a7b82",
                 level: "Bac+4",
                 trainingCenter: {
@@ -36,7 +36,7 @@ const data = {
                 },
                 links: {
                     link1: {
-                        title: "RNCP",
+                        name: "RNCP",
                         url: "https://certificationprofessionnelle.fr/recherche/rncp/6255",
                     }
                 },
@@ -46,7 +46,7 @@ const data = {
             dateStart: new Date("2018-04-16T00:00:00"),
             dateEnd: new Date("2019-11-29T00:00:00"),
             experience: {
-                jobTitle: "Concepteur Développeur d'Application",
+                name: "Concepteur Développeur d'Application",
                 comment:"Au sein d'un groupe d'entreprise de recherche de fuite, ma tâche principale a été de concevoir une application métier de suivi et de gestion de rapport d'intervention.",
                 img: null,
                 enterprise: {
@@ -74,7 +74,7 @@ const data = {
                 workstudy: true,
                 links: {
                     link1:{
-                        title:"Atlas",
+                        name:"Atlas",
                         url:"https://atlas.groupeafd.com/",
                     },
                 },
@@ -85,7 +85,7 @@ const data = {
             dateStart: new Date("2017-04-16T00:00:00"),
             dateEnd: new Date("2018-11-29T00:00:00"),
             experience: {
-                jobTitle: "Concepteur Développeur d'Application",
+                name: "Concepteur Développeur d'Application",
                 comment:"Au sein d'un groupe d'entreprise de recherche de fuite, ma tâche principale a été de concevoir une application métier de suivi et de gestion de rapport d'intervention.",
                 img: null,
                 enterprise: {
@@ -113,7 +113,7 @@ const data = {
                 workstudy: true,
                 links: {
                     link1:{
-                        title:"Atlas",
+                        name:"Atlas",
                         url:"https://atlas.groupeafd.com/",
                     },
                 },
@@ -125,7 +125,7 @@ const data = {
             dateEnd: new Date("2016-12-02T00:00:00"),
             experience: null,
             qualification: {
-                title: "BTS SIO",
+                name: "BTS SIO",
                 img: "https://edito.regionsjob.com/xjob/wp-content/uploads/sites/3/2016/02/code_developpeur.jpg",
                 level: "Bac+2",
                 trainingCenter: {
@@ -156,7 +156,7 @@ const data = {
                 },
                 links: {
                     link1: {
-                        title: "RNCP",
+                        name: "RNCP",
                         url: "https://certificationprofessionnelle.fr/recherche/rncp/6255",
                     }
                 },
@@ -167,7 +167,7 @@ const data = {
             dateEnd: new Date("2014-12-02T00:00:00"),
             experience: null,
             qualification: {
-                title: "BTS SIO",
+                name: "BTS SIO",
                 img: "https://edito.regionsjob.com/xjob/wp-content/uploads/sites/3/2016/02/code_developpeur.jpg",
                 level: "Bac+2",
                 trainingCenter: {
@@ -198,7 +198,7 @@ const data = {
                 },
                 links: {
                     link1: {
-                        title: "RNCP",
+                        name: "RNCP",
                         url: "https://certificationprofessionnelle.fr/recherche/rncp/6255",
                     }
                 },
@@ -208,13 +208,13 @@ const data = {
     },
     jobs: {
         job1: {
-            title: "Analyste programmeur",
+            name: "Analyste programmeur",
         },
         job2: {
-            title: "Concepteur d'applications",
+            name: "Concepteur d'applications",
         },
         job3: {
-            title: "Ingénieur d'études et développement",
+            name: "Ingénieur d'études et développement",
         },
     },
     technologies: {

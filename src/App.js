@@ -3,8 +3,9 @@ import './App.css';
 import OccurenceList from "./components/OccurenceList";
 import Header from "./components/Header";
 import {Container} from 'react-bootstrap';
-import NewQualification from "./components/edit/NewQualification";
+import NewQualification from "./components/edit/EditQualification";
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import Admin from "./components/admin";
 
 
 function App() {
@@ -17,8 +18,8 @@ function App() {
                     <Route exact path={"/"}>
                         <OccurenceList/>
                     </Route>
-                    <Route exact path={"/qualification/new"}>
-                        <NewQualification/>
+                    <Route exact path={"/admin"}>
+                        <Admin/>
                     </Route>
                 </Switch>
 

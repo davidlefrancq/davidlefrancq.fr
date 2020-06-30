@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {Jumbotron} from 'react-bootstrap';
 import {connect} from "react-redux";
 import {actions} from '../actions';
+import {Link} from "react-router-dom";
 
 class Header extends Component {
 
@@ -25,6 +26,17 @@ class Header extends Component {
         }
     }
 
+    renderButtonAdmin() {
+        const {isLoggedIn} = this.props;
+        if (isLoggedIn) {
+            return (
+                <li className="nav-item">
+                    <Link className="nav-link" to="/admin">Admin</Link>
+                </li>
+            );
+        }
+    }
+
     render() {
         return (
             <Fragment>
@@ -38,11 +50,11 @@ class Header extends Component {
 
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" href="/">Accueil</a>
+                            <Link className="nav-link" to="/">Accueil</Link>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="/qualification/new">NewQualifaication</a>
-                        </li>
+
+                        {this.renderButtonAdmin()}
+
                         <li className="nav-item">
                             <a className="nav-link" onClick={this.handleAuthentification}>
                                 {this.renderAuthentificationLabel()}
