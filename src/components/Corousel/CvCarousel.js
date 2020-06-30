@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {actions} from "../actions";
+import {actions} from "../../actions";
 import Carousel from "./Carousel";
-import Step from "../bo/Step";
+import Step from "../../bo/Step";
 
 class CvCarousel extends Component {
 
@@ -24,7 +24,7 @@ class CvCarousel extends Component {
     }
 
     getItemsCarousel() {
-        const items = {};
+        const items = [];
         let i = 0;
 
         const {occurences} = this.props;
@@ -38,14 +38,14 @@ class CvCarousel extends Component {
             let description = "";
 
             if (occurence.experience instanceof Object) {
-                title = occurence.experience.jobTitle;
+                title = occurence.experience.name;
 
                 dateStart = occurence.dateStart ? occurence.dateStart : null;
                 dateEnd = occurence.dateEnd ? occurence.dateEnd : null;
             }
 
             if (occurence.qualification instanceof Object) {
-                title = occurence.qualification.title;
+                title = occurence.qualification.name;
                 dateEnd = occurence.dateEnd ? occurence.dateEnd : null;
             }
 

@@ -1,11 +1,14 @@
 import React, {Component, Fragment} from 'react';
 import OccurenceItem from "./OccurenceItem";
-import CvCarousel from "./CvCarousel";
-import DateBar from "./edit/DateBar";
+import CvCarousel from "./Corousel/CvCarousel";
+import DateBar from "./DateBar/DateBar";
 import Step from "../bo/Step";
 import {connect} from "react-redux";
 import {actions} from '../actions';
 import data from "../data";
+import DAOFactory from "../dal/DAOFactory";
+
+const daoFactory = new DAOFactory();
 
 class OccurenceList extends Component {
 
@@ -17,7 +20,13 @@ class OccurenceList extends Component {
     }
 
     componentDidMount() {
-        this.props.setOccurences(data.occurences);
+        const result = daoFactory.getOccurenceDAO().selectAll();
+        result.then((res)=>{
+            const {data} = res;
+            const items = data['hydra:member'];
+
+            this.props.setOccurences(items)
+        });
     }
 
     handleOccurence(occurence) {
@@ -81,6 +90,7 @@ class OccurenceList extends Component {
                 let dateExist = false;
 
                 dates.forEach((item) => {
+
                     if (date.getFullYear() == item.title) {
                         dateExist = true;
                     }

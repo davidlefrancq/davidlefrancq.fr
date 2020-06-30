@@ -146,7 +146,21 @@ class ExperienceCard extends Component {
         }
     }
 
-    renderDate(dateStart, dateEnd) {
+    renderDate(resDateStart, resDateEnd) {
+
+        let dateStart = resDateStart;
+        let dateEnd = resDateEnd;
+        if (dateStart != undefined && dateStart != null) {
+            if (!(dateStart instanceof Date)) {
+                dateStart = new Date(resDateStart)
+            }
+        }
+        if (dateEnd != undefined && dateEnd != null) {
+            if (!(dateEnd instanceof Date)) {
+                dateEnd = new Date(resDateEnd)
+            }
+        }
+
         if (dateStart instanceof Date || dateEnd instanceof Date) {
 
             return (
@@ -249,8 +263,8 @@ class ExperienceCard extends Component {
 
     renderLink(link) {
         return (
-            <a key={link.title} className={"btn btn-info m-1"} href={link.url}>
-                {link.title}
+            <a key={link.name} className={"btn btn-info m-1"} href={link.url}>
+                {link.name}
             </a>
         );
     }
@@ -268,7 +282,7 @@ class ExperienceCard extends Component {
     render() {
         let image = "https://alchimistedelajoie.com/wp-content/uploads/2018/12/business-camera-coffee-1509428-reduit-1080x675.jpg";
         const {dateStart, dateEnd, experience} = this.props.occurence;
-        const {jobTitle, comment, img, enterprise, technologicalCategories, workstudy, links} = experience;
+        const {name, comment, img, enterprise, technologicalCategories, workstudy, links} = experience;
 
         if (img != undefined && img != null) {
             image = img;
@@ -280,7 +294,7 @@ class ExperienceCard extends Component {
                 <Card.Header>
                     <Card.Title>
                         <h4>
-                            {jobTitle}
+                            {FirstCharUppercase.convert(name)}
                         </h4>
                     </Card.Title>
 

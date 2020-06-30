@@ -49,31 +49,6 @@
     }
 }
 
-/*.datebar li:before {*/
-/*    content: counter(step);*/
-/*    counter-increment: step;*/
-/*    width: 30px;*/
-/*    height: 30px;*/
-/*    line-height: 25px;*/
-/*    border: 1px solid #ddd;*/
-/*    display: block;*/
-/*    text-align: center;*/
-/*    margin: 0 auto 10px auto;*/
-/*    border-radius: 50%;*/
-/*    background-color: white;*/
-/*    animation: datebar-li-before 0.5s ease-in forwards;*/
-/*}*/
-@keyframes datebar-li-before {
-    0% {
-        color: blue;
-        border-color: blue;
-    }
-    100% {
-        color: #ddd;
-        border-color: #ddd;
-    }
-}
-
 .datebar .link{
     content: '';
     position: absolute;
@@ -117,57 +92,6 @@
         width: 40%;
     }
 }
-
-
-/*.datebar li.active {*/
-/*    animation: datebar-li-active 0.5s ease-in forwards;*/
-/*}*/
-
-/*@keyframes datebar-li-active {*/
-/*    0% {*/
-/*        color: #ddd;*/
-/*    }*/
-/*    100% {*/
-/*        color: blue;*/
-/*    }*/
-/*}*/
-
-/*.datebar li.active:before {*/
-/*    animation: datebar-li-active-before 0.5s ease-in forwards;*/
-/*}*/
-
-/*@keyframes datebar-li-active-before {*/
-/*    0% {*/
-/*        border-color: #ddd;*/
-/*    }*/
-/*    100% {*/
-/*        border-color: blue;*/
-/*    }*/
-/*}*/
-
-
-/*.datebar li.validated:before {*/
-/*    border-color: green;*/
-/*}*/
-
-/*.datebar .link.active {*/
-/*    animation: datebar-li-active-link 0.5s ease-in forwards;*/
-/*}*/
-
-/*@keyframes datebar-li-active-link {*/
-/*    0% {*/
-/*        width: 0;*/
-/*        background-color: #ddd;*/
-/*    }*/
-/*    100% {*/
-/*        width: 100%;*/
-/*        background-color: blue;*/
-/*    }*/
-/*}*/
-
-/*.datebar .link.validated {*/
-/*    background-color: green;*/
-/*}*/
 
 .datebar li:first-child .link, .datebar li:first-child .link-active{
     display: none;

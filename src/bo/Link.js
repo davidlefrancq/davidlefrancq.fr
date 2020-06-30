@@ -1,16 +1,16 @@
 class Link {
-    constructor(title,url) {
+    constructor(name,url) {
 
-        this.title = title;
+        this.name = name;
         this.url = url;
     }
 
-    getTitle() {
-        return this.title;
+    getName() {
+        return this.name;
     }
 
-    setTitle(value) {
-        this.title = value;
+    setName(value) {
+        this.name = value;
     }
 
     getUrl() {

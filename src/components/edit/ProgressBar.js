@@ -43,7 +43,9 @@ class ProgressBar extends Component {
             return newStepObject;
         });
 
-        steps[0].active = true;
+        if (steps[0]) {
+            steps[0].active = true;
+        }
 
         this.setState({
             steps,
@@ -95,7 +97,10 @@ class ProgressBar extends Component {
             return (
                 <li key={key} id={key} className={"col " + classActive} onClick={this.handleStep}>
                     {step.title}
-                    <div className={"link " + classActive}></div>
+                    {/*<div className={"link " + classActive}></div>*/}
+                    <div className={"link"}></div>
+                    <div className={"link-active"}></div>
+
                 </li>
             );
         });
@@ -105,7 +110,7 @@ class ProgressBar extends Component {
     renderButtons() {
 
         return (
-            <div className={"text-center"}>
+            <div className={"clearfix"}>
                 {this.renderButtonBefore()}
                 {this.renderButtonAfter()}
             </div>
@@ -123,12 +128,12 @@ class ProgressBar extends Component {
 
         if (before >= 0) {
             return (
-                <button id={before} className={"btn btn-light m-1"} onClick={this.handleStep}>{'<<'}</button>
+                <button id={before} className={"btn btn-secondary float-left"} onClick={this.handleStep}>{'Précédent'}</button>
             );
         } else {
-            return (
-                <button className={"btn btn-light m-1"} disabled>{'<<'}</button>
-            );
+            // return (
+            //     <button className={"btn btn-light float-left"} disabled>{"Précédent"}</button>
+            // );
         }
     }
 
@@ -143,12 +148,12 @@ class ProgressBar extends Component {
 
         if (after > target) {
             return (
-                <button id={after} className={"btn btn-light m-1"} onClick={this.handleStep}>{'>>'}</button>
+                <button id={after} className={"btn btn-success float-right"} onClick={this.handleStep}>{'Suivant'}</button>
             );
         } else {
-            return (
-                <button className={"btn btn-light m-1"} disabled>{'>>'}</button>
-            );
+            // return (
+            //     <button className={"btn btn-light m-1 float-right"} disabled>{'Suivant'}</button>
+            // );
         }
     }
 

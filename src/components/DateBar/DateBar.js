@@ -113,9 +113,9 @@ class DateBar extends Component {
         occurencesKeys.map((key) => {
             if (newId === null) {
                 const occurence = occurences[key];
-                const dateControl = this.getDateControl(occurence);
+                const dateControl = new Date(this.getDateControl(occurence)).getFullYear();
 
-                if (dateControl != null) {
+                if (dateControl != undefined && dateControl != null) {
                     if (eval(dateControl) === eval(fullYear)) {
                         newId = key;
                     }
