@@ -177,13 +177,20 @@ class EditExperience extends Component {
         e.preventDefault();
         const newState = {...this.state};
         const {occurence} = this.props;
+        const occurenceDAO = daoFactory.getOccurenceDAO();
 
-        const result = daoFactory.getOccurenceDAO().insert(occurence);
-        result.then((res) => {
-            console.log(res);
+        if(occurence["@id"] != undefined && occurence["@id"] != null && occurence["@id"] != ""){
+            occurenceDAO.update(occurence).then((res)=>{
+                console.log(res);
+                this.reset();
+            });
+        }else{
+            occurenceDAO.insert(occurence).then((res) => {
+                console.log(res);
+                this.reset();
+            });
 
-            this.reset();
-        });
+        }
     }
 
     reset = () => {
