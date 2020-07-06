@@ -11,6 +11,7 @@ const initialState = {
     occurence: null,
     target: {
         date: null,
+        oldDate: null,
     },
     edit: {
         qualification: {
@@ -47,7 +48,8 @@ export default function OccurencesReducer(state = initialState, action) {
             return newState;
 
         case SET_TARGET_DATE:
-            newState.date = action.payload;
+            newState.target.oldDate = newState.target.date;
+            newState.target.date = action.payload;
             return newState;
 
         case ADD_OCCURENCE:

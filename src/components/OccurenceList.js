@@ -29,10 +29,6 @@ class OccurenceList extends Component {
         });
     }
 
-    handleOccurence(occurence) {
-        this.setState({occurence});
-    }
-
     getQualifications() {
         const {occurences} = this.props;
         const occurencesQualifications = [];
@@ -158,13 +154,11 @@ class OccurenceList extends Component {
                     <div className={"col-12 col-md-6"}>
                         <CvCarousel
                             occurences={occurencesQualifications}
-                            handleOccurence={this.handleOccurence.bind(this)}
                         />
                     </div>
                     <div className={"col-12 col-md-6"}>
                         <CvCarousel
                             occurences={occurencesExperiences}
-                            handleOccurence={this.handleOccurence.bind(this)}
                         />
                     </div>
                 </div>

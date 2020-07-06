@@ -105,51 +105,191 @@ class DateBar extends Component {
         }
     }
 
-    getNewIdToFullYear(occurences, fullYear) {
+    getItemYear(occurences, fullYear) {
+
+        let occurenceSelected = null;
+        const date = new Date(`${fullYear}-01-01T00:00:00`);
 
         const occurencesKeys = Object.keys(occurences);
-        let newId = null;
-
         occurencesKeys.map((key) => {
-            if (newId === null) {
-                const occurence = occurences[key];
-                const dateControl = new Date(this.getDateControl(occurence)).getFullYear();
 
-                if (dateControl != undefined && dateControl != null) {
+                const occurence = occurences[key];
+                const dateOccurence = this.getDate(occurence);
+
+                if (dateOccurence != undefined && dateOccurence != null) {
+
+                    const dateControl = dateOccurence.getFullYear();
                     if (eval(dateControl) === eval(fullYear)) {
-                        newId = key;
+
+                        if(occurenceSelected == null){
+                            occurenceSelected = occurence;
+                        }else{
+                            const dateItem = this.getDate(occurence);
+                            const dateControlSelected = this.getDate(occurenceSelected);
+
+                            const diffControl = dateItem.getTime() - date.getTime();
+                            const diffControlSelected = dateControlSelected.getTime() - date.getTime();
+
+                            if (diffControlSelected > diffControl) {
+                                // Ne rien faire
+                            } else {
+                                occurenceSelected = occurences[key];
+                            }
+                        }
+                    }
+                }
+        });
+
+        return occurenceSelected;
+    }
+
+    getItemYearUpper(occurences, fullYear) {
+
+        let occurenceSelected = null;
+        const date = new Date(`${fullYear}-01-01T00:00:00`);
+
+        const occurencesKeys = Object.keys(occurences);
+        occurencesKeys.map((key) => {
+
+            const occurence = occurences[key];
+            const dateItem = this.getDate(occurence);
+
+            if (dateItem != undefined && dateItem != null) {
+
+                const diff = dateItem.getTime() - date.getTime();
+                if (diff > 0) {
+
+                    if (occurenceSelected == null) {
+
+                        occurenceSelected = occurences[key];
+
+                    } else {
+
+                        const dateControlSelected = this.getDate(occurenceSelected);
+                        const diffControl = dateItem.getTime() - date.getTime();
+                        const diffControlSelected = dateControlSelected.getTime() - date.getTime();
+
+                        if (diffControlSelected < diffControl) {
+                            // Ne rien faire
+                        } else {
+                            occurenceSelected = occurences[key];
+                        }
                     }
                 }
             }
         });
 
-        return newId;
+        return occurenceSelected;
     }
 
-    getDateControl(occurence) {
+    getItemYearLower(occurences, fullYear) {
+
+        let occurenceSelected = null;
+        const date = new Date(`${fullYear}-01-01T00:00:00`);
+
+        const occurencesKeys = Object.keys(occurences);
+        occurencesKeys.map((key) => {
+
+            const occurence = occurences[key];
+            const dateItem = this.getDate(occurence);
+
+            if (dateItem != undefined && dateItem != null) {
+
+                const diff = date.getTime() - dateItem.getTime();
+                if (diff > 0) {
+
+                    if (occurenceSelected == null) {
+
+                        occurenceSelected = occurences[key];
+
+                    } else {
+
+                        const dateControlSelected = this.getDate(occurenceSelected);
+
+                        const diffControl = date.getTime() - dateItem.getTime();
+                        const diffControlSelected = date.getTime() - dateControlSelected.getTime();
+
+                        if (diffControlSelected < diffControl) {
+                            // Ne rien faire
+                        } else {
+                            occurenceSelected = occurences[key];
+                        }
+                    }
+                }
+            }
+        });
+
+        return occurenceSelected;
+    }
+
+    getNewIdToFullYear(occurences, fullYear) {
+
+        let targetKey = null;
+
+        const occurence = this.getOccurence(occurences,fullYear);
+        if(occurence != null){
+            targetKey = this.getTargetKey(occurences,occurence)
+        }
+
+        return targetKey;
+    }
+
+    getOccurence(occurences,fullYear){
+        const {target} = this.props;
+        const {date,oldDate} = target;
+
+        let occurence = this.getItemYear(occurences,fullYear);
+        if(occurence == null){
+
+            if(eval(date) < eval(oldDate)){
+                occurence = this.getItemYearUpper(occurences,fullYear);
+            }
+
+            if(oldDate == null || eval(date) > eval(oldDate)){
+                occurence = this.getItemYearLower(occurences,fullYear);
+            }
+        }
+
+        return occurence;
+    }
+
+    getTargetKey(occurences,occurence){
+
+        let target = 0;
+        const keys = Object.keys(occurences);
+        keys.map((key)=>{
+            if(occurences[key].id == occurence.id){
+                target = key;
+            }
+        });
+
+        return target;
+    }
+
+    getDate(occurence) {
 
         const {dateStart, dateEnd} = occurence;
-        let dateControl = null;
+        let date = null;
 
         if (dateStart != undefined && dateStart != null && dateStart !== "") {
 
-            if(dateStart instanceof Date){
-                dateControl = dateStart.getFullYear();
-            }else{
-                dateControl = dateStart;
+            if (dateStart instanceof Date) {
+                date = dateStart;
+            } else {
+                date = new Date(dateStart);
             }
         }
 
         if (dateEnd != undefined && dateEnd != null && dateEnd !== "") {
 
-            if(dateEnd instanceof Date){
-                dateControl = dateEnd.getFullYear();
-            }else{
-                dateControl = dateEnd;
+            if (dateEnd instanceof Date) {
+                date = dateEnd;
+            } else {
+                date = new Date(dateEnd);
             }
         }
 
-        return dateControl;
+        return date;
     }
 
     actualiseStepBeforeActive(idActive, steps) {
