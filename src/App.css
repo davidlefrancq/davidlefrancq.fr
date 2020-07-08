@@ -170,3 +170,50 @@ body{
     position: absolute;
     top: 10px;
 }
+
+.auth-form{
+    background-color: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 25px;
+    padding: 25px;
+    position: fixed;
+    width: 40%;
+    height: 30%;
+    top: 25%;
+    left: 30%;
+    visibility: hidden;
+}
+
+.auth-form-on{
+    animation: auth-form-on-animation 0.3s ease-in forwards;
+    overflow: hidden;
+}
+@keyframes auth-form-on-animation {
+    0% {
+        visibility: visible;
+        left: 30%;
+        width: 40%;
+        top: 0;
+        height: 0;
+    }
+    100% {
+        top: 25%;
+        height: 30%;
+        visibility: visible;
+    }
+}
+.auth-form-off{
+    animation: auth-form-off-animation 0.4s ease-in forwards;
+}
+@keyframes auth-form-off-animation {
+    0% {
+        width: 40%;
+        left: 30%;
+        visibility: visible;
+    }
+    100% {
+        width: 5%;
+        left: 0;
+        visibility: hidden;
+    }
+}

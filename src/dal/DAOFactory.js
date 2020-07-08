@@ -1,9 +1,11 @@
 import OccurenceDAO from "./OccurenceDAO";
+import AuthenticationDAO from "./AuthenticationDAO";
 
 class DAOFactory {
 
     constructor() {
         this.occurenceDAO = null;
+        this.authenticationDAO = null;
     }
 
     getOccurenceDAO(){
@@ -13,6 +15,14 @@ class DAOFactory {
         }
 
         return this.occurenceDAO;
+    }
+
+    getAuthenticationDAO(){
+        if(this.authenticationDAO == null){
+            this.authenticationDAO = new AuthenticationDAO();
+        }
+
+        return this.authenticationDAO;
     }
 
 }

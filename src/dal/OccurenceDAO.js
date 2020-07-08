@@ -2,13 +2,13 @@ import axios from "axios";
 import Occurence from "../bo/Occurence";
 import Enterprise from "../bo/Enterprise";
 import Experience from "../bo/Experience";
+import {URL_OCCURENCES} from "./server-url";
 
-const URL_SERVER = "http://localhost:8000";
-const SELECT_ALL = URL_SERVER + "/api/occurences";
-const SELECT_BY_ID = URL_SERVER + "/api/occurences";
-const INSERT = URL_SERVER + "/api/occurences";
-const UPDATE = URL_SERVER + "/api/occurences/{id}";
-const DELETE = URL_SERVER + "/api/occurences/{id}";
+const SELECT_ALL = URL_OCCURENCES;
+const SELECT_BY_ID = URL_OCCURENCES + "/{id}";
+const INSERT = URL_OCCURENCES;
+const UPDATE = URL_OCCURENCES + "/{id}";
+const DELETE = URL_OCCURENCES + "/{id}";
 
 class OccurenceDAO {
 

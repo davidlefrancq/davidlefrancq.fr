@@ -1,1 +1,2 @@
 export const SET_AUTHENTIFICATION = "SET_AUTHENTIFICATION";
+export const SET_TOKEN = "SET_TOKEN";
