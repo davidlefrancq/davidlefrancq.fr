@@ -19,13 +19,23 @@ class LoginForm extends Component {
         this.setState(state);
     }
 
+    handleKeyUp(e){
+        e.preventDefault();
+        const {key} = e;
+        if(key != undefined && key != null){
+            if(key == "Enter"){
+                this.handleSubmit(e);
+            }
+        }
+    }
+
     handleChange = (e) =>{
         const state = {...this.state};
         state[e.target.name] = e.target.value;
         this.setState(state);
     }
 
-    handleSubmut(e){
+    handleSubmit(e){
         e.preventDefault();
         const {email, password} = this.state;
         this.handleAuthentification(email,password);
@@ -44,6 +54,7 @@ class LoginForm extends Component {
                             placeholder="Email"
                             value={this.state.email}
                             onChange={(e)=>{this.handleChange(e)}}
+                            onKeyUp={(e)=>{this.handleKeyUp(e)}}
                         />
                     </div>
                     <div className={"col-12 col-xl-5"}>
@@ -54,12 +65,13 @@ class LoginForm extends Component {
                             placeholder="Password"
                             value={this.state.password}
                             onChange={(e)=>{this.handleChange(e)}}
+                            onKeyUp={(e)=>{this.handleKeyUp(e)}}
                         />
                     </div>
                 </div>
                 <div className={"row p-1"}>
                     <div className={"col-12 clearfix"}>
-                        <button className="float-right btn btn-success" onClick={(e)=>{this.handleSubmut(e)}}>
+                        <button className="float-right btn btn-success" onClick={(e)=>{this.handleSubmit(e)}}>
                             Connexion
                         </button>
                     </div>

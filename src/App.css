@@ -182,6 +182,7 @@ body{
     top: 25%;
     left: 30%;
     visibility: hidden;
+    z-index: 9999;
 }
 
 .auth-form-on{

@@ -1,14 +1,11 @@
 import axios from "axios";
-import Occurence from "../bo/Occurence";
-import Enterprise from "../bo/Enterprise";
-import Experience from "../bo/Experience";
-import {URL_OCCURENCES} from "./server-url";
+import {URL_OCCURENCES, URL_OCCURENCES_ADMIN} from "./server-url";
 
 const SELECT_ALL = URL_OCCURENCES;
 const SELECT_BY_ID = URL_OCCURENCES + "/{id}";
-const INSERT = URL_OCCURENCES;
-const UPDATE = URL_OCCURENCES + "/{id}";
-const DELETE = URL_OCCURENCES + "/{id}";
+const INSERT = URL_OCCURENCES_ADMIN;
+const UPDATE = URL_OCCURENCES_ADMIN + "/{id}";
+const DELETE = URL_OCCURENCES_ADMIN + "/{id}";
 
 class OccurenceDAO {
 
@@ -23,9 +20,12 @@ class OccurenceDAO {
         }
     }
 
-    insert(occurence) {
+    insert(occurence, token) {
+        console.log("insert",[occurence, token]);
+
         if (occurence != undefined && occurence != null) {
             const headers = {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
             const data = JSON.stringify(occurence);
@@ -33,8 +33,9 @@ class OccurenceDAO {
         }
     }
 
-    update(occurence) {
+    update(occurence, token) {
         const headers = {
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         }
         const data = JSON.stringify(this.prepareUpdate(occurence));
@@ -130,9 +131,10 @@ class OccurenceDAO {
         }
     }
 
-    delete(occurence) {
+    delete(occurence, token) {
         if (occurence != undefined && occurence != null) {
             const headers = {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
             const {id} = occurence;

@@ -176,16 +176,18 @@ class EditExperience extends Component {
     handleSave = (e) => {
         e.preventDefault();
         const newState = {...this.state};
-        const {occurence} = this.props;
+        const {occurence,token} = this.props;
         const occurenceDAO = daoFactory.getOccurenceDAO();
 
+        console.log(this.props);
+
         if(occurence["@id"] != undefined && occurence["@id"] != null && occurence["@id"] != ""){
-            occurenceDAO.update(occurence).then((res)=>{
+            occurenceDAO.update(occurence,token).then((res)=>{
                 console.log(res);
                 this.reset();
             });
         }else{
-            occurenceDAO.insert(occurence).then((res) => {
+            occurenceDAO.insert(occurence,token).then((res) => {
                 console.log(res);
                 this.reset();
             });
@@ -637,9 +639,11 @@ class EditExperience extends Component {
 
 const mapStateToProps = (state) => {
     const {occurence, edit} = state.OccurencesReducer;
+    const {token} = state.AuthentificationReducer;
     return {
         occurence,
         edit,
+        token,
     };
 };
 

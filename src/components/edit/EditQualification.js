@@ -441,14 +441,9 @@ class EditQualification extends Component {
 
     handleSave(e) {
         e.preventDefault();
-        const newState = {...this.state};
-        const {occurence} = this.props;
+        const {occurence,token} = this.props;
 
-        const result = daoFactory.getOccurenceDAO().insert(occurence);
-        result.then((res) => {
-            // console.log(res);
-            // localStorage.setItem('newOccurenceQualification', null);
-
+        daoFactory.getOccurenceDAO().insert(occurence,token).then((res) => {
             this.reset();
         });
     }
@@ -812,8 +807,10 @@ class EditQualification extends Component {
 
 const mapStateToProps = (state) => {
     const {occurence} = state.OccurencesReducer;
+    const {token} = state.AuthentificationReducer;
     return {
-        occurence
+        occurence,
+        token,
     };
 };
 

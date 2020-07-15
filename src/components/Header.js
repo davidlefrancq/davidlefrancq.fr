@@ -79,7 +79,16 @@ class Header extends Component {
     }
 
     handleAuthentificationFailure = (res) => {
-        console.log("handleAuthentificationFailure",res);
+
+        console.log("handleAuthentificationFailure res",res);
+
+        const {setAuthentification} = this.props;
+        const state = {...this.state};
+
+        state.connection.authForm = false;
+        this.setState(state);
+
+        setAuthentification(false);
     }
 
     handleAuthentification = (email,password) => {
