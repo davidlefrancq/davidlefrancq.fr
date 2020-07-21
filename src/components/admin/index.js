@@ -50,10 +50,25 @@ class Admin extends Component {
     }
 
     handelDeleteOccurence = (occurence) => {
-        daoFactory.getOccurenceDAO().delete(occurence).then((res) => {
+        const {token,setOccurences} = this.props;
+        daoFactory.getOccurenceDAO().delete(occurence,token).then((res) => {
             console.log("handelDeleteOccurence res", res);
+            console.log("handelDeleteOccurence occurence", occurence);
             const occurences = {...this.props.occurences};
-            // occurences.
+            this.deleteOccurenceInList(occurences,occurence);
+            setOccurences(occurences);
+        });
+    }
+
+    deleteOccurenceInList(occurences,occurence){
+        const keys = Object.keys(occurences);
+        keys.map((key)=>{
+            const item = occurences[key];
+            if(item.id != undefined && item.id !=null){
+                if(item.id == occurence.id){
+                    delete occurences[key];
+                }
+            }
         });
     }
 
@@ -216,17 +231,19 @@ class Admin extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {isLoggedIn} = state.AuthentificationReducer;
+    const {isLoggedIn,token} = state.AuthentificationReducer;
     const {occurences, occurence} = state.OccurencesReducer;
     return {
         isLoggedIn,
         occurences,
         occurence,
+        token,
     };
 };
 const mapDispatchToProps = (dispatch) => {
     return {
         setOccurence: (occurence) => dispatch(actions.occurences.setOccurence(occurence)),
+        setOccurences: (occurences) => dispatch(actions.occurences.setOccurences(occurences)),
     };
 };
 
