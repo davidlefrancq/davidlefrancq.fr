@@ -57,6 +57,8 @@ class EditQualification extends Component {
                 },
             },
 
+            file: null,
+
             style: {
                 qualification: {
                     display: "block",
@@ -163,10 +165,29 @@ class EditQualification extends Component {
 
     updateQualificationLogo(e) {
         e.preventDefault();
+
+        const {token} = this.props;
+        const file = e.target.files[0];
+
         console.log(e);
-        // const {value} = e.target;
-        // this.updateStateQualification("logo",value);
+        console.log("file", file);
+
+        const occurenceDAO = daoFactory.getOccurenceDAO();
+        occurenceDAO.uploadImage(file, token).then(this.uploadQualificationLogoSuccess, this.uploadQualificationLogoError);
     }
+
+    uploadQualificationLogoSuccess = (res) => {
+        const {data} = res;
+        const {contentUrl} = data;
+        const occurence = {...this.props.occurence};
+        occurence.qualification.img = contentUrl;
+        this.props.setOccurence(occurence);
+    }
+    uploadQualificationLogoError = (res) => {
+        console.log(res);
+    }
+
+
 
     updateQualificationLevel(e) {
         const {value} = e.target;

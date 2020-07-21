@@ -1,11 +1,12 @@
 import axios from "axios";
-import {URL_OCCURENCES, URL_OCCURENCES_ADMIN} from "./server-url";
+import {MEDIA_OBJECT_ADMIN, URL_OCCURENCES, URL_OCCURENCES_ADMIN} from "./server-url";
 
 const SELECT_ALL = URL_OCCURENCES;
 const SELECT_BY_ID = URL_OCCURENCES + "/{id}";
 const INSERT = URL_OCCURENCES_ADMIN;
 const UPDATE = URL_OCCURENCES_ADMIN + "/{id}";
 const DELETE = URL_OCCURENCES_ADMIN + "/{id}";
+const UPLOAD_IMAGE = MEDIA_OBJECT_ADMIN;
 
 class OccurenceDAO {
 
@@ -21,7 +22,7 @@ class OccurenceDAO {
     }
 
     insert(occurence, token) {
-        console.log("insert",[occurence, token]);
+        console.log("insert", [occurence, token]);
 
         if (occurence != undefined && occurence != null) {
             const headers = {
@@ -143,6 +144,19 @@ class OccurenceDAO {
         }
     }
 
+    uploadImage(file, token) {
+        console.log("uploadImage", [file, token]);
+
+        const data = new FormData()
+        data.append('file', file)
+
+        if (file != undefined && file != null) {
+            const headers = {
+                'Authorization': `Bearer ${token}`,
+            }
+            return axios.post(UPLOAD_IMAGE, data, {headers});
+        }
+    }
 }
 
 export default OccurenceDAO;
