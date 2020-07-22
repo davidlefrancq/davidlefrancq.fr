@@ -126,10 +126,40 @@
     left: 5%;
     width: 90%;
     /*z-index: 998;*/
-    animation: 1s title-annimation forwards;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 0;
+    color: white;
+    text-shadow: 2px 2px 8px darkslategrey;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0);
+    cursor: pointer;
 }
 
-@keyframes title-annimation {
+.carousel .title-enter {
+    animation: 0.3s title-enter-annimation forwards;
+}
+
+@keyframes title-enter-annimation {
+    0% {
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 0;
+        color: white;
+        text-shadow: 2px 2px 8px #000000;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0);
+    }
+    100% {
+        border-radius: 25px;
+        background-color: rgba(255, 255, 255, 0.6);
+        color: black;
+        text-shadow: 2px 2px 8px darkslategrey;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    }
+}
+
+.carousel .title-leave {
+    animation: 0.3s title-leave-annimation forwards;
+}
+
+@keyframes title-leave-annimation {
     0% {
         background-color: rgba(255, 255, 255, 0.6);
         border-radius: 25px;
@@ -146,24 +176,6 @@
     }
 }
 
-.carousel .title:hover {
+.cursorPointer{
     cursor: pointer;
-    animation: 1s title-hover-annimation forwards;
-}
-
-@keyframes title-hover-annimation {
-    0% {
-        background-color: rgba(0, 0, 0, 0.6);
-        border-radius: 0;
-        color: white;
-        text-shadow: 2px 2px 8px #000000;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0);
-    }
-    100% {
-        border-radius: 25px;
-        background-color: rgba(255, 255, 255, 0.6);
-        color: black;
-        text-shadow: 2px 2px 8px darkslategrey;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    }
 }

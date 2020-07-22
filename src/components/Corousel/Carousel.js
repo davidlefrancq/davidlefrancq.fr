@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import "./Carousel.css";
 import {TiArrowBackOutline, TiArrowForwardOutline} from "react-icons/ti";
+import useSound from "use-sound";
 
 class Carousel extends Component {
 
@@ -10,7 +11,115 @@ class Carousel extends Component {
             // target: 0,
             direction: "left",
             cssClassCenter: "center", // center, centerFromLeft, centerFromRight
+            style: {
+                titleAnimation: "",
+                imageAnimation: "",
+            },
+            sfx:{
+                mouseEnter: {
+                    audio: new Audio("/sfx/mouse-enter.mp3"),
+                    play: false,
+                },
+                mouseLeave: {
+                    audio: new Audio("/sfx/mouse-leave.mp3"),
+                    play: false,
+                },
+                mouseClick: {
+                    audio: new Audio("/sfx/mouse-click-02.mp3"),
+                    play: false,
+                },
+            },
         };
+    }
+
+    componentDidMount() {
+        const state = {...this.state};
+        const {mouseEnter, mouseLeave, mouseClick} = state.sfx;
+
+        mouseEnter.audio.addEventListener('ended',()=>{
+            state.sfx.mouseEnter.play = false;
+            this.setState(state);
+        });
+
+        mouseLeave.audio.addEventListener('ended',()=>{
+            state.sfx.mouseLeave.play = false;
+            this.setState(state);
+        });
+
+        mouseClick.audio.addEventListener('ended',()=>{
+            state.sfx.mouseClick.play = false;
+            this.setState(state);
+        });
+    }
+
+    componentWillUnmount() {
+        const {mouseEnter, mouseLeave, mouseClick} = this.state.sfx;
+
+        mouseEnter.audio.addEventListener('ended',()=>{
+            const state = {...this.state};
+            state.sfx.mouseEnter.play = false;
+            this.setState(state);
+        });
+
+        mouseLeave.audio.addEventListener('ended',()=>{
+            const state = {...this.state};
+            state.sfx.mouseLeave.play = false;
+            this.setState(state);
+        });
+
+        mouseClick.audio.addEventListener('ended',()=>{
+            const state = {...this.state};
+            state.sfx.mouseClick.play = false;
+            this.setState(state);
+        });
+    }
+
+    togglePlayMouseEnter = () => {
+        const state = {...this.state};
+        const {sfx} = state;
+        const {mouseEnter} = sfx;
+
+        if(mouseEnter.play){
+            mouseEnter.audio.pause();
+            state.sfx.mouseEnter.play = false;
+            this.setState(state);
+        }else{
+            mouseEnter.audio.play();
+            state.sfx.mouseEnter.play = true;
+            this.setState(state);
+        }
+    }
+
+    togglePlayMouseLeave = () => {
+        const state = {...this.state};
+        const {sfx} = state;
+        const {mouseLeave} = sfx;
+
+        if(mouseLeave.play){
+            mouseLeave.audio.pause();
+            state.sfx.mouseLeave.play = false;
+            this.setState(state);
+        }else{
+            mouseLeave.audio.play();
+            state.sfx.mouseLeave.play = true;
+            this.setState(state);
+        }
+    }
+
+    togglePlayMouseClick = () => {
+        const state = {...this.state};
+        const {sfx} = state;
+        const {mouseClick} = sfx;
+
+        if(mouseClick.play){
+            mouseClick.audio.pause();
+            state.sfx.mouseClick.play = false;
+            this.setState(state);
+        }else{
+            mouseClick.audio.play();
+            state.sfx.mouseClick.play = true;
+            this.setState(state);
+        }
     }
 
     handlePrevent = () => {
@@ -96,9 +205,39 @@ class Carousel extends Component {
         return string[0].toUpperCase() + string.slice(1);
     }
 
+    itemMouseEnter = () => {
+        this.togglePlayMouseEnter();
+
+        const state = {...this.state};
+        state.style.titleAnimation = "title-enter";
+        state.style.imageAnimation = "";
+        this.setState(state);
+    }
+
+    itemMouseLeave = () => {
+        // this.togglePlayMouseLeave();
+
+        const state = {...this.state};
+        state.style.titleAnimation = "title-leave";
+        state.style.imageAnimation = "";
+        this.setState(state);
+    }
+
+    itemOnClick = (e) => {
+        e.preventDefault();
+        this.togglePlayMouseClick();
+
+        const key = e.target.getAttribute('name');
+        const {items} = this.props;
+        if(items[key] != undefined){
+            items[key].onClick();
+        }
+    }
+
     renderItems() {
 
-        const {cssClassCenter, direction} = this.state;
+        const {cssClassCenter, direction, style} = this.state;
+        const {titleAnimation, imageAnimation} = style;
         const {items, target} = this.props;
         if (items != undefined && items != null) {
 
@@ -120,16 +259,20 @@ class Carousel extends Component {
                 return (
                     <div
                         key={key}
-                        className={`${cssClassCenterRender}`}
+                        name={key}
+                        className={`cursorPointer ${cssClassCenterRender} carousel-item-image ${imageAnimation}`}
                         style={{
                             backgroundImage: `url(${item.image})`,
                             backgroundRepeat: "no-repeat",
                             backgroundPosition: "center",
                             backgroundSize: "cover",
                         }}
+                        onMouseEnter={this.itemMouseEnter}
+                        onMouseLeave={this.itemMouseLeave}
+                        onClick={this.itemOnClick}
                     >
                         <div
-                            className={"title text-center p-2"}
+                            className={`title text-center p-2 ${titleAnimation}`}
                             onClick={item.onClick}
                         >
                             {this.firstCharUppercase(item.title)}
@@ -192,9 +335,9 @@ class Carousel extends Component {
         }
     }
 
-    renderCarousel(){
-        if(this.props.items.length > 0){
-            return(
+    renderCarousel() {
+        if (this.props.items.length > 0) {
+            return (
                 <div className={"carousel"}>
 
                     {this.renderItems()}
