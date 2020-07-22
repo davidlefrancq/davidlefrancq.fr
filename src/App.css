@@ -231,6 +231,29 @@ body {
     clear: both;
 }
 
+.navbar-brand .logo-hover{
+    animation: logo-hover 0.2s ease-in forwards;
+}
+@keyframes logo-hover {
+    0%{
+        border-radius: 0;
+    }
+    100%{
+        border-radius: 25px;
+    }
+}
+.navbar-brand .logo-leave{
+    animation: logo-leave 0.2s ease-in forwards;
+}
+@keyframes logo-leave {
+    0%{
+        border-radius: 25px;
+    }
+    100%{
+        border-radius: 0;
+    }
+}
+
 .logo .initial{
     float: left;
 }

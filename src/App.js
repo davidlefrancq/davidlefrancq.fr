@@ -11,7 +11,7 @@ import Admin from "./components/admin";
 function App() {
     return (
         <Router>
-            <Container className="App bg-white">
+            <Container fluid className="App bg-white">
                 <Header/>
 
                 <Switch>

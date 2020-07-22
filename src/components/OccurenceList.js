@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {actions} from '../actions';
 import data from "../data";
 import DAOFactory from "../dal/DAOFactory";
+import ScreenDetection from "../utils/ScreenDetection";
 
 const daoFactory = new DAOFactory();
 
@@ -14,19 +15,51 @@ class OccurenceList extends Component {
 
     constructor(props) {
         super(props);
+        const screenSize = ScreenDetection.getBootstrapSize();
         this.state = {
             occurence: {},
+            style: {
+                qualificationDisplay: "",
+                experienceDisplay: "",
+            },
+            screenSize: screenSize,
         };
     }
 
     componentDidMount() {
         const result = daoFactory.getOccurenceDAO().selectAll();
-        result.then((res)=>{
+        result.then((res) => {
             const {data} = res;
             const items = data['hydra:member'];
 
-            this.props.setOccurences(items)
+            this.props.setOccurences(items);
         });
+
+        // Lorsque l'écran change de résolution
+        window.addEventListener("resize", this.screenResizeEvent);
+    }
+
+    screenResizeEvent = () => {
+
+        const state = {...this.state};
+        const screenSize = ScreenDetection.getBootstrapSize();
+
+        if (state.screenSize != screenSize) {
+
+            state.screenSize = screenSize;
+
+            if(screenSize == "col-xl"){
+                state.style.qualificationDisplay = "";
+                state.style.experienceDisplay = "";
+            }else{
+                if(state.style.qualificationDisplay != "d-none" && state.style.experienceDisplay != "d-none"){
+                    state.style.qualificationDisplay = "";
+                    state.style.experienceDisplay = "d-none";
+                }
+            }
+
+            this.setState(state);
+        }
     }
 
     getQualifications() {
@@ -138,7 +171,47 @@ class OccurenceList extends Component {
         }
     }
 
+
+    showQualification = () => {
+        const state = {...this.state};
+        state.style.experienceDisplay = "d-none";
+        state.style.qualificationDisplay = "";
+        this.setState(state);
+    }
+
+    showExperience = () => {
+        const state = {...this.state};
+        state.style.experienceDisplay = "";
+        state.style.qualificationDisplay = "d-none";
+        this.setState(state);
+    }
+
+    renderMenu() {
+        const {screenSize} = this.state
+        if (screenSize != "col-xl") {
+            return (
+                <Fragment>
+                    <h2>Menu</h2>
+                    <div className={"text-center"}>
+                        <button className={"btn btn-secondary m-1 col-4 col-xl-12"}
+                                onClick={this.showQualification}>
+                            Diplome
+                        </button>
+                        <button className={"btn btn-secondary m-1 col-4 col-xl-12"}
+                                onClick={this.showExperience}>
+                            Expérience
+                        </button>
+                    </div>
+                </Fragment>
+            );
+        }
+    }
+
     render() {
+
+        console.log(this.state.screenSize);
+
+        const {qualificationDisplay, experienceDisplay} = this.state.style;
 
         const occurencesQualifications = this.getQualifications();
         const occurencesExperiences = this.getExperiences();
@@ -151,24 +224,43 @@ class OccurenceList extends Component {
                         {this.renderDateBar()}
                     </div>
 
-                    <div className={"col-12 col-md-6"}>
-                        <CvCarousel
-                            occurences={occurencesQualifications}
-                        />
+                    <div className={"col-12"}>
+                        <div className={"container-fluid"}>
+                            <div className={"row"}>
+                                <div className={"col-12 col-xl-1"}>
+                                    {this.renderMenu()}
+                                </div>
+                                <div className={"col-12 col-xl-4"}>
+                                    <div className={"row"}>
+                                        <div className={`col-12 mb-3 ${qualificationDisplay}`}>
+                                            <h2>Diplome</h2>
+                                            <CvCarousel
+                                                occurences={occurencesQualifications}
+                                            />
+                                        </div>
+                                        <div className={`col-12 mb-3 ${experienceDisplay}`}>
+                                            <h2>Expériences</h2>
+                                            <CvCarousel
+                                                occurences={occurencesExperiences}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={"col-12 col-xl-6"}>
+                                    {this.renderOcurence()}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className={"col-12 col-md-6"}>
-                        <CvCarousel
-                            occurences={occurencesExperiences}
-                        />
-                    </div>
+
                 </div>
 
                 <div className={"clearfix"}>
                     {/*{this.renderOccurences()}*/}
                 </div>
 
-                <div className={"container"} style={{minHeight:"250px"}}>
-                    {this.renderOcurence()}
+                <div className={"container"} style={{minHeight: "250px"}}>
+                    {/*{this.renderOcurence()}*/}
                 </div>
 
             </Fragment>
@@ -184,9 +276,9 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) =>{
+const mapDispatchToProps = (dispatch) => {
 
-    return{
+    return {
         setOccurences: (occurences) => dispatch(actions.occurences.setOccurences(occurences)),
         setExperienceList: (occurences) => dispatch(actions.experience.setExperienceList(occurences)),
         setQualificationList: (occurences) => dispatch(actions.qualification.setQualificationList(occurences)),

@@ -19,8 +19,9 @@ class Header extends Component {
                 authFormAnimation: "",
             },
             style: {
-                logoFirstActionHover: "",
-                logoLastActionHover: "",
+                logoAnimation: "",
+                logoFirstAnimation: "",
+                logoLastAnimation: "",
             }
         };
     }
@@ -141,22 +142,24 @@ class Header extends Component {
 
     logoEnterAnimation = () => {
         const state = {...this.state};
-        state.style.logoFirstActionHover = "logo-first-action-hover"
-        state.style.logoLastActionHover = "logo-last-action-hover"
+        state.style.logoAnimation = "logo-hover"
+        state.style.logoFirstAnimation = "logo-first-action-hover"
+        state.style.logoLastAnimation = "logo-last-action-hover"
         this.setState(state);
     }
 
     logoLeaveAnimation = () => {
         const state = {...this.state};
-        state.style.logoFirstActionHover = "logo-first-action-leave"
-        state.style.logoLastActionHover = "logo-last-action-leave"
+        state.style.logoAnimation = "logo-leave"
+        state.style.logoFirstAnimation = "logo-first-action-leave"
+        state.style.logoLastAnimation = "logo-last-action-leave"
         this.setState(state);
     }
 
     render() {
         const {isLoggedIn} = this.props;
         const {authFormAnimation} = this.state.connection;
-        const {logoFirstActionHover, logoLastActionHover} = this.state.style;
+        const {logoFirstAnimation, logoLastAnimation, logoAnimation} = this.state.style;
         let dNone = "";
         if (isLoggedIn) {
             dNone = "d-none";
@@ -169,14 +172,14 @@ class Header extends Component {
                         {/*<img*/}
                         {/*    src={"/logo.png"}*/}
                         {/*    alt={"log"} style={{width: "40px"}}/>*/}
-                        <div className={"logo"}
+                        <div className={`logo ${logoAnimation}`}
                              onMouseEnter={this.logoEnterAnimation}
                              onMouseLeave={this.logoLeaveAnimation}
                         >
                             <div className={"initial"}>D</div>
-                            <div className={`first-name ${logoFirstActionHover}`}>avid</div>
+                            <div className={`first-name ${logoFirstAnimation}`}>avid</div>
                             <div className={"initial"}>L</div>
-                            <div className={`last-name ${logoLastActionHover}`}>efrancq</div>
+                            <div className={`last-name ${logoLastAnimation}`}>efrancq</div>
                         </div>
                     </a>
 
