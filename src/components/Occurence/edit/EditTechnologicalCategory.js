@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import TechnologicalCategorie from "../../bo/TechnologicalCategorie";
+import TechnologicalCategorie from "../../../bo/TechnologicalCategorie";
 import {Col, Form} from "react-bootstrap";
 import {FaSave} from "react-icons/fa";
 import {connect} from "react-redux";
-import {actions} from "../../actions";
+import {actions} from "../../../actions";
 
 class EditTechnologicalCategory extends Component {
 

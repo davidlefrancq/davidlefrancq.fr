@@ -1,13 +1,13 @@
 import React, {Component, Fragment} from 'react';
 import OccurenceItem from "./OccurenceItem";
-import CvCarousel from "./Corousel/CvCarousel";
-import DateBar from "./DateBar/DateBar";
-import Step from "../bo/Step";
+import CvCarousel from "../Corousel/CvCarousel";
+import DateBar from "../DateBar/DateBar";
+import Step from "../../bo/Step";
 import {connect} from "react-redux";
-import {actions} from '../actions';
-import data from "../data";
-import DAOFactory from "../dal/DAOFactory";
-import ScreenDetection from "../utils/ScreenDetection";
+import {actions} from '../../actions';
+import data from "../../data";
+import DAOFactory from "../../dal/DAOFactory";
+import ScreenDetection from "../../utils/ScreenDetection";
 
 const daoFactory = new DAOFactory();
 

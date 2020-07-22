@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Link from "../../bo/Link";
+import Link from "../../../bo/Link";
 import {Col, Form} from "react-bootstrap";
 import {FaSave} from "react-icons/fa";
 

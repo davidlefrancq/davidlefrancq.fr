@@ -2,14 +2,14 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import OccurenceItemMenu from "./OccurenceItemMenu";
 import {actions} from "../../actions";
-import EditQualification from "../edit/EditQualification";
+import EditQualification from "../Occurence/edit/EditQualification";
 import TrainingCenter from "../../bo/TrainingCenter";
 import Qualification from "../../bo/Qualification";
 import Occurence from "../../bo/Occurence";
 import Experience from "../../bo/Experience";
 import Enterprise from "../../bo/Enterprise";
 import DAOFactory from "../../dal/DAOFactory";
-import EditExperience from "../edit/EditExperience";
+import EditExperience from "../Occurence/edit/EditExperience";
 
 const daoFactory = new DAOFactory();
 

@@ -4,17 +4,17 @@ import {FormGroup, Form} from "react-bootstrap";
 import EditTechnologicalCategory from "./EditTechnologicalCategory";
 import EditLink from "./EditLink";
 import {FiDelete} from "react-icons/fi";
-import {actions} from "../../actions";
+import {actions} from "../../../actions";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import OccurenceItem from "../OccurenceItem";
-import ProgressBar from "./ProgressBar";
-import DAOFactory from "../../dal/DAOFactory";
-import TrainingCenter from "../../bo/TrainingCenter";
-import Qualification from "../../bo/Qualification";
-import Occurence from "../../bo/Occurence";
-import Experience from "../../bo/Experience";
-import Enterprise from "../../bo/Enterprise";
+import ProgressBar from "../../ProgressBar/ProgressBar";
+import DAOFactory from "../../../dal/DAOFactory";
+import TrainingCenter from "../../../bo/TrainingCenter";
+import Qualification from "../../../bo/Qualification";
+import Occurence from "../../../bo/Occurence";
+import Experience from "../../../bo/Experience";
+import Enterprise from "../../../bo/Enterprise";
 
 const daoFactory = new DAOFactory();
 

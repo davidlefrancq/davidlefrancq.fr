@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {Button, Card} from 'react-bootstrap';
-import MonthFr from "../utils/MonthFr";
-import FirstCharUppercase from "../utils/FirstCharUppercase";
+import MonthFr from "../../utils/MonthFr";
+import FirstCharUppercase from "../../utils/FirstCharUppercase";
 import {BsFillInfoCircleFill, BsLink} from "react-icons/bs";
 import {MdWork} from "react-icons/md";
 import {FaCalendarAlt} from "react-icons/fa";

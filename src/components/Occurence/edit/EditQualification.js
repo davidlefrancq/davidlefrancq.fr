@@ -7,14 +7,14 @@ import {FiEdit, FiDelete} from "react-icons/fi";
 import {Col, Form} from "react-bootstrap";
 import EditJob from "./EditJob";
 import EditLink from "./EditLink";
-import Occurence from "../../bo/Occurence";
-import Qualification from "../../bo/Qualification";
-import TrainingCenter from "../../bo/TrainingCenter";
-import ProgressBar from "./ProgressBar";
+import Occurence from "../../../bo/Occurence";
+import Qualification from "../../../bo/Qualification";
+import TrainingCenter from "../../../bo/TrainingCenter";
+import ProgressBar from "../../ProgressBar/ProgressBar";
 import OccurenceItem from "../OccurenceItem";
 import {connect} from "react-redux";
-import DAOFactory from "../../dal/DAOFactory";
-import {actions} from "../../actions";
+import DAOFactory from "../../../dal/DAOFactory";
+import {actions} from "../../../actions";
 
 
 const daoFactory = new DAOFactory();

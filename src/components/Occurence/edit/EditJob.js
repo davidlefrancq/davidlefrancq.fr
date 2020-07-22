@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Col, Form} from "react-bootstrap";
 import {FaSave} from "react-icons/fa";
-import Job from "../../bo/Job";
+import Job from "../../../bo/Job";
 
 class EditJob extends Component {
 

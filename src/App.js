@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import OccurenceList from "./components/OccurenceList";
+import OccurenceList from "./components/Occurence/OccurenceList";
 import Header from "./components/Header";
 import {Container} from 'react-bootstrap';
-import NewQualification from "./components/edit/EditQualification";
+import NewQualification from "./components/Occurence/edit/EditQualification";
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import Admin from "./components/admin";
 
