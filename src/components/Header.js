@@ -6,18 +6,22 @@ import {Link} from "react-router-dom";
 import DAOFactory from "../dal/DAOFactory";
 import LoginForm from "./LoginForm/LoginForm";
 import {STRING_LOGIN, STRING_LOGOUT} from "../translation/fr-fr";
-import { AiOutlineLogin, AiOutlineLogout} from "react-icons/ai";
+import {AiOutlineLogin, AiOutlineLogout} from "react-icons/ai";
 
 class Header extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            connection:{
-                title:STRING_LOGIN,
-                authForm:false,
-                authFormAnimation:"",
+            connection: {
+                title: STRING_LOGIN,
+                authForm: false,
+                authFormAnimation: "",
             },
+            style: {
+                logoFirstActionHover: "",
+                logoLastActionHover: "",
+            }
         };
     }
 
@@ -50,13 +54,13 @@ class Header extends Component {
         const {isLoggedIn} = this.props;
         const {authForm} = this.state.connection;
 
-        if(isLoggedIn){
+        if (isLoggedIn) {
             this.logout();
-        }else{
-            if(!authForm){
+        } else {
+            if (!authForm) {
                 this.openFormAuth();
 
-            }else{
+            } else {
                 this.closeFormAuth();
             }
         }
@@ -64,8 +68,8 @@ class Header extends Component {
 
     handleAuthentificationSuccess = (res) => {
 
-        console.log("res",res);
-        console.log("token",res.data.token);
+        console.log("res", res);
+        console.log("token", res.data.token);
 
         const state = {...this.state};
         const {setAuthentification, setToken} = this.props;
@@ -80,7 +84,7 @@ class Header extends Component {
 
     handleAuthentificationFailure = (res) => {
 
-        console.log("handleAuthentificationFailure res",res);
+        console.log("handleAuthentificationFailure res", res);
 
         const {setAuthentification} = this.props;
         const state = {...this.state};
@@ -91,22 +95,22 @@ class Header extends Component {
         setAuthentification(false);
     }
 
-    handleAuthentification = (email,password) => {
+    handleAuthentification = (email, password) => {
 
         const {setAuthentification, isLoggedIn, setToken} = this.props;
         const daoFactory = new DAOFactory();
         const state = {...this.state};
 
-        if(!isLoggedIn){
+        if (!isLoggedIn) {
             state.connection.authFormAnimation = "auth-form-off";
             this.setState(state);
 
             daoFactory
                 .getAuthenticationDAO()
-                .login(email,password)
+                .login(email, password)
                 .then(this.handleAuthentificationSuccess, this.handleAuthentificationFailure)
             ;
-        }else{
+        } else {
             setToken(null);
             setAuthentification(false);
             state.connection.title = STRING_LOGIN;
@@ -117,10 +121,10 @@ class Header extends Component {
 
     renderAuthentificationLabel() {
         const {authForm} = this.state.connection;
-        if(authForm){
-            return <AiOutlineLogin style={{fontSize:"x-large"}}/>;
-        }else {
-            return <AiOutlineLogout style={{fontSize:"x-large"}}/>;
+        if (authForm) {
+            return <AiOutlineLogin style={{fontSize: "x-large"}}/>;
+        } else {
+            return <AiOutlineLogout style={{fontSize: "x-large"}}/>;
         }
     }
 
@@ -135,11 +139,26 @@ class Header extends Component {
         }
     }
 
+    logoEnterAnimation = () => {
+        const state = {...this.state};
+        state.style.logoFirstActionHover = "logo-first-action-hover"
+        state.style.logoLastActionHover = "logo-last-action-hover"
+        this.setState(state);
+    }
+
+    logoLeaveAnimation = () => {
+        const state = {...this.state};
+        state.style.logoFirstActionHover = "logo-first-action-leave"
+        state.style.logoLastActionHover = "logo-last-action-leave"
+        this.setState(state);
+    }
+
     render() {
         const {isLoggedIn} = this.props;
         const {authFormAnimation} = this.state.connection;
+        const {logoFirstActionHover, logoLastActionHover} = this.state.style;
         let dNone = "";
-        if(isLoggedIn){
+        if (isLoggedIn) {
             dNone = "d-none";
         }
         return (
@@ -147,9 +166,18 @@ class Header extends Component {
 
                 <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
                     <a className="navbar-brand" href="/">
-                        <img
-                            src={"/logo.png"}
-                            alt={"log"} style={{width: "40px"}}/>
+                        {/*<img*/}
+                        {/*    src={"/logo.png"}*/}
+                        {/*    alt={"log"} style={{width: "40px"}}/>*/}
+                        <div className={"logo"}
+                             onMouseEnter={this.logoEnterAnimation}
+                             onMouseLeave={this.logoLeaveAnimation}
+                        >
+                            <div className={"initial"}>D</div>
+                            <div className={`first-name ${logoFirstActionHover}`}>avid</div>
+                            <div className={"initial"}>L</div>
+                            <div className={`last-name ${logoLastActionHover}`}>efrancq</div>
+                        </div>
                     </a>
 
                     <ul className="navbar-nav mr-auto">
@@ -171,8 +199,8 @@ class Header extends Component {
                 </nav>
 
                 <Jumbotron>
-                    <h1>David Lefrancq</h1>
-                    <p>Concepteur Développeur Informatique</p>
+                    <h1>Concepteur Développeur Informatique</h1>
+                    {/*<p>David Lefrancq</p>*/}
                 </Jumbotron>
 
                 <div className={`auth-form ${authFormAnimation} ${dNone}`}>
