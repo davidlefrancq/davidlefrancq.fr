@@ -8,6 +8,9 @@ import {actions} from '../../actions';
 import data from "../../data";
 import DAOFactory from "../../dal/DAOFactory";
 import ScreenDetection from "../../utils/ScreenDetection";
+import { BsBuilding } from 'react-icons/bs';
+import { GiDiploma } from 'react-icons/gi';
+import {OverlayTrigger, Tooltip} from "react-bootstrap";
 
 const daoFactory = new DAOFactory();
 
@@ -192,25 +195,53 @@ class OccurenceList extends Component {
             return (
                 <Fragment>
                     <h2>Menu</h2>
-                    <div className={"text-center"}>
-                        <button className={"btn btn-secondary m-1 col-4 col-xl-12"}
-                                onClick={this.showQualification}>
-                            Diplome
+                    <div className={"text-center mb-3 p-0"}>
+
+                        {/* Bouton Diplome */}
+                        <button className={"btn btn-secondary m-1 col-5 col-xl-12"}
+                                onClick={this.showQualification}
+                                style={{fontSize:"large"}}
+                        >
+                            <span style={{fontSize:"x-large"}}>
+                                <GiDiploma/>
+                            </span>
+                            <span> Diplome</span>
                         </button>
-                        <button className={"btn btn-secondary m-1 col-4 col-xl-12"}
-                                onClick={this.showExperience}>
-                            Expérience
+
+                        {/* Bouton Experience */}
+                        <button className={"btn btn-secondary m-1 col-5 col-xl-12"}
+                                onClick={this.showExperience}
+                                style={{fontSize:"large"}}
+                        >
+                            <span style={{fontSize:"x-large", marginRight:"5px"}}>
+                                <BsBuilding/>
+                            </span>
+                            <span> Expérience</span>
                         </button>
+
                     </div>
                 </Fragment>
             );
         }
     }
 
+    renderTooltipQualification = (props) => {
+        return (
+            <Tooltip id="button-tooltip-qualification" {...props}>
+                Diplome
+            </Tooltip>
+        );
+    }
+
+    renderTooltipExperience = (props) => {
+        return (
+            <Tooltip id="button-tooltip-qualification" {...props}>
+                Expérience professionnelle
+            </Tooltip>
+        );
+    }
+
     render() {
-
-        console.log(this.state.screenSize);
-
         const {qualificationDisplay, experienceDisplay} = this.state.style;
 
         const occurencesQualifications = this.getQualifications();
@@ -233,13 +264,29 @@ class OccurenceList extends Component {
                                 <div className={"col-12 col-xl-4"}>
                                     <div className={"row"}>
                                         <div className={`col-12 mb-3 ${qualificationDisplay}`}>
-                                            <h2>Diplome</h2>
+                                            <div style={{height:0}}>
+                                                <OverlayTrigger
+                                                    placement="right"
+                                                    delay={{ show: 250, hide: 400 }}
+                                                    overlay={this.renderTooltipQualification}
+                                                >
+                                                    <GiDiploma className={"logo-carousel"}/>
+                                                </OverlayTrigger>
+                                            </div>
                                             <CvCarousel
                                                 occurences={occurencesQualifications}
                                             />
                                         </div>
                                         <div className={`col-12 mb-3 ${experienceDisplay}`}>
-                                            <h2>Expériences</h2>
+                                            <div style={{height:0}}>
+                                                <OverlayTrigger
+                                                    placement="right"
+                                                    delay={{ show: 250, hide: 400 }}
+                                                    overlay={this.renderTooltipExperience}
+                                                >
+                                                    <BsBuilding className={"logo-carousel"}/>
+                                                </OverlayTrigger>
+                                            </div>
                                             <CvCarousel
                                                 occurences={occurencesExperiences}
                                             />
