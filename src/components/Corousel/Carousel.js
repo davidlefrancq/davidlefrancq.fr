@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import "./Carousel.css";
 import {TiArrowBackOutline, TiArrowForwardOutline} from "react-icons/ti";
-import useSound from "use-sound";
 
 class Carousel extends Component {
 
