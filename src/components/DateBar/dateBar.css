@@ -26,8 +26,8 @@
 }
 @keyframes datebar-title-animation {
     0%{
-        border: 1px solid blue;
-        color: blue;
+        border: 1px solid rgba(0, 87, 227,1);
+        color: rgba(0, 87, 227,1);
     }
     50%{
         color: rgba(0,0,0,0.5);
@@ -50,10 +50,12 @@
     50%{
         color: rgba(0,0,0,0.5);
         border: 1px solid rgba(0,0,0,0.5);
+        box-shadow: 0px 0px 0px #888888;
     }
     100%{
-        border: 1px solid blue;
-        color: blue;
+        border: 1px solid rgba(0, 87, 227,1);
+        color: rgba(0, 87, 227,1);
+        box-shadow: 1px 2px 3px rgba(0,0,0,0.4);
     }
 }
 
@@ -73,8 +75,8 @@
     }
     100% {
         color: white;
-        background-color: blue;
-        border: 1px solid blue;
+        background-color: rgba(0, 87, 227,1);
+        border: 1px solid rgba(0, 87, 227,1);
     }
 }
 
@@ -84,7 +86,7 @@
 
 @keyframes datebar-title-leave-animation {
     0% {
-        color: blue;
+        color: rgba(0, 87, 227,1);
     }
     100% {
         color: rgba(0,0,0,0.5);
@@ -110,7 +112,7 @@
     left: -20%;
     width: 40%;
     height: 1px;
-    background-color: blue;
+    background-color: rgba(0, 87, 227,1);
     z-index: 1;
     animation: datebar-li-link 0.1s ease-in forwards;
 }
@@ -133,12 +135,15 @@
 @keyframes datebar-li-link-active {
     0% {
         width: 0%;
+        box-shadow: 0px 0px 0px rgba(0,0,0,0.4);
     }
     50% {
         width: 40%;
+        box-shadow: 1px 2px 3px rgba(0,0,0,0.4);
     }
     100%{
         width: 40%;
+        box-shadow: 1px 2px 3px rgba(0,0,0,0.4);
     }
 }
 
