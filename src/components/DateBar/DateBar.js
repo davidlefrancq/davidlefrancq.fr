@@ -125,7 +125,7 @@ class DateBar extends Component {
 
                 position--;
 
-                if (position < target) {
+                if (position <= target) {
                     resolve();
                     break;
                 }
