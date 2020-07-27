@@ -209,7 +209,7 @@ class Carousel extends Component {
 
         const state = {...this.state};
         state.style.titleAnimation = "title-enter";
-        state.style.imageAnimation = "";
+        state.style.imageAnimation = "carousel-item-image-enter";
         this.setState(state);
     }
 
@@ -218,7 +218,7 @@ class Carousel extends Component {
 
         const state = {...this.state};
         state.style.titleAnimation = "title-leave";
-        state.style.imageAnimation = "";
+        state.style.imageAnimation = "carousel-item-image-leave";
         this.setState(state);
     }
 

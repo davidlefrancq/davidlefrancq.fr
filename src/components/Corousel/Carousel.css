@@ -148,8 +148,8 @@
     }
     100% {
         border-radius: 25px;
-        background-color: rgba(255, 255, 255, 0.6);
-        color: black;
+        background-color: rgba(0, 0, 0, 0.9);
+        color: white;
         text-shadow: 2px 2px 8px darkslategrey;
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     }
@@ -161,9 +161,9 @@
 
 @keyframes title-leave-annimation {
     0% {
-        background-color: rgba(255, 255, 255, 0.6);
+        background-color: rgba(0, 0, 0, 0.9);
         border-radius: 25px;
-        color: black;
+        color: white;
         text-shadow: 2px 2px 8px #aaaaaa;
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     }
@@ -176,6 +176,34 @@
     }
 }
 
-.cursorPointer{
+.cursorPointer {
     cursor: pointer;
+}
+
+.carousel-item-image{
+    filter: grayscale(100%);
+}
+
+.carousel-item-image-enter {
+    animation: 0.3s carousel-item-image-hover-animation forwards;
+}
+@keyframes carousel-item-image-hover-animation {
+    0%{
+        filter: grayscale(100%);
+    }
+    100%{
+        filter: grayscale(0%);
+    }
+}
+
+.carousel-item-image-leave {
+    animation: 0.3s carousel-item-image-animation forwards;
+}
+@keyframes carousel-item-image-animation {
+    0%{
+        filter: grayscale(0%);
+    }
+    100%{
+        filter: grayscale(100%);
+    }
 }
