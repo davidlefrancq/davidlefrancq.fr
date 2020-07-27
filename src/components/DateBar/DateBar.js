@@ -1,13 +1,14 @@
 import React, {Component, Fragment} from 'react';
 import "./dateBar.css";
-import Step from "../../bo/Step";
 import {actions} from "../../actions";
 import {connect} from "react-redux";
+import DateBareStep from "./bo/DateBareStep";
 
 class DateBar extends Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
             steps: {},
             target: 0,
@@ -29,6 +30,7 @@ class DateBar extends Component {
 
     initStep(list) {
 
+        const state = {...this.state};
         const listKeys = Object.keys(list);
 
         const steps = listKeys.map((key) => {
@@ -36,7 +38,7 @@ class DateBar extends Component {
             const item = list[key];
             const {title, description, action} = item
 
-            const newStepObject = new Step(title, description)
+            const newStepObject = new DateBareStep(title, description)
 
             if (action != undefined && action != null) {
                 newStepObject.action = action;
@@ -47,11 +49,13 @@ class DateBar extends Component {
 
         if (steps[0]) {
             steps[0].active = true;
+            steps[0].animation.end = true;
         }
 
-        this.setState({
-            steps,
-        });
+
+        state.steps = steps;
+
+        this.setState(state);
     }
 
     handleStep(e) {
@@ -62,19 +66,117 @@ class DateBar extends Component {
         const fullYear = step.title;
 
         this.props.setOccurencesDateTargeted(fullYear);
-
-        step.active = !step.active;
-        this.actualiseStepBeforeActive(id, steps);
-        const newState = {
-            steps,
-            target: eval(id),
-        };
-
         this.updateOccurencesSelected(fullYear);
 
-        this.setState(newState);
+        // step.active = !step.active;
+        // this.actualiseStepBeforeActive(id, steps);
+        // const newState = {
+        //     steps,
+        //     target: eval(id),
+        // };
+        const target = eval(id);
+        this.activeStep(target);
+
+        // this.setState(newState);
 
         step.onClick(e);
+    }
+
+    activeStep = (target) => {
+        if (target > this.state.target) {
+            this.animateSteps(target).then(() => {
+                const state = {...this.state};
+                state.target = target;
+                this.setState(state);
+            });
+        } else if (target < this.state.target) {
+            this.animateStepsReverted(target).then(() => {
+                const state = {...this.state};
+                state.target = target;
+                this.setState(state);
+            });
+
+        }
+    }
+
+    animateSteps(target) {
+        return new Promise(async (resolve, reject) => {
+            let position = 0;
+
+            while (await this.animateStep(position)) {
+
+                position++;
+
+                if (position > target) {
+                    resolve();
+                    break;
+                }
+            }
+        });
+    }
+
+    animateStepsReverted(target) {
+        return new Promise(async (resolve, reject) => {
+            const {steps} = this.state;
+            const keys = Object.keys(steps).reverse();
+            let position = (keys.length - 1);
+
+            while (await this.animateStepReverted(position)) {
+
+                position--;
+
+                if (position < target) {
+                    resolve();
+                    break;
+                }
+            }
+        });
+    }
+
+    animateStep = (target) => {
+        return new Promise((resolve, reject) => {
+
+            const state = {...this.state};
+            const {steps} = state;
+            if (steps[target]) {
+
+                const step = steps[target];
+                step.active = true;
+                this.setState(state);
+
+                // Timeout pour laisser l'animation css se terminer
+                const t = step.animation.duration;
+                setTimeout(() => {
+                    resolve(true);
+                }, t);
+
+            } else {
+                reject(false);
+            }
+        });
+    }
+
+    animateStepReverted = (target) => {
+        return new Promise((resolve, reject) => {
+
+            const state = {...this.state};
+            const {steps} = state;
+            if (steps[target]) {
+
+                const step = steps[target];
+                step.active = false;
+                this.setState(state);
+
+                // Timeout pour laisser l'animation css se terminer
+                const t = step.animation.duration;
+                setTimeout(() => {
+                    resolve(true);
+                }, t);
+
+            } else {
+                reject(false);
+            }
+        });
     }
 
     updateOccurencesSelected(fullYear) {
@@ -113,31 +215,31 @@ class DateBar extends Component {
         const occurencesKeys = Object.keys(occurences);
         occurencesKeys.map((key) => {
 
-                const occurence = occurences[key];
-                const dateOccurence = this.getDate(occurence);
+            const occurence = occurences[key];
+            const dateOccurence = this.getDate(occurence);
 
-                if (dateOccurence != undefined && dateOccurence != null) {
+            if (dateOccurence != undefined && dateOccurence != null) {
 
-                    const dateControl = dateOccurence.getFullYear();
-                    if (eval(dateControl) === eval(fullYear)) {
+                const dateControl = dateOccurence.getFullYear();
+                if (eval(dateControl) === eval(fullYear)) {
 
-                        if(occurenceSelected == null){
-                            occurenceSelected = occurence;
-                        }else{
-                            const dateItem = this.getDate(occurence);
-                            const dateControlSelected = this.getDate(occurenceSelected);
+                    if (occurenceSelected == null) {
+                        occurenceSelected = occurence;
+                    } else {
+                        const dateItem = this.getDate(occurence);
+                        const dateControlSelected = this.getDate(occurenceSelected);
 
-                            const diffControl = dateItem.getTime() - date.getTime();
-                            const diffControlSelected = dateControlSelected.getTime() - date.getTime();
+                        const diffControl = dateItem.getTime() - date.getTime();
+                        const diffControlSelected = dateControlSelected.getTime() - date.getTime();
 
-                            if (diffControlSelected > diffControl) {
-                                // Ne rien faire
-                            } else {
-                                occurenceSelected = occurences[key];
-                            }
+                        if (diffControlSelected > diffControl) {
+                            // Ne rien faire
+                        } else {
+                            occurenceSelected = occurences[key];
                         }
                     }
                 }
+            }
         });
 
         return occurenceSelected;
@@ -226,39 +328,39 @@ class DateBar extends Component {
 
         let targetKey = null;
 
-        const occurence = this.getOccurence(occurences,fullYear);
-        if(occurence != null){
-            targetKey = this.getTargetKey(occurences,occurence)
+        const occurence = this.getOccurence(occurences, fullYear);
+        if (occurence != null) {
+            targetKey = this.getTargetKey(occurences, occurence)
         }
 
         return targetKey;
     }
 
-    getOccurence(occurences,fullYear){
+    getOccurence(occurences, fullYear) {
         const {target} = this.props;
-        const {date,oldDate} = target;
+        const {date, oldDate} = target;
 
-        let occurence = this.getItemYear(occurences,fullYear);
-        if(occurence == null){
+        let occurence = this.getItemYear(occurences, fullYear);
+        if (occurence == null) {
 
-            if(eval(date) < eval(oldDate)){
-                occurence = this.getItemYearUpper(occurences,fullYear);
+            if (eval(date) < eval(oldDate)) {
+                occurence = this.getItemYearUpper(occurences, fullYear);
             }
 
-            if(oldDate == null || eval(date) > eval(oldDate)){
-                occurence = this.getItemYearLower(occurences,fullYear);
+            if (oldDate == null || eval(date) > eval(oldDate)) {
+                occurence = this.getItemYearLower(occurences, fullYear);
             }
         }
 
         return occurence;
     }
 
-    getTargetKey(occurences,occurence){
+    getTargetKey(occurences, occurence) {
 
         let target = 0;
         const keys = Object.keys(occurences);
-        keys.map((key)=>{
-            if(occurences[key].id == occurence.id){
+        keys.map((key) => {
+            if (occurences[key].id == occurence.id) {
                 target = key;
             }
         });
@@ -303,28 +405,98 @@ class DateBar extends Component {
         });
     }
 
+    itemMouseEnter = (e) => {
+        const key = eval(e.target.getAttribute("name"));
+        if (key != undefined && key != null && key != "") {
+
+            const state = {...this.state};
+
+            this.resetAllStepAnimation(state);
+
+            state.steps[key].animation.enter.active = true;
+            state.steps[key].animation.leave.active = false;
+
+            this.setState(state);
+        }
+    }
+
+    itemMouseLeave = (e) => {
+        const key = eval(e.target.getAttribute("name"));
+        if (key != undefined && key != null && key != "") {
+
+            const state = {...this.state};
+
+            this.resetAllStepAnimation(state);
+
+            state.steps[key].animation.leave.active = true;
+            state.steps[key].animation.enter.active = false;
+
+            this.setState(state);
+        }
+    }
+
+    resetAllStepAnimation(state) {
+        this.resetAllStepAnimationEnter(state);
+        this.resetAllStepAnimationLeave(state);
+    }
+
+    resetAllStepAnimationEnter(state) {
+        const keys = Object.keys(state.steps);
+        keys.map((key) => {
+            state.steps[key].animation.enter.active = false;
+        });
+    }
+
+    resetAllStepAnimationLeave(state) {
+        const keys = Object.keys(state.steps);
+        keys.map((key) => {
+            state.steps[key].animation.leave.active = false;
+        });
+    }
+
     renderSteps() {
 
-        const {steps} = this.state;
+        const {steps, style} = this.state;
+        //const {animations} = style;
         const stepsKeys = Object.keys(steps);
 
-        if (steps[0]) {
+        if (steps) {
             return stepsKeys.map((key) => {
 
                 const step = steps[key];
 
-                let classActive = "";
+                let liCssActive = "";
+                let titleCssAnimation = "";
+
+                // Bouton Actif
                 if (step.active == true) {
-                    classActive = "active";
+                    liCssActive = step.animation.css.li;
+                    titleCssAnimation = step.animation.css.title;
                 }
 
+                // Enter
+                if (step.animation.enter.active == true) {
+                    titleCssAnimation = step.animation.enter.css;
+                }
+
+                // Leave
+                if (step.animation.leave.active == true) {
+                    titleCssAnimation = step.animation.leave.css;
+                }
+
+
                 return (
-                    <li key={key} className={"col " + classActive}>
+                    <li
+                        key={key}
+                        name={key}
+                        className={`col ${liCssActive}`}
+                        onMouseEnter={this.itemMouseEnter}
+                        onMouseLeave={this.itemMouseLeave}
+                    >
                         <div
                             id={key}
-                            className={"title"}
+                            className={`title ${titleCssAnimation}`}
                             onClick={this.handleStep}
-                            style={{cursor: "pointer"}}
                         >
                             {step.title}
                         </div>
