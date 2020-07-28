@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import "./Carousel.css";
+import "./carousel.css";
 import {TiArrowBackOutline, TiArrowForwardOutline} from "react-icons/ti";
 
 class Carousel extends Component {
@@ -254,6 +254,8 @@ class Carousel extends Component {
                 }
 
                 const item = items[key];
+
+                console.log("item.image",item.image);
 
                 return (
                     <div

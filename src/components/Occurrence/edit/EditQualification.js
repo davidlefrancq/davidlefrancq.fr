@@ -7,11 +7,11 @@ import {FiEdit, FiDelete} from "react-icons/fi";
 import {Col, Form} from "react-bootstrap";
 import EditJob from "./EditJob";
 import EditLink from "./EditLink";
-import Occurence from "../../../bo/Occurence";
+import Occurrence from "../../../bo/Occurrence";
 import Qualification from "../../../bo/Qualification";
 import TrainingCenter from "../../../bo/TrainingCenter";
 import ProgressBar from "../../ProgressBar/ProgressBar";
-import OccurenceItem from "../OccurenceItem";
+import OccurrenceItem from "../OccurrenceItem";
 import {connect} from "react-redux";
 import DAOFactory from "../../../dal/DAOFactory";
 import {actions} from "../../../actions";
@@ -118,7 +118,7 @@ class EditQualification extends Component {
 
         const trainingCenter = new TrainingCenter(null, null, null, null, null, null)
         const qualification = new Qualification(null, null, null, trainingCenter, "", [], []);
-        const occurence = new Occurence(null, null, qualification, null)
+        const occurrence = new Occurrence(null, null, qualification, null)
 
         this.setState({
             edit: {
@@ -149,13 +149,13 @@ class EditQualification extends Component {
             },
         });
 
-        this.props.setOccurence(occurence);
+        this.props.setOccurrence(occurrence);
     }
 
     updateDateEnd(e) {
-        const occurence = {...this.props.occurence};
-        occurence.dateEnd = e.target.value;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.dateEnd = e.target.value;
+        this.props.setOccurrence(occurrence);
     }
 
     updateQualificationName(e) {
@@ -172,16 +172,16 @@ class EditQualification extends Component {
         console.log(e);
         console.log("file", file);
 
-        const occurenceDAO = daoFactory.getOccurenceDAO();
-        occurenceDAO.uploadImage(file, token).then(this.uploadQualificationLogoSuccess, this.uploadQualificationLogoError);
+        const occurrenceDAO = daoFactory.getOccurrenceDAO();
+        occurrenceDAO.uploadImage(file, token).then(this.uploadQualificationLogoSuccess, this.uploadQualificationLogoError);
     }
 
     uploadQualificationLogoSuccess = (res) => {
         const {data} = res;
         const {contentUrl} = data;
-        const occurence = {...this.props.occurence};
-        occurence.qualification.img = contentUrl;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.qualification.img = contentUrl;
+        this.props.setOccurrence(occurrence);
     }
     uploadQualificationLogoError = (res) => {
         console.log(res);
@@ -195,9 +195,9 @@ class EditQualification extends Component {
     }
 
     updateStateQualification(key, value) {
-        const occurence = {...this.props.occurence};
-        occurence.qualification[key] = value;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.qualification[key] = value;
+        this.props.setOccurrence(occurrence);
     }
 
     updateTrainingCenterName(e) {
@@ -233,16 +233,16 @@ class EditQualification extends Component {
     }
 
     updateStateTrainingCenter(key, value) {
-        const occurence = {...this.props.occurence};
-        occurence.qualification.trainingCenter[key] = value;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.qualification.trainingCenter[key] = value;
+        this.props.setOccurrence(occurrence);
     }
 
     updateObjectives(data) {
 
-        const occurence = {...this.props.occurence};
-        occurence.qualification.objectives = data;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.qualification.objectives = data;
+        this.props.setOccurrence(occurrence);
     }
 
     showQualification = () => {
@@ -384,12 +384,12 @@ class EditQualification extends Component {
 
         if (job != undefined && job != null) {
 
-            const occurence = {...this.props.occurence};
-            const jobs = occurence.qualification.jobs;
+            const occurrence = {...this.props.occurrence};
+            const jobs = occurrence.qualification.jobs;
             jobs[jobs.length] = job;
-            occurence.qualification.jobs = jobs;
+            occurrence.qualification.jobs = jobs;
 
-            this.props.setOccurence(occurence);
+            this.props.setOccurrence(occurrence);
         }
     }
 
@@ -397,12 +397,12 @@ class EditQualification extends Component {
 
         if (link != undefined && link != null) {
 
-            const occurence = {...this.props.occurence};
-            const links = occurence.qualification.links;
+            const occurrence = {...this.props.occurrence};
+            const links = occurrence.qualification.links;
             links[links.length] = link;
-            occurence.qualification.links = links;
+            occurrence.qualification.links = links;
 
-            this.props.setOccurence(occurence);
+            this.props.setOccurrence(occurrence);
         }
     }
 
@@ -427,50 +427,50 @@ class EditQualification extends Component {
     }
 
     handleUpdateJob(key, job) {
-        const occurence = {...this.props.occurence};
+        const occurrence = {...this.props.occurrence};
         const state = {...this.state};
 
-        occurence.qualification.jobs[key] = job;
+        occurrence.qualification.jobs[key] = job;
         state.edit.job.key = null;
 
         this.setState(state);
-        this.props.setOccurence(occurence);
+        this.props.setOccurrence(occurrence);
     }
 
     handleUpdateLink(key, link) {
-        const occurence = {...this.props.occurence};
+        const occurrence = {...this.props.occurrence};
         const state = {...this.state};
 
-        occurence.qualification.links[key] = link;
+        occurrence.qualification.links[key] = link;
         state.edit.link.key = null;
 
         this.setState(state);
-        this.props.setOccurence(occurence);
+        this.props.setOccurrence(occurrence);
     }
 
     handleDeleteJob(key) {
-        const occurence = {...this.props.occurence};
-        occurence.qualification.jobs[key] = null;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.qualification.jobs[key] = null;
+        this.props.setOccurrence(occurrence);
     }
 
     handleDeleteLink(key) {
-        const occurence = {...this.props.occurence};
-        occurence.qualification.links[key] = null;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.qualification.links[key] = null;
+        this.props.setOccurrence(occurrence);
     }
 
     handleSave(e) {
         e.preventDefault();
-        const {occurence,token} = this.props;
+        const {occurrence,token} = this.props;
 
-        daoFactory.getOccurenceDAO().insert(occurence,token).then((res) => {
+        daoFactory.getOccurrenceDAO().insert(occurrence,token).then((res) => {
             this.reset();
         });
     }
 
     renderJobs() {
-        const {jobs} = this.props.occurence.qualification;
+        const {jobs} = this.props.occurrence.qualification;
         const jobsKeys = Object.keys(jobs);
 
         return jobsKeys.map((key) => {
@@ -516,7 +516,7 @@ class EditQualification extends Component {
                 />
             );
         } else {
-            const job = this.props.occurence.qualification.jobs[edit.job.key];
+            const job = this.props.occurrence.qualification.jobs[edit.job.key];
             return (
                 <EditJob
                     keyJob={edit.job.key}
@@ -528,7 +528,7 @@ class EditQualification extends Component {
     }
 
     renderLinks() {
-        const {links} = this.props.occurence.qualification;
+        const {links} = this.props.occurrence.qualification;
         const linksKeys = Object.keys(links);
 
         return linksKeys.map((key) => {
@@ -577,7 +577,7 @@ class EditQualification extends Component {
                 />
             );
         } else {
-            const link = this.props.occurence.qualification.links[key];
+            const link = this.props.occurrence.qualification.links[key];
             return (
                 <EditLink
                     keyLink={key}
@@ -597,19 +597,19 @@ class EditQualification extends Component {
 
     render() {
 
-        const {occurence} = this.props;
-        const {dateEnd, qualification} = occurence;
+        const {occurrence} = this.props;
+        const {dateEnd, qualification} = occurrence;
         const {name, img, level, trainingCenter, objectives, jobs, links} = qualification;
 
-        console.log("occurence objectives", occurence.qualification.objectives);
+        console.log("occurrence objectives", occurrence.qualification.objectives);
 
-        const occurenceValidate = {...occurence};
-        if (!(occurenceValidate.dateEnd instanceof Date) && occurenceValidate.dateEnd != "") {
-            occurenceValidate.dateEnd = new Date(occurenceValidate.dateEnd);
+        const occurrenceValidate = {...occurrence};
+        if (!(occurrenceValidate.dateEnd instanceof Date) && occurrenceValidate.dateEnd != "") {
+            occurrenceValidate.dateEnd = new Date(occurrenceValidate.dateEnd);
         }
 
         return (
-            <div className={"container pl-5 pr-5"}>
+            <div className={"container-fluid"}>
                 <div className={"row"}>
 
                     {/*<div className={"col-12"}>*/}
@@ -813,7 +813,7 @@ class EditQualification extends Component {
                                     </button>
                                 </div>
 
-                                <OccurenceItem occurence={occurenceValidate}/>
+                                <OccurrenceItem occurrence={occurrenceValidate}/>
 
                             </div>
 
@@ -827,17 +827,17 @@ class EditQualification extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {occurence} = state.OccurencesReducer;
+    const {occurrence} = state.OccurrencesReducer;
     const {token} = state.AuthentificationReducer;
     return {
-        occurence,
+        occurrence,
         token,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setOccurence: (occurence)=>{dispatch(actions.occurences.setOccurence(occurence))},
+        setOccurrence: (occurrence)=>{dispatch(actions.occurrences.setOccurrence(occurrence))},
     };
 };
 

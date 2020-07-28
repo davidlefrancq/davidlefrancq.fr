@@ -7,12 +7,12 @@ import {FiDelete} from "react-icons/fi";
 import {actions} from "../../../actions";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import OccurenceItem from "../OccurenceItem";
+import OccurrenceItem from "../OccurrenceItem";
 import ProgressBar from "../../ProgressBar/ProgressBar";
 import DAOFactory from "../../../dal/DAOFactory";
 import TrainingCenter from "../../../bo/TrainingCenter";
 import Qualification from "../../../bo/Qualification";
-import Occurence from "../../../bo/Occurence";
+import Occurrence from "../../../bo/Occurrence";
 import Experience from "../../../bo/Experience";
 import Enterprise from "../../../bo/Enterprise";
 
@@ -79,52 +79,52 @@ class EditExperience extends Component {
     }
 
     updateDateStart = (e) => {
-        const occurence = {...this.props.occurence};
-        occurence.dateStart = e.target.value;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.dateStart = e.target.value;
+        this.props.setOccurrence(occurrence);
     }
 
     updateDateEnd = (e) => {
-        const occurence = {...this.props.occurence};
-        occurence.dateEnd = e.target.value;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.dateEnd = e.target.value;
+        this.props.setOccurrence(occurrence);
     }
 
     updateComment = (data) => {
-        const occurence = {...this.props.occurence};
-        occurence.experience.comment = data;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.experience.comment = data;
+        this.props.setOccurrence(occurrence);
     }
 
     updateExperienceValue = (e) => {
         const key = e.target.name;
         const value = e.target.value;
 
-        const occurence = {...this.props.occurence};
-        occurence.experience[key] = value;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.experience[key] = value;
+        this.props.setOccurrence(occurrence);
     }
 
     updateEnterpriseValue = (e) => {
         const key = e.target.name;
         const value = e.target.value;
 
-        const occurence = {...this.props.occurence};
-        occurence.experience.enterprise[key] = value;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.experience.enterprise[key] = value;
+        this.props.setOccurrence(occurrence);
     }
 
     handleAddLink = (link) => {
 
         if (link != undefined && link != null) {
 
-            const occurence = {...this.props.occurence};
-            const {experience} = occurence;
+            const occurrence = {...this.props.occurrence};
+            const {experience} = occurrence;
             const links = experience.links;
             links[links.length] = link;
             experience.links = links;
 
-            this.props.setOccurence(occurence);
+            this.props.setOccurrence(occurrence);
         }
     }
 
@@ -139,20 +139,20 @@ class EditExperience extends Component {
     }
 
     handleUpdateLink = (key, link) => {
-        const occurence = {...this.props.occurence};
+        const occurrence = {...this.props.occurrence};
         const state = {...this.state};
 
-        occurence.experience.links[key] = link;
+        occurrence.experience.links[key] = link;
         state.edit.link.key = null;
 
         this.setState(state);
-        this.props.setOccurence(occurence);
+        this.props.setOccurrence(occurrence);
     }
 
     handleDeleteLink = (key) => {
-        const occurence = {...this.props.occurence};
-        occurence.experience.links[key] = null;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.experience.links[key] = null;
+        this.props.setOccurrence(occurrence);
     }
 
     handleEditTechnology = (key) => {
@@ -168,26 +168,26 @@ class EditExperience extends Component {
     }
 
     handleDeleteTechnology = (key) => {
-        const occurence = {...this.props.occurence};
-        occurence.experience.technologicalCategories[key] = null;
-        this.props.setOccurence(occurence);
+        const occurrence = {...this.props.occurrence};
+        occurrence.experience.technologicalCategories[key] = null;
+        this.props.setOccurrence(occurrence);
     }
 
     handleSave = (e) => {
         e.preventDefault();
         const newState = {...this.state};
-        const {occurence,token} = this.props;
-        const occurenceDAO = daoFactory.getOccurenceDAO();
+        const {occurrence,token} = this.props;
+        const occurrenceDAO = daoFactory.getOccurrenceDAO();
 
         console.log(this.props);
 
-        if(occurence["@id"] != undefined && occurence["@id"] != null && occurence["@id"] != ""){
-            occurenceDAO.update(occurence,token).then((res)=>{
+        if(occurrence["@id"] != undefined && occurrence["@id"] != null && occurrence["@id"] != ""){
+            occurrenceDAO.update(occurrence,token).then((res)=>{
                 console.log(res);
                 this.reset();
             });
         }else{
-            occurenceDAO.insert(occurence,token).then((res) => {
+            occurrenceDAO.insert(occurrence,token).then((res) => {
                 console.log(res);
                 this.reset();
             });
@@ -197,15 +197,15 @@ class EditExperience extends Component {
 
     reset = () => {
         this.resetState();
-        this.resetOccurence();
+        this.resetOccurrence();
     }
 
-    resetOccurence = () => {
+    resetOccurrence = () => {
         const enterprise = new Enterprise(null, null, null, null, null, null)
         const experience = new Experience(null, null, null, enterprise, [], false, []);
-        const occurence = new Occurence(null, null, null, experience);
+        const occurrence = new Occurrence(null, null, null, experience);
 
-        this.props.setOccurence(occurence);
+        this.props.setOccurence(occurrence);
     }
 
     resetState = () => {
@@ -290,7 +290,7 @@ class EditExperience extends Component {
 
 
     renderLinks() {
-        const {links} = this.props.occurence.experience;
+        const {links} = this.props.occurrence.experience;
         const linksKeys = Object.keys(links);
 
         return linksKeys.map((key) => {
@@ -333,7 +333,7 @@ class EditExperience extends Component {
         const {key} = edit.link;
         let link = null;
         if (key) {
-            link = this.props.occurence.experience.links[key];
+            link = this.props.occurrence.experience.links[key];
         }
 
         return (
@@ -353,7 +353,7 @@ class EditExperience extends Component {
     }
 
     renderTechnologies() {
-        const {technologicalCategories} = this.props.occurence.experience;
+        const {technologicalCategories} = this.props.occurrence.experience;
         if (technologicalCategories != undefined && technologicalCategories != null) {
             const technologiesKeys = Object.keys(technologicalCategories);
 
@@ -394,15 +394,15 @@ class EditExperience extends Component {
     }
 
     renderExperienceForm() {
-        const {occurence} = this.props;
-        const {dateStart, dateEnd, experience} = occurence;
+        const {occurrence} = this.props;
+        const {dateStart, dateEnd, experience} = occurrence;
         const {name, comment, enterprise, technologicalCategories, workstudy, links} = experience;
-        const occurenceValidate = {...occurence};
-        if (!(occurenceValidate.dateEnd instanceof Date) && occurenceValidate.dateEnd != "") {
-            occurenceValidate.dateEnd = new Date(occurenceValidate.dateEnd);
+        const occurrenceValidate = {...occurrence};
+        if (!(occurrenceValidate.dateEnd instanceof Date) && occurrenceValidate.dateEnd != "") {
+            occurrenceValidate.dateEnd = new Date(occurrenceValidate.dateEnd);
         }
-        if (!(occurenceValidate.dateStart instanceof Date) && occurenceValidate.dateStart != "") {
-            occurenceValidate.dateStart = new Date(occurenceValidate.dateStart);
+        if (!(occurrenceValidate.dateStart instanceof Date) && occurrenceValidate.dateStart != "") {
+            occurrenceValidate.dateStart = new Date(occurrenceValidate.dateStart);
         }
 
         return (
@@ -606,7 +606,7 @@ class EditExperience extends Component {
                         </button>
                     </div>
 
-                    <OccurenceItem occurence={occurenceValidate}/>
+                    <OccurrenceItem occurrence={occurrenceValidate}/>
 
                 </div>
 
@@ -638,10 +638,10 @@ class EditExperience extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {occurence, edit} = state.OccurencesReducer;
+    const {occurrence, edit} = state.OccurrencesReducer;
     const {token} = state.AuthentificationReducer;
     return {
-        occurence,
+        occurrence,
         edit,
         token,
     };
@@ -649,8 +649,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setOccurence: (occurence) => dispatch(actions.occurences.setOccurence(occurence)),
-        setEdit: (edit) => dispatch(actions.occurences.setEdit(edit)),
+        setOccurrence: (occurrence) => dispatch(actions.occurrences.setOccurrence(occurrence)),
+        setEdit: (edit) => dispatch(actions.occurrences.setEdit(edit)),
     };
 };
 

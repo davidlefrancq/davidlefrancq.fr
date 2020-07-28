@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import OccurenceItem from "./OccurenceItem";
+import OccurrenceItem from "./OccurrenceItem";
 import CvCarousel from "../Corousel/CvCarousel";
 import DateBar from "../DateBar/DateBar";
 import Step from "../../bo/Step";
@@ -14,13 +14,13 @@ import {OverlayTrigger, Tooltip} from "react-bootstrap";
 
 const daoFactory = new DAOFactory();
 
-class OccurenceList extends Component {
+class OccurrenceList extends Component {
 
     constructor(props) {
         super(props);
         const screenSize = ScreenDetection.getBootstrapSize();
         this.state = {
-            occurence: {},
+            occurrence: {},
             style: {
                 qualificationDisplay: "",
                 experienceDisplay: "",
@@ -30,12 +30,12 @@ class OccurenceList extends Component {
     }
 
     componentDidMount() {
-        const result = daoFactory.getOccurenceDAO().selectAll();
+        const result = daoFactory.getOccurrenceDAO().selectAll();
         result.then((res) => {
             const {data} = res;
             const items = data['hydra:member'];
 
-            this.props.setOccurences(items);
+            this.props.setOccurrences(items);
         });
 
         // Lorsque l'écran change de résolution
@@ -66,46 +66,46 @@ class OccurenceList extends Component {
     }
 
     getQualifications() {
-        const {occurences} = this.props;
-        const occurencesQualifications = [];
+        const {occurrences} = this.props;
+        const occurrencesQualifications = [];
 
-        for (const id in occurences) {
-            const occurence = occurences[id];
-            const {qualification} = occurence;
+        for (const id in occurrences) {
+            const occurrence = occurrences[id];
+            const {qualification} = occurrence;
             if (qualification != undefined && qualification != null) {
-                occurencesQualifications.push(occurence);
+                occurrencesQualifications.push(occurrence);
             }
         }
 
-        this.props.setQualificationList(occurencesQualifications);
+        this.props.setQualificationList(occurrencesQualifications);
 
-        return occurencesQualifications;
+        return occurrencesQualifications;
     }
 
     getExperiences() {
-        const {occurences} = this.props;
-        const occurencesExperiences = [];
+        const {occurrences} = this.props;
+        const occurrencesExperiences = [];
 
-        for (const id in occurences) {
-            const occurence = occurences[id];
-            const {experience} = occurence;
+        for (const id in occurrences) {
+            const occurrence = occurrences[id];
+            const {experience} = occurrence;
             if (experience != undefined && experience != null) {
-                occurencesExperiences.push(occurence);
+                occurrencesExperiences.push(occurrence);
             }
         }
 
-        this.props.setExperienceList(occurencesExperiences);
+        this.props.setExperienceList(occurrencesExperiences);
 
-        return occurencesExperiences;
+        return occurrencesExperiences;
     }
 
     getStepsDates() {
-        const {occurences} = this.props;
+        const {occurrences} = this.props;
         let dates = [];
 
-        for (const id in occurences) {
-            const occurence = occurences[id];
-            const {dateStart, dateEnd} = occurence;
+        for (const id in occurrences) {
+            const occurrence = occurrences[id];
+            const {dateStart, dateEnd} = occurrence;
 
             let date = null;
 
@@ -138,22 +138,22 @@ class OccurenceList extends Component {
         return dates;
     }
 
-    renderOccurences() {
-        const {occurences} = this.props;
-        const occurencesIds = Object.keys(occurences);
+    renderOccurrences() {
+        const {occurrences} = this.props;
+        const occurrencesIds = Object.keys(occurrences);
 
-        return occurencesIds.map((key) => {
+        return occurrencesIds.map((key) => {
             return (
-                <OccurenceItem key={key} occurence={occurences[key]}/>
+                <OccurrenceItem key={key} occurrence={occurrences[key]}/>
             );
         });
     }
 
     renderOcurence() {
-        const {occurence} = this.props;
-        if (occurence != undefined && occurence != null) {
+        const {occurrence} = this.props;
+        if (occurrence != undefined && occurrence != null) {
             return (
-                <OccurenceItem occurence={occurence}/>
+                <OccurrenceItem occurrence={occurrence}/>
             );
         }
     }
@@ -161,7 +161,7 @@ class OccurenceList extends Component {
     renderDateBar() {
 
         let i = 0;
-        for (let item in this.props.occurences) {
+        for (let item in this.props.occurrences) {
             i = i + 1;
         }
 
@@ -236,7 +236,9 @@ class OccurenceList extends Component {
     renderTooltipExperience = (props) => {
         return (
             <Tooltip id="button-tooltip-qualification" {...props}>
-                Expérience professionnelle
+                Expérience
+                <br/>
+                Professionnelle
             </Tooltip>
         );
     }
@@ -244,8 +246,8 @@ class OccurenceList extends Component {
     render() {
         const {qualificationDisplay, experienceDisplay} = this.state.style;
 
-        const occurencesQualifications = this.getQualifications();
-        const occurencesExperiences = this.getExperiences();
+        const occurrencesQualifications = this.getQualifications();
+        const occurrencesExperiences = this.getExperiences();
 
         return (
             <Fragment>
@@ -261,38 +263,50 @@ class OccurenceList extends Component {
                                 <div className={"col-12 col-xl-1"}>
                                     {this.renderMenu()}
                                 </div>
-                                <div className={"col-12 col-xl-4"}>
+                                <div className={"col-12 col-xl-3"}>
                                     <div className={"row"}>
                                         <div className={`col-12 mb-3 ${qualificationDisplay}`}>
                                             <div style={{height:0}}>
                                                 <OverlayTrigger
-                                                    placement="right"
+                                                    placement="left"
                                                     delay={{ show: 250, hide: 400 }}
                                                     overlay={this.renderTooltipQualification}
                                                 >
-                                                    <GiDiploma className={"logo-carousel"}/>
+                                                    <div className={"logo-carousel text-center"}>
+                                                        <GiDiploma style={{
+                                                            fontSize:"x-large"
+                                                        }}/>
+                                                    </div>
                                                 </OverlayTrigger>
                                             </div>
                                             <CvCarousel
-                                                occurences={occurencesQualifications}
+                                                occurrences={occurrencesQualifications}
                                             />
                                         </div>
+
+                                        <div className={"col-12 d-none d-xl-block"} style={{height:"25px"}}></div>
+
                                         <div className={`col-12 mb-3 ${experienceDisplay}`}>
                                             <div style={{height:0}}>
                                                 <OverlayTrigger
-                                                    placement="right"
+                                                    placement="left"
                                                     delay={{ show: 250, hide: 400 }}
                                                     overlay={this.renderTooltipExperience}
                                                 >
-                                                    <BsBuilding className={"logo-carousel"}/>
+                                                    <div className={"logo-carousel text-center"}>
+                                                        <BsBuilding style={{
+                                                            fontSize:"x-large"
+                                                        }}/>
+                                                    </div>
                                                 </OverlayTrigger>
                                             </div>
                                             <CvCarousel
-                                                occurences={occurencesExperiences}
+                                                occurrences={occurrencesExperiences}
                                             />
                                         </div>
                                     </div>
                                 </div>
+                                <div className={"col-xl-auto d-none d-xl-block"} style={{minWidth:"75px"}}></div>
                                 <div className={"col-12 col-xl-6"}>
                                     {this.renderOcurence()}
                                 </div>
@@ -303,10 +317,10 @@ class OccurenceList extends Component {
                 </div>
 
                 <div className={"clearfix"}>
-                    {/*{this.renderOccurences()}*/}
+                    {/*{this.renderOccurrences()}*/}
                 </div>
 
-                <div className={"container"} style={{minHeight: "250px"}}>
+                <div className={"container"}>
                     {/*{this.renderOcurence()}*/}
                 </div>
 
@@ -316,20 +330,20 @@ class OccurenceList extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {occurences, occurence} = state.OccurencesReducer;
+    const {occurrences, occurrence} = state.OccurrencesReducer;
     return {
-        occurences: occurences,
-        occurence,
+        occurrences: occurrences,
+        occurrence,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
 
     return {
-        setOccurences: (occurences) => dispatch(actions.occurences.setOccurences(occurences)),
-        setExperienceList: (occurences) => dispatch(actions.experience.setExperienceList(occurences)),
-        setQualificationList: (occurences) => dispatch(actions.qualification.setQualificationList(occurences)),
+        setOccurrences: (occurrences) => dispatch(actions.occurrences.setOccurrences(occurrences)),
+        setExperienceList: (occurrences) => dispatch(actions.experience.setExperienceList(occurrences)),
+        setQualificationList: (occurrences) => dispatch(actions.qualification.setQualificationList(occurrences)),
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OccurenceList);
+export default connect(mapStateToProps, mapDispatchToProps)(OccurrenceList);

@@ -1,0 +1,105 @@
+.occurrence-card{
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.9);
+    border-radius: 25px 0 25px 0;
+}
+
+.occurrence-card .card-header{
+    border-radius: 23px 0 25px 0;
+    background-color: rgba(0,0,0,0.9);
+    color: white;
+}
+
+.occurrence-card .card-body h4{
+    background-color: rgba(0,0,0,0.9);
+    color: white;
+    padding: 10px 10px 10px 20px;
+    border-radius: 3px 25px 3px 25px;
+    text-align: center;
+}
+
+.occurrence-card .logo{
+    position: absolute;
+    color: rgba(0,0,0,9);
+    border: 1px solid rgba(0,0,0,9);
+    top: -15px;
+    right: -15px;
+    z-index: 9999;
+    background-color: rgba(255,255,255,1);
+    padding:10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+
+.occurrence-card-logo-date{
+    color: rgba(255,255,255,1);
+    border: 1px solid rgba(0,0,0,8);
+    background-color: rgba(0,0,0,8);
+    padding:10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.experience-technology-logo {
+    max-height: 45px;
+}
+
+.google-map-link{
+    background-image: url("/google-map.jpg");
+    filter: grayscale(65%);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 75px;
+}
+
+.google-map-link:hover{
+    animation: google-map-enter-animation 0.2s ease-in forwards;
+}
+@keyframes google-map-enter-animation {
+    0%{
+        filter: grayscale(65%);
+        border-radius: 0;
+    }
+    100%{
+        filter: grayscale(0%);
+        border-radius: 25px;
+    }
+}
+.google-map-link a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: #007bff;
+    text-shadow: 1px 1px 2px rgba(255,255,255,1);
+    padding-top: 25px;
+}
+
+.google-map-link a:hover{
+    text-decoration: none !important;
+    animation: google-map-link-enter-animation 0.2s ease-in forwards;
+}
+
+@keyframes google-map-link-enter-animation {
+    0%{
+        border-radius: 0;
+        padding-top: 25px;
+        font-weight: initial;
+        font-size: initial;
+        box-shadow: 4px 4px 6px rgba(0,0,0,0);
+        text-shadow: 2px 3px 6px rgba(0,0,0,0);
+    }
+    100%{
+        border-radius: 25px;
+        color: rgba(255,255,255,0.9);
+        padding-top: 17px;
+        font-weight: bold;
+        font-size: x-large;
+        box-shadow: 4px 4px 6px rgba(0,0,0,0.4);
+        text-shadow: 2px 3px 6px rgba(0,0,0,0.8);
+    }
+}

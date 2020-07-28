@@ -1,20 +1,20 @@
-import OccurenceDAO from "./OccurenceDAO";
+import OccurrenceDAO from "./OccurrenceDAO";
 import AuthenticationDAO from "./AuthenticationDAO";
 
 class DAOFactory {
 
     constructor() {
-        this.occurenceDAO = null;
+        this.occurcenceDAO = null;
         this.authenticationDAO = null;
     }
 
-    getOccurenceDAO(){
+    getOccurrenceDAO(){
 
-        if(this.occurenceDAO == null){
-            this.occurenceDAO = new OccurenceDAO();
+        if(this.occurrenceDAO == null){
+            this.occurrenceDAO = new OccurrenceDAO();
         }
 
-        return this.occurenceDAO;
+        return this.occurrenceDAO;
     }
 
     getAuthenticationDAO(){

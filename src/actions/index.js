@@ -1,11 +1,11 @@
 import AuthentificationAction from "./AuthentificationAction";
-import OccurencesAction from "./OccurencesAction";
+import OccurrencesAction from "./OccurrencesAction";
 import QualificationAction from "./QualificationAction";
 import ExperienceAction from "./ExperienceAction";
 
 export const actions = {
     authentification: AuthentificationAction,
-    occurences: OccurencesAction,
+    occurrences: OccurrencesAction,
     qualification: QualificationAction,
     experience: ExperienceAction,
 };

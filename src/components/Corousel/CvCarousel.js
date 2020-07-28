@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {actions} from "../../actions";
 import Carousel from "./Carousel";
 import Step from "../../bo/Step";
+import {SERVER_API} from "../../utils/urls";
 
 class CvCarousel extends Component {
 
@@ -19,7 +20,7 @@ class CvCarousel extends Component {
         const newExperienceSelected = eval(this.props.experienceSelected);
 
         if (oldQualificationSeleted !== newQualificationSeleted || oldExperienceSelected !== newExperienceSelected) {
-            this.props.setOccurence(null);
+            this.props.setOccurrence(null);
         }
     }
 
@@ -27,31 +28,42 @@ class CvCarousel extends Component {
         const items = [];
         let i = 0;
 
-        const {occurences} = this.props;
-        const occurencesKeys = Object.keys(occurences);
-        occurencesKeys.map((key) => {
+        const {occurrences} = this.props;
+        const occurrencesKeys = Object.keys(occurrences);
+        occurrencesKeys.map((key) => {
 
-            const occurence = occurences[key];
+            const occurrence = occurrences[key];
             let title = "";
             let dateStart = null;
             let dateEnd = null;
             let description = "";
+            let image = null;
 
-            if (occurence.experience instanceof Object) {
-                title = occurence.experience.name;
+            if (occurrence.experience instanceof Object) {
+                title = occurrence.experience.name;
 
-                dateStart = occurence.dateStart ? occurence.dateStart : null;
-                dateEnd = occurence.dateEnd ? occurence.dateEnd : null;
+                dateStart = occurrence.dateStart ? occurrence.dateStart : null;
+                dateEnd = occurrence.dateEnd ? occurrence.dateEnd : null;
+
+                if(occurrence.experience.img){
+                    image = occurrence.experience.img;
+                }
             }
 
-            if (occurence.qualification instanceof Object) {
-                title = occurence.qualification.name;
-                dateEnd = occurence.dateEnd ? occurence.dateEnd : null;
+            if (occurrence.qualification instanceof Object) {
+                title = occurrence.qualification.name;
+                dateEnd = occurrence.dateEnd ? occurrence.dateEnd : null;
+                if(occurrence.qualification.img){
+                    image = occurrence.qualification.img;
+                }
             }
 
             const step = new Step(title, description, dateStart, dateEnd);
+            if(image){
+                step.image = `${SERVER_API}${image}`;
+            }
             step.onClick = () => {
-                this.props.setOccurence(occurence);
+                this.props.setOccurrence(occurrence);
             };
             items[i] = step;
 
@@ -64,17 +76,17 @@ class CvCarousel extends Component {
     getTarget() {
         let target = 0;
 
-        const {occurences} = this.props;
-        const occurencesKeys = Object.keys(occurences);
-        occurencesKeys.map((key) => {
+        const {occurrences} = this.props;
+        const occurrencesKeys = Object.keys(occurrences);
+        occurrencesKeys.map((key) => {
 
-            const occurence = occurences[key];
+            const occurrence = occurrences[key];
 
-            if (occurence.experience instanceof Object) {
+            if (occurrence.experience instanceof Object) {
                 target = this.props.experienceSelected;
             }
 
-            if (occurence.qualification instanceof Object) {
+            if (occurrence.qualification instanceof Object) {
                 target = this.props.qualificationSeleted;
             }
 
@@ -85,17 +97,17 @@ class CvCarousel extends Component {
 
     updateTarget = (target) => {
 
-        const {occurences} = this.props;
-        const occurencesKeys = Object.keys(occurences);
-        occurencesKeys.map((key) => {
+        const {occurrences} = this.props;
+        const occurrencesKeys = Object.keys(occurrences);
+        occurrencesKeys.map((key) => {
 
-            const occurence = occurences[key];
+            const occurrence = occurrences[key];
 
-            if (occurence.experience instanceof Object) {
+            if (occurrence.experience instanceof Object) {
                 this.props.setExperienceSelected(target);
             }
 
-            if (occurence.qualification instanceof Object) {
+            if (occurrence.qualification instanceof Object) {
                 this.props.setQualificationSelected(target);
             }
         });
@@ -125,7 +137,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setExperienceSelected: (id) => dispatch(actions.experience.setExperienceSelected(id)),
         setQualificationSelected: (id) => dispatch(actions.qualification.setQualificationSelected(id)),
-        setOccurence: (occurence) => dispatch(actions.occurences.setOccurence(occurence)),
+        setOccurrence: (occurrence) => dispatch(actions.occurrences.setOccurrence(occurrence)),
     };
 }
 

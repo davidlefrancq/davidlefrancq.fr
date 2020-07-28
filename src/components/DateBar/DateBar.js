@@ -65,8 +65,8 @@ class DateBar extends Component {
         const step = steps[id];
         const fullYear = step.title;
 
-        this.props.setOccurencesDateTargeted(fullYear);
-        this.updateOccurencesSelected(fullYear);
+        this.props.setOccurrencesDateTargeted(fullYear);
+        this.updateOccurrencesSelected(fullYear);
 
         // step.active = !step.active;
         // this.actualiseStepBeforeActive(id, steps);
@@ -179,7 +179,7 @@ class DateBar extends Component {
         });
     }
 
-    updateOccurencesSelected(fullYear) {
+    updateOccurrencesSelected(fullYear) {
 
         this.updateExperienceSelected(fullYear);
         this.updateQualificationSelected(fullYear);
@@ -187,9 +187,9 @@ class DateBar extends Component {
 
     updateExperienceSelected(fullYear) {
 
-        const {experienceOccurences} = this.props;
+        const {experienceOccurrences} = this.props;
 
-        let newId = this.getNewIdToFullYear(experienceOccurences, fullYear);
+        let newId = this.getNewIdToFullYear(experienceOccurrences, fullYear);
 
         if (newId != null) {
             this.props.setExperienceSelected(newId)
@@ -198,36 +198,36 @@ class DateBar extends Component {
 
     updateQualificationSelected(fullYear) {
 
-        const {qualificationOccurences} = this.props;
+        const {qualificationOccurrences} = this.props;
 
-        let newId = this.getNewIdToFullYear(qualificationOccurences, fullYear);
+        let newId = this.getNewIdToFullYear(qualificationOccurrences, fullYear);
 
         if (newId != null) {
             this.props.setQualificationSelected(newId)
         }
     }
 
-    getItemYear(occurences, fullYear) {
+    getItemYear(occurrences, fullYear) {
 
-        let occurenceSelected = null;
+        let occurrenceSelected = null;
         const date = new Date(`${fullYear}-01-01T00:00:00`);
 
-        const occurencesKeys = Object.keys(occurences);
-        occurencesKeys.map((key) => {
+        const occurrencesKeys = Object.keys(occurrences);
+        occurrencesKeys.map((key) => {
 
-            const occurence = occurences[key];
-            const dateOccurence = this.getDate(occurence);
+            const occurrence = occurrences[key];
+            const dateOccurrence = this.getDate(occurrence);
 
-            if (dateOccurence != undefined && dateOccurence != null) {
+            if (dateOccurrence != undefined && dateOccurrence != null) {
 
-                const dateControl = dateOccurence.getFullYear();
+                const dateControl = dateOccurrence.getFullYear();
                 if (eval(dateControl) === eval(fullYear)) {
 
-                    if (occurenceSelected == null) {
-                        occurenceSelected = occurence;
+                    if (occurrenceSelected == null) {
+                        occurrenceSelected = occurrence;
                     } else {
-                        const dateItem = this.getDate(occurence);
-                        const dateControlSelected = this.getDate(occurenceSelected);
+                        const dateItem = this.getDate(occurrence);
+                        const dateControlSelected = this.getDate(occurrenceSelected);
 
                         const diffControl = dateItem.getTime() - date.getTime();
                         const diffControlSelected = dateControlSelected.getTime() - date.getTime();
@@ -235,78 +235,78 @@ class DateBar extends Component {
                         if (diffControlSelected > diffControl) {
                             // Ne rien faire
                         } else {
-                            occurenceSelected = occurences[key];
+                            occurrenceSelected = occurrences[key];
                         }
                     }
                 }
             }
         });
 
-        return occurenceSelected;
+        return occurrenceSelected;
     }
 
-    getItemYearUpper(occurences, fullYear) {
+    getItemYearUpper(occurrences, fullYear) {
 
-        let occurenceSelected = null;
+        let occurrenceSelected = null;
         const date = new Date(`${fullYear}-01-01T00:00:00`);
 
-        const occurencesKeys = Object.keys(occurences);
-        occurencesKeys.map((key) => {
+        const occurrencesKeys = Object.keys(occurrences);
+        occurrencesKeys.map((key) => {
 
-            const occurence = occurences[key];
-            const dateItem = this.getDate(occurence);
+            const occurrence = occurrences[key];
+            const dateItem = this.getDate(occurrence);
 
             if (dateItem != undefined && dateItem != null) {
 
                 const diff = dateItem.getTime() - date.getTime();
                 if (diff > 0) {
 
-                    if (occurenceSelected == null) {
+                    if (occurrenceSelected == null) {
 
-                        occurenceSelected = occurences[key];
+                        occurrenceSelected = occurrences[key];
 
                     } else {
 
-                        const dateControlSelected = this.getDate(occurenceSelected);
+                        const dateControlSelected = this.getDate(occurrenceSelected);
                         const diffControl = dateItem.getTime() - date.getTime();
                         const diffControlSelected = dateControlSelected.getTime() - date.getTime();
 
                         if (diffControlSelected < diffControl) {
                             // Ne rien faire
                         } else {
-                            occurenceSelected = occurences[key];
+                            occurrenceSelected = occurrences[key];
                         }
                     }
                 }
             }
         });
 
-        return occurenceSelected;
+        return occurrenceSelected;
     }
 
-    getItemYearLower(occurences, fullYear) {
+    getItemYearLower(occurrences, fullYear) {
 
-        let occurenceSelected = null;
+        let occurrenceSelected = null;
         const date = new Date(`${fullYear}-01-01T00:00:00`);
 
-        const occurencesKeys = Object.keys(occurences);
-        occurencesKeys.map((key) => {
+        const occurrencesKeys = Object.keys(occurrences);
+        occurrencesKeys.map((key) => {
 
-            const occurence = occurences[key];
-            const dateItem = this.getDate(occurence);
+            const occurrence = occurrences[key];
+            const dateItem = this.getDate(occurrence);
 
             if (dateItem != undefined && dateItem != null) {
 
                 const diff = date.getTime() - dateItem.getTime();
                 if (diff > 0) {
 
-                    if (occurenceSelected == null) {
+                    if (occurrenceSelected == null) {
 
-                        occurenceSelected = occurences[key];
+                        occurrenceSelected = occurrences[key];
 
                     } else {
 
-                        const dateControlSelected = this.getDate(occurenceSelected);
+                        const dateControlSelected = this.getDate(occurrenceSelected);
 
                         const diffControl = date.getTime() - dateItem.getTime();
                         const diffControlSelected = date.getTime() - dateControlSelected.getTime();
@@ -314,53 +314,53 @@ class DateBar extends Component {
                         if (diffControlSelected < diffControl) {
                             // Ne rien faire
                         } else {
-                            occurenceSelected = occurences[key];
+                            occurrenceSelected = occurrences[key];
                         }
                     }
                 }
             }
         });
 
-        return occurenceSelected;
+        return occurrenceSelected;
     }
 
-    getNewIdToFullYear(occurences, fullYear) {
+    getNewIdToFullYear(occurrences, fullYear) {
 
         let targetKey = null;
 
-        const occurence = this.getOccurence(occurences, fullYear);
-        if (occurence != null) {
-            targetKey = this.getTargetKey(occurences, occurence)
+        const occurrence = this.getOccurrence(occurrences, fullYear);
+        if (occurrence != null) {
+            targetKey = this.getTargetKey(occurrences, occurrence)
         }
 
         return targetKey;
     }
 
-    getOccurence(occurences, fullYear) {
+    getOccurrence(occurrences, fullYear) {
         const {target} = this.props;
         const {date, oldDate} = target;
 
-        let occurence = this.getItemYear(occurences, fullYear);
-        if (occurence == null) {
+        let occurrence = this.getItemYear(occurrences, fullYear);
+        if (occurrence == null) {
 
             if (eval(date) < eval(oldDate)) {
-                occurence = this.getItemYearUpper(occurences, fullYear);
+                occurrence = this.getItemYearUpper(occurrences, fullYear);
             }
 
             if (oldDate == null || eval(date) > eval(oldDate)) {
-                occurence = this.getItemYearLower(occurences, fullYear);
+                occurrence = this.getItemYearLower(occurrences, fullYear);
             }
         }
 
-        return occurence;
+        return occurrence;
     }
 
-    getTargetKey(occurences, occurence) {
+    getTargetKey(occurrences, occurrence) {
 
         let target = 0;
-        const keys = Object.keys(occurences);
+        const keys = Object.keys(occurrences);
         keys.map((key) => {
-            if (occurences[key].id == occurence.id) {
+            if (occurrences[key].id == occurrence.id) {
                 target = key;
             }
         });
@@ -368,9 +368,9 @@ class DateBar extends Component {
         return target;
     }
 
-    getDate(occurence) {
+    getDate(occurrence) {
 
-        const {dateStart, dateEnd} = occurence;
+        const {dateStart, dateEnd} = occurrence;
         let date = null;
 
         if (dateStart != undefined && dateStart != null && dateStart !== "") {
@@ -584,19 +584,19 @@ class DateBar extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {target} = state.OccurencesReducer;
-    const qualificationOccurences = state.QualificationReducer.occurences;
+    const {target} = state.OccurrencesReducer;
+    const qualificationOccurrences = state.QualificationReducer.occurrences;
     const qualificationSeleted = state.QualificationReducer.selected;
-    const experienceOccurences = state.ExperienceReducer.occurences;
+    const experienceOccurrences = state.ExperienceReducer.occurrences;
     const experienceSelected = state.ExperienceReducer.selected;
-    const {occurences} = state.OccurencesReducer;
+    const {occurrences} = state.OccurrencesReducer;
     return {
         target,
-        qualificationOccurences,
+        qualificationOccurrences,
         qualificationSeleted,
-        experienceOccurences,
+        experienceOccurrences,
         experienceSelected,
-        occurences,
+        occurrences,
     };
 };
 
@@ -605,7 +605,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setQualificationSelected: (id) => dispatch(actions.qualification.setQualificationSelected(id)),
         setExperienceSelected: (id) => dispatch(actions.experience.setExperienceSelected(id)),
-        setOccurencesDateTargeted: (date) => dispatch(actions.occurences.setOccurencesDateTargeted(date)),
+        setOccurrencesDateTargeted: (date) => dispatch(actions.occurrences.setOccurrencesDateTargeted(date)),
     };
 };
 

@@ -1,12 +1,12 @@
 import {combineReducers} from 'redux';
 import AuthentificationReducer from "./AuthentificationReducer";
-import OccurencesReducer from "./OccurencesReducer";
+import OccurrencesReducer from "./OccurrencesReducer";
 import QualificationReducer from "./QualificationReducer";
 import ExperienceReducer from "./ExperienceReducer";
 
 const rootReducer = combineReducers({
     AuthentificationReducer,
-    OccurencesReducer,
+    OccurrencesReducer: OccurrencesReducer,
     QualificationReducer,
     ExperienceReducer,
 });

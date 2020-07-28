@@ -1,14 +1,14 @@
 import axios from "axios";
-import {MEDIA_OBJECT_ADMIN, URL_OCCURENCES, URL_OCCURENCES_ADMIN} from "./server-url";
+import {MEDIA_OBJECT_ADMIN, URL_OCCURRENCES, URL_OCCURRENCES_ADMIN} from "./server-url";
 
-const SELECT_ALL = URL_OCCURENCES;
-const SELECT_BY_ID = URL_OCCURENCES + "/{id}";
-const INSERT = URL_OCCURENCES_ADMIN;
-const UPDATE = URL_OCCURENCES_ADMIN + "/{id}";
-const DELETE = URL_OCCURENCES_ADMIN + "/{id}";
+const SELECT_ALL = URL_OCCURRENCES;
+const SELECT_BY_ID = URL_OCCURRENCES + "/{id}";
+const INSERT = URL_OCCURRENCES_ADMIN;
+const UPDATE = URL_OCCURRENCES_ADMIN + "/{id}";
+const DELETE = URL_OCCURRENCES_ADMIN + "/{id}";
 const UPLOAD_IMAGE = MEDIA_OBJECT_ADMIN;
 
-class OccurenceDAO {
+class OccurrenceDAO {
 
     selectAll() {
         return axios.get(SELECT_ALL);
@@ -159,4 +159,4 @@ class OccurenceDAO {
     }
 }
 
-export default OccurenceDAO;
+export default OccurrenceDAO;

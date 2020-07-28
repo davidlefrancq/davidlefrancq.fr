@@ -33,13 +33,13 @@ class EditTechnologicalCategory extends Component {
     add = () => {
 
         const {key, technology} = this.state;
-        const {occurence, setOccurence, setEdit,edit} = this.props;
+        const {occurrence, setOccurrence, setEdit,edit} = this.props;
 
-        // Ajout de la Tech à l'occurence
-        const newOccurence = {...occurence};
-        const {technologicalCategories} = newOccurence.experience;
+        // Ajout de la Tech à l'occurrence
+        const newOccurrence = {...occurrence};
+        const {technologicalCategories} = newOccurrence.experience;
         technologicalCategories[key] = technology;
-        setOccurence(newOccurence);
+        setOccurrence(newOccurrence);
 
         // RAZ le l'état du composant d'édition
         this.reset();
@@ -56,14 +56,14 @@ class EditTechnologicalCategory extends Component {
     update = () => {
 
         const {technology} = this.state;
-        const {occurence, setOccurence, setEdit,edit} = this.props;
-        const newOccurence = {...occurence};
-        const {technologicalCategories} = newOccurence.experience;
+        const {occurrence, setOccurrence, setEdit,edit} = this.props;
+        const newOccurrence = {...occurrence};
+        const {technologicalCategories} = newOccurrence.experience;
 
         // Ajout de la Tech à l'occurence
         const i = technologicalCategories.length;
         technologicalCategories[i] = technology;
-        setOccurence(newOccurence);
+        setOccurrence(newOccurrence);
 
         // RAZ le l'état du composant d'édition
         this.reset();
@@ -90,14 +90,14 @@ class EditTechnologicalCategory extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        const {edit, occurence} = this.props;
+        const {edit, occurrence} = this.props;
         const {key} = edit.experience.technology;
 
         if (key != null) {
             if (key != this.state.key) {
 
                 const state = {...this.state};
-                const {technologicalCategories} = occurence.experience;
+                const {technologicalCategories} = occurrence.experience;
 
                 state.technology = technologicalCategories[key];
                 state.key = key;
@@ -146,16 +146,16 @@ class EditTechnologicalCategory extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {occurence, edit} = state.OccurencesReducer;
+    const {occurrence, edit} = state.OccurrencesReducer;
     return {
-        occurence,
+        occurrence,
         edit,
     };
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        setOccurence: (occurence) => dispatch(actions.occurences.setOccurence(occurence)),
-        setEdit: (edit) => dispatch(actions.occurences.setEdit(edit)),
+        setOccurrence: (occurrence) => dispatch(actions.occurrences.setOccurrence(occurrence)),
+        setEdit: (edit) => dispatch(actions.occurrences.setEdit(edit)),
     };
 }
 

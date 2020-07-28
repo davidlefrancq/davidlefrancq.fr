@@ -1,4 +1,4 @@
-class Occurence {
+class Occurrence {
 
     constructor(dateStart, dateEnd, qualification, experience) {
         this.dateStart = dateStart;
@@ -40,4 +40,4 @@ class Occurence {
     }
 }
 
-export default Occurence;
+export default Occurrence;
