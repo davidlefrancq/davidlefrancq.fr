@@ -502,8 +502,8 @@ class DateBar extends Component {
                         </div>
 
                         {step.description}
-                        <div className={"link"}></div>
-                        <div className={"link-active"}></div>
+                        <div className={"link d-none d-xl-block"}></div>
+                        <div className={"link-active d-none d-xl-block"}></div>
                     </li>
                 );
             });

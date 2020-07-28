@@ -148,5 +148,5 @@
 }
 
 .datebar li:first-child .link, .datebar li:first-child .link-active{
-    display: none;
+    display: none !important;
 }
