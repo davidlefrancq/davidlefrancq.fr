@@ -1,50 +1,55 @@
 .auth-form {
     background-color: #ffffff;
-    border: 1px solid #eeeeee;
-    border-radius: 25px;
+    border: 1px solid rgba(0,0,0,0.9);
+    border-radius: 0 25px 0 25px;
     padding: 25px;
     position: fixed;
     width: 40%;
-    height: 30%;
-    top: 25%;
-    left: 30%;
+    height: 150px;
     visibility: hidden;
-    z-index: 9999;
+    z-index: 9999999999;
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.5);
 }
 
 .auth-form-on {
-    animation: auth-form-on-animation 0.3s ease-in forwards;
+    animation: auth-form-on-animation 0.2s ease-in forwards;
     overflow: hidden;
 }
 
 @keyframes auth-form-on-animation {
-    0% {
+    0%{
+        visibility: hidden;
+    }
+    1% {
         visibility: visible;
+        top: -20%;
         left: 30%;
         width: 40%;
-        top: 0;
-        height: 0;
     }
     100% {
         top: 25%;
-        height: 30%;
+        left: 30%;
         visibility: visible;
     }
 }
 
 .auth-form-off {
-    animation: auth-form-off-animation 0.4s ease-in forwards;
+    animation: auth-form-off-animation 0.2s ease-in forwards;
 }
 
 @keyframes auth-form-off-animation {
     0% {
-        width: 40%;
+        top: 25%;
         left: 30%;
         visibility: visible;
     }
-    100% {
-        width: 5%;
-        left: 0;
+    99% {
+        top: 25%;
+        left: -60%;
+    }
+    100%{
+        top: 25%;
+        left: -60%;
         visibility: hidden;
     }
 }
