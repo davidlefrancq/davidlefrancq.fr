@@ -6,6 +6,8 @@
     list-style-type: none;
     position: relative;
     text-align: center;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .datebar li .title {
@@ -98,8 +100,8 @@
     content: '';
     position: absolute;
     top: 30px;
-    left: -20%;
-    width: 40%;
+    left: -25px;
+    width: 20px;
     height: 1px;
     background-color: rgba(0,0,0,0.5);
     z-index: 1;
@@ -109,8 +111,8 @@
     content: '';
     position: absolute;
     top: 30px;
-    left: -20%;
-    width: 40%;
+    left: -25px;
+    width: 20px;
     height: 1px;
     background-color: rgba(0, 87, 227,1);
     z-index: 1;
@@ -118,13 +120,13 @@
 }
 @keyframes datebar-li-link {
     0% {
-        width: 40%;
+        width: 20px;
     }
     50% {
-        width: 0%;
+        width: 0;
     }
     100%{
-        width: 0%;
+        width: 0;
     }
 }
 
@@ -134,15 +136,15 @@
 
 @keyframes datebar-li-link-active {
     0% {
-        width: 0%;
+        width: 0;
         box-shadow: 0px 0px 0px rgba(0,0,0,0.4);
     }
     50% {
-        width: 40%;
+        width: 20px;
         box-shadow: 1px 2px 3px rgba(0,0,0,0.4);
     }
     100%{
-        width: 40%;
+        width: 20px;
         box-shadow: 1px 2px 3px rgba(0,0,0,0.4);
     }
 }

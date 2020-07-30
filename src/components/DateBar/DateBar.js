@@ -489,7 +489,7 @@ class DateBar extends Component {
                     <li
                         key={key}
                         name={key}
-                        className={`col ${liCssActive}`}
+                        className={`${liCssActive}`}
                         onMouseEnter={this.itemMouseEnter}
                         onMouseLeave={this.itemMouseLeave}
                     >
@@ -578,7 +578,7 @@ class DateBar extends Component {
                     </div>
 
                     <div className={"col-10 m-0 p-0"}>
-                        <ul className={"datebar row m-0 p-0"}>
+                        <ul className={"datebar row d-flex justify-content-center m-0 p-0"}>
                             {this.renderSteps()}
                         </ul>
                     </div>
