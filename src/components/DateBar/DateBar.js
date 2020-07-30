@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import "./dateBar.css";
 import {actions} from "../../actions";
 import {connect} from "react-redux";
@@ -10,7 +10,7 @@ class DateBar extends Component {
         super(props);
 
         this.state = {
-            steps: {},
+            steps: [],
             target: 0,
         };
 
@@ -30,12 +30,14 @@ class DateBar extends Component {
 
     initStep(list) {
 
+        const listSorted = this.stepsSort(list);
+
         const state = {...this.state};
-        const listKeys = Object.keys(list);
+        const listKeys = Object.keys(listSorted);
 
-        const steps = listKeys.map((key) => {
+        let steps = listKeys.map((key) => {
 
-            const item = list[key];
+            const item = listSorted[key];
             const {title, description, action} = item
 
             const newStepObject = new DateBareStep(title, description)
@@ -44,16 +46,14 @@ class DateBar extends Component {
                 newStepObject.action = action;
             }
 
+            newStepObject.active = true;
+            newStepObject.animation.end = false;
+
             return newStepObject;
         });
 
-        if (steps[0]) {
-            steps[0].active = true;
-            steps[0].animation.end = true;
-        }
-
-
         state.steps = steps;
+        state.target = steps.length -1;
 
         this.setState(state);
     }
@@ -456,8 +456,8 @@ class DateBar extends Component {
 
     renderSteps() {
 
-        const {steps, style} = this.state;
-        //const {animations} = style;
+        const {steps} = this.state;
+
         const stepsKeys = Object.keys(steps);
 
         if (steps) {
@@ -510,6 +510,17 @@ class DateBar extends Component {
         }
     }
 
+    stepsSort(steps){
+
+        if(steps != undefined && steps != null){
+            return [].slice.call(steps).sort((a,b)=>{
+                const title1 = '' + a.title;
+                const title2 = '' + b.title;
+                return title1.localeCompare(title2);
+            });
+        }
+    }
+
     renderButtonBefore() {
 
         const {steps, target} = this.state;
@@ -558,7 +569,7 @@ class DateBar extends Component {
     render() {
 
         return (
-            <div className={"container mt-0 mb-4"}>
+            <div className={"container-fluid mt-0 mb-4"}>
 
                 <div className={"row p-0"}>
 
