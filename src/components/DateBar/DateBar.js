@@ -40,7 +40,8 @@ class DateBar extends Component {
             const item = listSorted[key];
             const {title, description, action} = item
 
-            const newStepObject = new DateBareStep(title, description)
+            const newStepObject = new DateBareStep(title, description);
+            newStepObject.onClick = item.onClick;
 
             if (action != undefined && action != null) {
                 newStepObject.action = action;

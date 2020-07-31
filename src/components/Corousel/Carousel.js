@@ -7,14 +7,14 @@ class Carousel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // target: 0,
-            direction: "left",
-            cssClassCenter: "center", // center, centerFromLeft, centerFromRight
+            direction: null,
+            lastTarget: null,
             style: {
                 titleAnimation: "",
                 imageAnimation: "",
+                itemButtons: "item-buttons",
             },
-            sfx:{
+            sfx: {
                 mouseEnter: {
                     audio: new Audio("/sfx/mouse-enter.mp3"),
                     play: false,
@@ -35,17 +35,17 @@ class Carousel extends Component {
         const state = {...this.state};
         const {mouseEnter, mouseLeave, mouseClick} = state.sfx;
 
-        mouseEnter.audio.addEventListener('ended',()=>{
+        mouseEnter.audio.addEventListener('ended', () => {
             state.sfx.mouseEnter.play = false;
             this.setState(state);
         });
 
-        mouseLeave.audio.addEventListener('ended',()=>{
+        mouseLeave.audio.addEventListener('ended', () => {
             state.sfx.mouseLeave.play = false;
             this.setState(state);
         });
 
-        mouseClick.audio.addEventListener('ended',()=>{
+        mouseClick.audio.addEventListener('ended', () => {
             state.sfx.mouseClick.play = false;
             this.setState(state);
         });
@@ -54,23 +54,91 @@ class Carousel extends Component {
     componentWillUnmount() {
         const {mouseEnter, mouseLeave, mouseClick} = this.state.sfx;
 
-        mouseEnter.audio.addEventListener('ended',()=>{
+        mouseEnter.audio.addEventListener('ended', () => {
             const state = {...this.state};
             state.sfx.mouseEnter.play = false;
             this.setState(state);
         });
 
-        mouseLeave.audio.addEventListener('ended',()=>{
+        mouseLeave.audio.addEventListener('ended', () => {
             const state = {...this.state};
             state.sfx.mouseLeave.play = false;
             this.setState(state);
         });
 
-        mouseClick.audio.addEventListener('ended',()=>{
+        mouseClick.audio.addEventListener('ended', () => {
             const state = {...this.state};
             state.sfx.mouseClick.play = false;
             this.setState(state);
         });
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+
+        // let displayedChanged = false;
+        // let resetItemButtons = false;
+        //
+        // if (prevProps.displayed == null) {
+        //     if (this.props.displayed != null) {
+        //         displayedChanged = true;
+        //         resetItemButtons = true;
+        //     }
+        // }
+        //
+        // if (prevProps.displayed != null) {
+        //
+        //     if (this.props.displayed == null) {
+        //         displayedChanged = true;
+        //         resetItemButtons = true;
+        //     }
+        //
+        //     if (prevProps.displayed.dateEnd != null) {
+        //         if (this.props.displayed != null) {
+        //             if (this.props.displayed.dateEnd != null) {
+        //                 if (prevProps.displayed.dateEnd != this.props.displayed.dateEnd) {
+        //
+        //                     console.log(prevProps.displayed.dateEnd);
+        //                     console.log(this.props.displayed.dateEnd);
+        //                     console.log([prevProps.target,this.props.target]);
+        //
+        //                     displayedChanged = true;
+        //                     if(prevProps.target == this.props.target){
+        //                         resetItemButtons = true;
+        //                     }
+        //                 }
+        //             }
+        //         }else{
+        //             resetItemButtons = true;
+        //         }
+        //     }
+        // }
+        //
+        //
+        // if (displayedChanged) {
+        //     if (resetItemButtons) {
+        //         this.itemButtonsUnselected();
+        //     } else {
+        //         this.itemButtonsSelected();
+        //     }
+        // }
+
+        // console.log(["props", prevProps, this.props]);
+        // console.log(["state", prevState, this.state]);
+        // console.log(["snapshot",snapshot]);
+
+
+        const oldTarget = eval(prevProps.target);
+        const newTarget = eval(this.props.target);
+
+        if (newTarget !== oldTarget) {
+            if (newTarget > oldTarget) {
+                this.setRightDirection();
+            } else if (newTarget < oldTarget) {
+                this.setLeftDirection();
+            }
+        }
+
     }
 
     togglePlayMouseEnter = () => {
@@ -78,11 +146,11 @@ class Carousel extends Component {
         const {sfx} = state;
         const {mouseEnter} = sfx;
 
-        if(mouseEnter.play){
+        if (mouseEnter.play) {
             mouseEnter.audio.pause();
             state.sfx.mouseEnter.play = false;
             this.setState(state);
-        }else{
+        } else {
             mouseEnter.audio.play();
             state.sfx.mouseEnter.play = true;
             this.setState(state);
@@ -94,11 +162,11 @@ class Carousel extends Component {
         const {sfx} = state;
         const {mouseLeave} = sfx;
 
-        if(mouseLeave.play){
+        if (mouseLeave.play) {
             mouseLeave.audio.pause();
             state.sfx.mouseLeave.play = false;
             this.setState(state);
-        }else{
+        } else {
             mouseLeave.audio.play();
             state.sfx.mouseLeave.play = true;
             this.setState(state);
@@ -110,11 +178,11 @@ class Carousel extends Component {
         const {sfx} = state;
         const {mouseClick} = sfx;
 
-        if(mouseClick.play){
+        if (mouseClick.play) {
             mouseClick.audio.pause();
             state.sfx.mouseClick.play = false;
             this.setState(state);
-        }else{
+        } else {
             mouseClick.audio.play();
             state.sfx.mouseClick.play = true;
             this.setState(state);
@@ -122,56 +190,38 @@ class Carousel extends Component {
     }
 
     handlePrevent = () => {
-        const newState = {...this.state};
+        const state = {...this.state};
         const {target} = this.props;
         let newTarget = this.props.target;
 
         if (target > 0) {
             newTarget = eval(target) - 1;
-            newState.direction = "left";
-            newState.cssClassCenter = "centerFromRight";
+            this.setLeftDirection();
         }
 
-        if (newTarget != target) {
-            this.setState(newState);
+        if (eval(newTarget) != eval(target)) {
+            state.lastTarget = target;
+            this.setState(state);
+            // this.itemButtonsSelected();
             this.props.updateTarget(newTarget);
         }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        const oldTarget = eval(prevProps.target);
-        const newTarget = eval(this.props.target);
-
-        if (newTarget !== oldTarget) {
-
-            const newState = {...this.state};
-
-            if (newTarget > oldTarget) {
-                newState.direction = "right";
-                newState.cssClassCenter = "centerFromRight";
-            } else if (newTarget < oldTarget) {
-                newState.direction = "left";
-                newState.cssClassCenter = "centerFromLeft";
-            }
-
-            this.setState(newState);
-        }
-
-    }
-
     handleNext = () => {
-        const newState = {...this.state};
+        const state = {...this.state};
         const nItems = Object.keys(this.props.items).length;
-        const {target} = this.props;
-        let newTarget = this.props.target;
+        const target = eval(this.props.target);
+        let newTarget = eval(this.props.target);
 
         if (target < nItems - 1) {
-            newTarget = eval(target) + 1;
-            newState.direction = "right";
-            newState.cssClassCenter = "centerFromLeft";
+            newTarget = target + 1;
+            this.setRightDirection();
         }
-        this.setState(newState);
-        if (newTarget != this.props.target) {
+
+        if (newTarget != target) {
+            state.lastTarget = target;
+            this.setState(state);
+            // this.itemButtonsSelected();
             this.props.updateTarget(newTarget);
         }
     }
@@ -180,24 +230,37 @@ class Carousel extends Component {
 
         const key = eval(e.target.name);
 
-        const target = this.props.target;
-        let newTarget = this.props.target;
-        const newState = {...this.state};
+        const target = eval(this.props.target);
+        let newTarget = eval(this.props.target);
+        const state = {...this.state};
 
         if (key > target) {
             newTarget = key;
-            newState.direction = "right";
-            newState.cssClassCenter = "centerFromRight";
+            this.setRightDirection();
         } else if (key < target) {
             newTarget = key;
-            newState.direction = "left";
-            newState.cssClassCenter = "centerFromLeft";
+            this.setLeftDirection();
         }
 
         if (key !== target) {
-            this.setState(newState);
+            state.lastTarget = target;
+            this.setState(state);
             this.props.updateTarget(newTarget);
         }
+    }
+
+    setLeftDirection() {
+        const state = {...this.state};
+        state.direction = "left";
+        state.style.itemButtons = "item-buttons-selected"
+        this.setState(state);
+    }
+
+    setRightDirection() {
+        const state = {...this.state};
+        state.direction = "right";
+        state.style.itemButtons = "item-buttons-selected"
+        this.setState(state);
     }
 
     firstCharUppercase = (string) => {
@@ -228,73 +291,134 @@ class Carousel extends Component {
 
         const key = e.target.getAttribute('name');
         const {items} = this.props;
-        if(items[key] != undefined){
+        if (items[key] != undefined && items[key] != null) {
             items[key].onClick();
+        }
+    }
+
+    itemButtonsSelected() {
+        const state = {...this.state};
+        if(state.style.itemButtons != "item-buttons-selected"){
+            state.style.itemButtons = "item-buttons-selected";
+            this.setState(state);
+        }
+    }
+
+    itemButtonsUnselected() {
+        const state = {...this.state};
+        if(state.style.itemButtons != "item-buttons"){
+            state.style.itemButtons = "item-buttons";
+            this.setState(state);
         }
     }
 
     renderItems() {
 
-        const {cssClassCenter, direction, style} = this.state;
+        const {direction, style} = this.state;
         const {titleAnimation, imageAnimation} = style;
         const {items, target} = this.props;
-        if (items != undefined && items != null) {
 
-            const itemsKeys = Object.keys(items);
+        const itemsKeys = Object.keys(items);
+        if (itemsKeys.length > 0) {
             return itemsKeys.map((key) => {
+                if (key == target) {
+                    const item = items[key];
 
-                let cssClassCenterRender = cssClassCenter;
+                    let cssClassItem = this.getCssClassItem(target, key);
+                    let itemImageCss = this.getItemImageCss(item);
 
-                if (eval(target) === (eval(key) - 1) && direction === "left") {
-                    cssClassCenterRender = "left";
-                } else if (eval(target) === (eval(key) + 1) && direction === "right") {
-                    cssClassCenterRender = "right";
-                } else if (eval(target) !== eval(key)) {
-                    cssClassCenterRender = "d-none";
-                }
+                    let imageBackground = `url(default-background.jpg)`;
+                    if (item.image != null) {
+                        imageBackground = `url(${item.image})`;
+                    }
 
-                const item = items[key];
-
-                console.log("item.image",item.image);
-
-                return (
-                    <div
-                        key={key}
-                        name={key}
-                        className={`cursorPointer ${cssClassCenterRender} carousel-item-image ${imageAnimation}`}
-                        style={{
-                            backgroundImage: `url(${item.image})`,
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                            backgroundSize: "cover",
-                        }}
-                        onMouseEnter={this.itemMouseEnter}
-                        onMouseLeave={this.itemMouseLeave}
-                        onClick={this.itemOnClick}
-                    >
+                    return (
                         <div
-                            className={`title text-center p-2 ${titleAnimation}`}
-                            onClick={item.onClick}
+                            key={key}
+                            name={key}
+                            className={`cursorPointer ${cssClassItem} ${itemImageCss} ${imageAnimation}`}
+                            style={{
+                                backgroundImage: imageBackground,
+                                backgroundRepeat: "no-repeat",
+                                backgroundPosition: "center",
+                                backgroundSize: "cover",
+                            }}
+                            onMouseEnter={this.itemMouseEnter}
+                            onMouseLeave={this.itemMouseLeave}
+                            onClick={this.itemOnClick}
                         >
-                            {this.firstCharUppercase(item.title)}
-                            <div>
-                                {this.renderDate(item.dateStart)}
-                                {this.renderDate(item.dateEnd)}
-                            </div>
-                            <div>
-                                {this.renderDescription(item.description)}
+                            <div
+                                className={`title text-center p-2 ${titleAnimation}`}
+                                onClick={item.onClick}
+                            >
+                                {this.firstCharUppercase(item.title)}
+                                <div>
+                                    {this.renderDate(item.dateStart)}
+                                    {this.renderDate(item.dateEnd)}
+                                </div>
+                                <div>
+                                    {this.renderDescription(item.description)}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                );
+                    );
+                }
             });
         }
+    }
+
+    getCssClassItem(target, key) {
+
+        const {direction} = this.state;
+        let css = "hidden"
+
+        if (direction === "left") {
+            css = "rightToCenter";
+            this.resetDirection();
+        } else if (direction === "right") {
+            css = "leftToCenter";
+            this.resetDirection();
+        } else if (eval(target) === eval(key)) {
+            css = "center";
+        } else {
+            this.itemButtonsUnselected();
+        }
+
+        return css;
+    }
+
+    resetDirection() {
+        setTimeout(() => {
+            const state = {...this.state}
+            state.direction = null;
+            this.setState(state);
+        }, 200);
+    }
+
+
+    getItemImageCss(item) {
+        let itemImageCss = "carousel-item-image";
+        const itemDisplayed = this.props.displayed;
+        if (itemDisplayed != undefined && itemDisplayed != null) {
+            const title1 = '' + item.title;
+            const title2 = '' + itemDisplayed.title;
+            if (title1.localeCompare(title2, 'fr', {sensitivity: 'variant'}) == 0) {
+                itemImageCss = "carousel-item-image-selected";
+                this.itemButtonsSelected();
+            }
+        }
+
+        if(itemImageCss == "carousel-item-image"){
+            this.itemButtonsUnselected();
+        }
+
+        return itemImageCss;
     }
 
     renderDate(date) {
         if (date instanceof Date) {
             return (
-                <span className={"badge badge-secondary ml-2 mr-2"}>
+                <span className={"badgeTitle"}>
                     {date.getFullYear()}
                 </span>
             );
@@ -336,14 +460,35 @@ class Carousel extends Component {
         }
     }
 
+    getBackgroundImageLastItem() {
+        const {lastTarget} = this.state;
+        let backgroundImage = "";
+
+        if (lastTarget != null) {
+            const item = this.props.items[lastTarget];
+            backgroundImage = item.image;
+        }
+
+        return backgroundImage;
+    }
+
     renderCarousel() {
-        if (this.props.items.length > 0) {
+        const {length} = this.props.items;
+        if (length > 0) {
+            const backgroundImage = this.getBackgroundImageLastItem();
             return (
-                <div className={"carousel"}>
+                <div className={"carousel"}
+                     style={{
+                         backgroundImage: `url(${backgroundImage})`,
+                         backgroundRepeat: "no-repeat",
+                         backgroundPosition: "center",
+                         backgroundSize: "cover",
+                     }}
+                >
 
                     {this.renderItems()}
 
-                    <div className={"item-buttons p-0"}>
+                    <div className={`${this.state.style.itemButtons} p-0`}>
                         <div className={"clearfix m-0 p-0"}>
 
                             <button

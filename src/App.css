@@ -22,8 +22,22 @@ body {
 }
 
 .jumbotron {
+    padding: 0;
+    box-shadow: 2px 0px 5px rgba(0,0,0,0.6);
+    border-bottom: 1px solid rgba(0,0,0,0.6);
+    border-radius: 0;
+    background-color: rgba(255,255,255,0);
+}
+
+.jumbotron h1{
+    margin: 0;
+    /*color: rgba(255,255,255,1);*/
+    /*background-color: rgba(0,0,0,0.8);*/
+    color: rgba(0,0,0,0.8);
+    background-color: rgba(255,255,255,1);
+    padding-left: 25px;
     padding-top: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 35px;
 }
 
 .bg-dark{
@@ -58,6 +72,10 @@ body {
     to {
         transform: rotate(360deg);
     }
+}
+
+.navbar{
+    background-color: rgba(0,0,0,0.9) !important;
 }
 
 .navbar-brand .logo {

@@ -4,6 +4,7 @@ import {actions} from "../../actions";
 import Carousel from "./Carousel";
 import Step from "../../bo/Step";
 import {SERVER_API} from "../../utils/urls";
+import Occurrence from "../../bo/Occurrence";
 
 class CvCarousel extends Component {
 
@@ -13,15 +14,6 @@ class CvCarousel extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        const oldQualificationSeleted = eval(prevProps.qualificationSeleted);
-        const newQualificationSeleted = eval(this.props.qualificationSeleted);
-
-        const oldExperienceSelected = eval(prevProps.experienceSelected);
-        const newExperienceSelected = eval(this.props.experienceSelected);
-
-        if (oldQualificationSeleted !== newQualificationSeleted || oldExperienceSelected !== newExperienceSelected) {
-            this.props.setOccurrence(null);
-        }
     }
 
     getItemsCarousel() {
@@ -33,6 +25,22 @@ class CvCarousel extends Component {
         occurrencesKeys.map((key) => {
 
             const occurrence = occurrences[key];
+            const step = this.occurenceToStep(occurrence);
+
+            items[i] = step;
+            i++;
+        });
+
+        return items;
+    }
+
+    occurenceToStep(occurrence) {
+        let step = null;
+
+        if (occurrence) {
+            const {qualification, experience} = occurrence;
+            step = new Step();
+
             let title = "";
             let dateStart = null;
             let dateEnd = null;
@@ -42,45 +50,68 @@ class CvCarousel extends Component {
             if (occurrence.experience instanceof Object) {
                 title = occurrence.experience.name;
 
-                dateStart = occurrence.dateStart ? occurrence.dateStart : null;
-                dateEnd = occurrence.dateEnd ? occurrence.dateEnd : null;
+                dateStart = occurrence.dateStart ? new Date(occurrence.dateStart) : null;
+                dateEnd = occurrence.dateEnd ? new Date(occurrence.dateEnd) : null;
 
-                if(occurrence.experience.img){
+                if (occurrence.experience.img != undefined && occurrence.experience.img != null && occurrence.experience.img != "") {
                     image = occurrence.experience.img;
                 }
             }
 
             if (occurrence.qualification instanceof Object) {
-                title = occurrence.qualification.name;
-                dateEnd = occurrence.dateEnd ? occurrence.dateEnd : null;
-                if(occurrence.qualification.img){
+
+                title += occurrence.qualification.name;
+                dateEnd = occurrence.dateEnd ? new Date(occurrence.dateEnd) : null;
+
+                if (occurrence.qualification.img != undefined && occurrence.qualification.img != null && occurrence.qualification.img != "") {
                     image = occurrence.qualification.img;
                 }
             }
 
-            const step = new Step(title, description, dateStart, dateEnd);
-            if(image){
+            step.title = title;
+            step.description = description;
+            step.dateStart = dateStart;
+            step.dateEnd = dateEnd;
+
+            if (image != undefined && image != null && image != "") {
                 step.image = `${SERVER_API}${image}`;
+            } else if (occurrence.qualification instanceof Object) {
+                step.image = `default-background-qualification.jpg`;
+            } else if (occurrence.experience instanceof Object) {
+                step.image = `defauld-background-experience.jpeg`;
             }
+
             step.onClick = () => {
-                this.props.setOccurrence(occurrence);
+
+                if(this.props.occurrence != null) {
+
+                    const id1 = ''+this.props.occurrence.id;
+                    const id2 = ''+occurrence.id;
+
+                    if (id1.localeCompare(id2, 'fr', {sensitivity: 'variant'}) == 0) {
+                        // Si on clique sur un élément qui est déjà affiché
+                        this.props.setOccurrence(null);
+                    }else{
+                        this.props.setOccurrence(occurrence);
+                    }
+                }else{
+                    this.props.setOccurrence(occurrence);
+                }
             };
-            items[i] = step;
 
-            i++;
-        });
-
-        return items;
+        }
+        return step;
     }
 
     getTarget() {
-        let target = 0;
 
         const {occurrences} = this.props;
-        const occurrencesKeys = Object.keys(occurrences);
-        occurrencesKeys.map((key) => {
+        let target = null;
 
-            const occurrence = occurrences[key];
+        const occurrencesKeys = Object.keys(occurrences);
+        if (occurrencesKeys.length > 0) {
+
+            const occurrence = occurrences[occurrencesKeys[0]];
 
             if (occurrence.experience instanceof Object) {
                 target = this.props.experienceSelected;
@@ -90,7 +121,7 @@ class CvCarousel extends Component {
                 target = this.props.qualificationSeleted;
             }
 
-        });
+        }
 
         return target;
     }
@@ -98,19 +129,28 @@ class CvCarousel extends Component {
     updateTarget = (target) => {
 
         const {occurrences} = this.props;
-        const occurrencesKeys = Object.keys(occurrences);
-        occurrencesKeys.map((key) => {
 
-            const occurrence = occurrences[key];
+        const occurrencesKeys = Object.keys(occurrences);
+        if (occurrencesKeys.length > 0) {
+
+            const occurrence = occurrences[occurrencesKeys[0]];
 
             if (occurrence.experience instanceof Object) {
                 this.props.setExperienceSelected(target);
+                this.props.setOccurrence(occurrences[target]);
             }
 
             if (occurrence.qualification instanceof Object) {
                 this.props.setQualificationSelected(target);
+                this.props.setOccurrence(occurrences[target]);
             }
-        });
+        }
+    }
+
+    getStepDisplayed() {
+        const {occurrence} = this.props;
+        let step = this.occurenceToStep(occurrence);
+        return step;
     }
 
     render() {
@@ -119,6 +159,7 @@ class CvCarousel extends Component {
                 items={this.getItemsCarousel()}
                 target={this.getTarget()}
                 updateTarget={this.updateTarget}
+                displayed={this.getStepDisplayed()}
             />
         );
     }
@@ -127,9 +168,11 @@ class CvCarousel extends Component {
 const mapStateToProps = (state) => {
     const qualificationSeleted = state.QualificationReducer.selected;
     const experienceSelected = state.ExperienceReducer.selected;
+    const occurrence = state.OccurrencesReducer.occurrence;
     return {
         qualificationSeleted,
         experienceSelected,
+        occurrence,
     };
 };
 

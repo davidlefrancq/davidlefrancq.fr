@@ -11,6 +11,7 @@ import ScreenDetection from "../../utils/ScreenDetection";
 import { BsBuilding } from 'react-icons/bs';
 import { GiDiploma } from 'react-icons/gi';
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
+import Occurrence from "../../bo/Occurrence";
 
 const daoFactory = new DAOFactory();
 
@@ -77,6 +78,8 @@ class OccurrenceList extends Component {
             }
         }
 
+        occurrencesQualifications.sort(this.occurrenceSort);
+
         this.props.setQualificationList(occurrencesQualifications);
 
         return occurrencesQualifications;
@@ -94,9 +97,51 @@ class OccurrenceList extends Component {
             }
         }
 
+        occurrencesExperiences.sort(this.occurrenceSort);
+
         this.props.setExperienceList(occurrencesExperiences);
 
         return occurrencesExperiences;
+    }
+
+    occurrenceSort(a,b){
+        let result = 0;
+
+        let dateA = null;
+        let dateB = null;
+
+        if(a.dateStart){
+            dateA = a.dateStart;
+        }
+        if(b.dateStart){
+            dateB = b.dateStart
+        }
+        if(a.dateEnd){
+            dateA = a.dateEnd;
+        }
+        if(b.dateEnd){
+            dateB = b.dateEnd
+        }
+
+        if(dateA != null && dateB != null){
+            if (dateA < dateB){
+                result = -1;
+            }
+
+            if (dateA > dateB){
+                result = 1;
+            }
+        }
+
+        if(dateA != null && dateB == null){
+            result = 1;
+        }
+
+        if(dateA == null && dateB != null){
+            result = -1;
+        }
+
+        return result;
     }
 
     getStepsDates() {
@@ -130,6 +175,10 @@ class OccurrenceList extends Component {
 
                 if (dateExist == false) {
                     let stepDate = new Step(date.getFullYear(), "");
+                    stepDate.onClick = (e)=>{
+                        e.preventDefault();
+                        this.props.setOccurrence(null);
+                    };
                     dates.push(stepDate);
                 }
             }
@@ -154,6 +203,15 @@ class OccurrenceList extends Component {
         if (occurrence != undefined && occurrence != null) {
             return (
                 <OccurrenceItem occurrence={occurrence}/>
+            );
+        }else{
+            return (
+                <div
+                    className={"border w-100 h-100 bg-light"}
+                    style={{
+                        borderRadius:"25px 0 25px 0",
+                    }}
+                ></div>
             );
         }
     }
@@ -340,6 +398,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 
     return {
+        setOccurrence: (occurrence) => dispatch(actions.occurrences.setOccurrence(occurrence)),
         setOccurrences: (occurrences) => dispatch(actions.occurrences.setOccurrences(occurrences)),
         setExperienceList: (occurrences) => dispatch(actions.experience.setExperienceList(occurrences)),
         setQualificationList: (occurrences) => dispatch(actions.qualification.setQualificationList(occurrences)),

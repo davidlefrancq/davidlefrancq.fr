@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {Button, Card, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import MonthFr from "../../utils/MonthFr";
 import FirstCharUppercase from "../../utils/FirstCharUppercase";
-import {BsBuilding, BsFillInfoCircleFill, BsLink, BsCalendar} from "react-icons/bs";
+import {BsBuilding, BsFillInfoCircleFill, BsLink, BsCalendar, BsLink45Deg} from "react-icons/bs";
 import {GoCalendar} from "react-icons/go";
 import {GiDiploma} from 'react-icons/gi';
 import {MdWork} from "react-icons/md";
@@ -89,10 +89,8 @@ class QualificationCard extends Component {
 
     renderJobs(jobs) {
         return (
-            <div className={"container"}>
-                    <div className={"list-group list-group-horizontal"}>
-                        {this.formatJobRendering(jobs)}
-                    </div>
+            <div className={"row"}>
+                {this.formatJobRendering(jobs)}
             </div>
         );
     }
@@ -112,8 +110,10 @@ class QualificationCard extends Component {
     renderJob(job) {
         if (job != undefined && job != null) {
             return (
-                <div className={"list-group-item"}>
-                    {job.name}
+                <div className={"col-6"}>
+                    <div className={"border border-top-0 border-left-0 border-right-0 p-2 mb-2"}>
+                        {job.name}
+                    </div>
                 </div>
             );
         }
@@ -141,8 +141,8 @@ class QualificationCard extends Component {
 
     renderLink(link) {
         return (
-            <a key={link.name} className={"btn btn-primary m-1"} href={link.url}>
-                {link.name}
+            <a key={link.name} className={"col-4 btn btn-primary m-1 pl-2"} href={link.url} target={"_blank"}>
+                <BsLink45Deg style={{fontSize:"large"}}/> {link.name}
             </a>
         );
     }
@@ -331,7 +331,7 @@ class QualificationCard extends Component {
         const {name, img, level, trainingCenter, objectives, jobs, links} = qualification;
 
         return (
-            <Card className={"mt-0 occurrence-card"}>
+            <Card className={"mt-0 occurrence-card qualification"}>
 
                 <OverlayTrigger
                     placement="right"
@@ -346,9 +346,9 @@ class QualificationCard extends Component {
                     </div>
                 </OverlayTrigger>
 
-                <Card.Header>
-                    <Card.Title>
-                        <h4 className={"mt-1"}>
+                <Card.Header className={"pb-1"}>
+                    <Card.Title className={"pb-0"}>
+                        <h4 className={"mt-1 mb-0 pb-0"}>
                             {FirstCharUppercase.convert(name)}
                         </h4>
                     </Card.Title>

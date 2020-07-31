@@ -361,7 +361,7 @@ class ExperienceCard extends Component {
         }
 
         return (
-            <Card className={"m-0 occurrence-card"}>
+            <Card className={"m-0 occurrence-card experience"}>
 
                 <OverlayTrigger
                     placement="right"

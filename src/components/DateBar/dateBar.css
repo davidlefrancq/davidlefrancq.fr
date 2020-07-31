@@ -116,7 +116,7 @@
     height: 1px;
     background-color: rgba(0, 87, 227,1);
     z-index: 1;
-    animation: datebar-li-link 0.1s ease-in forwards;
+    animation: datebar-li-link 0.05s ease-in forwards;
 }
 @keyframes datebar-li-link {
     0% {
@@ -131,7 +131,7 @@
 }
 
 .datebar li.active .link-active{
-    animation: datebar-li-link-active 0.1s ease-in forwards;
+    animation: datebar-li-link-active 0.05s ease-in forwards;
 }
 
 @keyframes datebar-li-link-active {

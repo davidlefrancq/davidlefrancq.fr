@@ -5,7 +5,7 @@ class Step {
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.description = description;
-        this.image = "https://picsum.photos/1200/300";
+        this.image = null;
     }
 
     onClick(e) {

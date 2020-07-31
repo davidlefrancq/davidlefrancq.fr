@@ -7,7 +7,7 @@ class DateBarAnimation {
             li:"active",
             title:"datebar-title-active",
         };
-        this.duration = 100;
+        this.duration = 50;
 
         this.enter={
             css:"datebar-title-enter",
