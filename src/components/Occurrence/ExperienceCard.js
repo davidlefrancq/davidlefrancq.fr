@@ -106,7 +106,15 @@ class ExperienceCard extends Component {
     }
 
     renderEnterprise(enterprise) {
-        const {name, logo, address, url} = enterprise;
+        const {name, logo, address, postalCode, city, url} = enterprise;
+
+        let fullAddress = "";
+        fullAddress += address ? address : "";
+        fullAddress += address && postalCode ? " " : "";
+        fullAddress += postalCode ? postalCode : "";
+        fullAddress += postalCode && fullAddress ? " " : "";
+        fullAddress += city ? city : "";
+
         return (
             <Fragment>
                 <div className={"row"}>
@@ -121,7 +129,7 @@ class ExperienceCard extends Component {
                         </div>
                     </div>
                     <div className={"col-8 m-0 pl-0 pr-5 pt-0 pb-0"}>
-                        {this.renderEnterpriseLinkGoogleMap(address)}
+                        {this.renderEnterpriseLinkGoogleMap(fullAddress)}
                     </div>
                 </div>
 
@@ -150,7 +158,7 @@ class ExperienceCard extends Component {
         if (url != undefined && url != null && url != "") {
             return (
                 <a href={url}>
-                    <img className={""} src={logo} style={{width: "50px"}}/>
+                    <img className={""} src={logo} style={{height: "100px"}}/>
                 </a>
             );
         } else if (logo != undefined && logo != null && logo != "") {
@@ -180,7 +188,7 @@ class ExperienceCard extends Component {
     renderEnterpriseLinkGoogleMap(address) {
         if (address != undefined && address != null && address != "") {
             return (
-                <div className={"h-100 google-map-link text-center"}>
+                <div className={"google-map-link text-center"} style={{height:"100px"}}>
                     <a
                         href={`https://www.google.fr/maps/search/${address}?hl=fr`}
                         target={"_blank"}
@@ -375,9 +383,9 @@ class ExperienceCard extends Component {
                     </div>
                 </OverlayTrigger>
 
-                <Card.Header>
-                    <Card.Title>
-                        <h4 className={"mt-1"}>
+                <Card.Header className={"pb-1"}>
+                    <Card.Title className={"pb-0"}>
+                        <h4 className={"mt-1 mb-0 pb-0"}>
                             {FirstCharUppercase.convert(name)}
                         </h4>
                     </Card.Title>

@@ -142,7 +142,7 @@ class QualificationCard extends Component {
     renderLink(link) {
         return (
             <a key={link.name} className={"col-4 btn btn-primary m-1 pl-2"} href={link.url} target={"_blank"}>
-                <BsLink45Deg style={{fontSize:"large"}}/> {link.name}
+                <BsLink45Deg style={{fontSize: "large"}}/> {link.name}
             </a>
         );
     }
@@ -160,7 +160,14 @@ class QualificationCard extends Component {
 
     renderTrainingCenter(trainingCenter) {
         const {name, logo, address, postalCode, city, url} = trainingCenter;
-        const fullAddress = address + " " + postalCode + " " + city;
+
+        let fullAddress = "";
+        fullAddress += address ? address : "";
+        fullAddress += address && postalCode ? " " : "";
+        fullAddress += postalCode ? postalCode : "";
+        fullAddress += postalCode && fullAddress ? " " : "";
+        fullAddress += city ? city : "";
+
         return (
             <Fragment>
 
@@ -202,7 +209,7 @@ class QualificationCard extends Component {
         if (url != undefined && url != null && url != "") {
             return (
                 <a href={url}>
-                    <img className={"mr-1"} src={logo} style={{width: "50px"}}/>
+                    <img className={"mr-1"} src={logo} style={{height: "100px"}}/>
                 </a>
             );
         } else if (logo != undefined && logo != null && logo != "") {
@@ -232,7 +239,7 @@ class QualificationCard extends Component {
     renderTrainingCenterLinkGoogleMap(address) {
         if (address != undefined && address != null && address != "") {
             return (
-                <div className={"h-100 google-map-link text-center"}>
+                <div className={"google-map-link text-center"} style={{height: "100px"}}>
                     <a
                         href={`https://www.google.fr/maps/search/${address}?hl=fr`}
                         target={"_blank"}
