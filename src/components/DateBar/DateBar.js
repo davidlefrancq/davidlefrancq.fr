@@ -57,6 +57,10 @@ class DateBar extends Component {
         state.target = steps.length -1;
 
         this.setState(state);
+
+        const fullYear = steps[steps.length -1].title;
+        this.props.setOccurrencesDateTargeted(fullYear);
+        this.updateOccurrencesSelected(fullYear);
     }
 
     handleStep(e) {
@@ -69,16 +73,8 @@ class DateBar extends Component {
         this.props.setOccurrencesDateTargeted(fullYear);
         this.updateOccurrencesSelected(fullYear);
 
-        // step.active = !step.active;
-        // this.actualiseStepBeforeActive(id, steps);
-        // const newState = {
-        //     steps,
-        //     target: eval(id),
-        // };
         const target = eval(id);
         this.activeStep(target);
-
-        // this.setState(newState);
 
         step.onClick(e);
     }
