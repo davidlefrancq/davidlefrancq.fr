@@ -4,7 +4,6 @@ import {actions} from "../../actions";
 import Carousel from "./Carousel";
 import Step from "../../bo/Step";
 import {SERVER_API} from "../../utils/urls";
-import Occurrence from "../../bo/Occurrence";
 
 class CvCarousel extends Component {
 
@@ -12,11 +11,7 @@ class CvCarousel extends Component {
         super(props);
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-
-    }
-
-    getItemsCarousel() {
+    getItemsCarousel = () => {
         const items = [];
         let i = 0;
 
@@ -34,7 +29,7 @@ class CvCarousel extends Component {
         return items;
     }
 
-    occurenceToStep(occurrence) {
+    occurenceToStep = (occurrence) => {
         let step = null;
 
         if (occurrence) {
@@ -83,18 +78,18 @@ class CvCarousel extends Component {
 
             step.onClick = () => {
 
-                if(this.props.occurrence != null) {
+                if (this.props.occurrence != null) {
 
-                    const id1 = ''+this.props.occurrence.id;
-                    const id2 = ''+occurrence.id;
+                    const id1 = '' + this.props.occurrence.id;
+                    const id2 = '' + occurrence.id;
 
                     if (id1.localeCompare(id2, 'fr', {sensitivity: 'variant'}) == 0) {
                         // Si on clique sur un élément qui est déjà affiché
                         this.props.setOccurrence(null);
-                    }else{
+                    } else {
                         this.props.setOccurrence(occurrence);
                     }
-                }else{
+                } else {
                     this.props.setOccurrence(occurrence);
                 }
             };
@@ -103,10 +98,10 @@ class CvCarousel extends Component {
         return step;
     }
 
-    getTarget() {
+    getTarget = () => {
 
         const {occurrences} = this.props;
-        let target = null;
+        let target = 0;
 
         const occurrencesKeys = Object.keys(occurrences);
         if (occurrencesKeys.length > 0) {
@@ -147,7 +142,7 @@ class CvCarousel extends Component {
         }
     }
 
-    getStepDisplayed() {
+    getStepDisplayed = () => {
         const {occurrence} = this.props;
         let step = this.occurenceToStep(occurrence);
         return step;
@@ -158,8 +153,8 @@ class CvCarousel extends Component {
             <Carousel
                 items={this.getItemsCarousel()}
                 target={this.getTarget()}
-                updateTarget={this.updateTarget}
-                displayed={this.getStepDisplayed()}
+                // updateTarget={this.updateTarget}
+                // displayed={this.getStepDisplayed()}
             />
         );
     }
