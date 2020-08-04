@@ -153,8 +153,8 @@ class CvCarousel extends Component {
             <Carousel
                 items={this.getItemsCarousel()}
                 target={this.getTarget()}
-                // updateTarget={this.updateTarget}
-                // displayed={this.getStepDisplayed()}
+                updateTarget={this.updateTarget}
+                displayed={this.getStepDisplayed()}
             />
         );
     }
