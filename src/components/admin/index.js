@@ -52,8 +52,6 @@ class Admin extends Component {
     handelDeleteOccurrence = (occurrence) => {
         const {token,setOccurrences} = this.props;
         daoFactory.getOccurenceDAO().delete(occurrence,token).then((res) => {
-            console.log("handelDeleteOccurrence res", res);
-            console.log("handelDeleteOccurrence occurrence", occurrence);
             const occurrences = {...this.props.occurrences};
             this.deleteOccurrenceInList(occurrences,occurrence);
             setOccurrences(occurrences);
@@ -80,7 +78,6 @@ class Admin extends Component {
         this.setState(state);
 
         const occurrence = this.getNewExperienceOccurrence();
-        console.log(occurrence);
         setOccurrence(occurrence);
     }
 

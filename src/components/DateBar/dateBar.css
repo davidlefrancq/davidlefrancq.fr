@@ -1,5 +1,4 @@
 .datebar {
-    /*counter-reset: step;*/
 }
 
 .datebar li {
@@ -11,8 +10,6 @@
 }
 
 .datebar li .title {
-    /*content: counter(step);*/
-    /*counter-increment: step;*/
     width: 60px;
     height: 60px;
     line-height: 55px;
@@ -24,21 +21,6 @@
     background-color: white;
     cursor: pointer;
     color: rgba(0,0,0,0.5);
-    animation: datebar-title-animation 0.1s ease-in forwards;
-}
-@keyframes datebar-title-animation {
-    0%{
-        border: 1px solid rgba(0, 87, 227,1);
-        color: rgba(0, 87, 227,1);
-    }
-    50%{
-        color: rgba(0,0,0,0.5);
-        border: 1px solid rgba(0,0,0,0.5);
-    }
-    100%{
-        color: rgba(0,0,0,0.5);
-        border: 1px solid rgba(0,0,0,0.5);
-    }
 }
 
 .datebar li.active .title {
@@ -61,19 +43,14 @@
     }
 }
 
-/*datebar-title-active{*/
-/*    border: 1px solid blue;*/
-/*    color: blue;*/
-/*}*/
-
 .datebar-title-enter{
-    animation: datebar-title-enter-animation 0.1s ease-in forwards;
-
+    animation: datebar-title-enter-animation 0.3s ease-in forwards !important;
 }
 @keyframes datebar-title-enter-animation {
     0% {
-        color: #ddd;
+        color: rgba(0,0,0,0.5);
         border: 1px solid rgba(0,0,0,0.5);
+        background-color: white;
     }
     100% {
         color: white;
@@ -83,15 +60,21 @@
 }
 
 .datebar-title-leave{
-    animation: datebar-title-leave-animation 0.1s ease-in forwards;
+    animation: datebar-title-leave-animation 0.3s ease-in forwards;
 }
 
 @keyframes datebar-title-leave-animation {
     0% {
-        color: rgba(0, 87, 227,1);
+        color: white;
+        background-color: rgba(0, 87, 227,1);
+        border: 1px solid rgba(0, 87, 227,1);
     }
     100% {
+        /*color: rgba(0,0,0,0.5);*/
         color: rgba(0,0,0,0.5);
+        border: 1px solid rgba(0,0,0,0.5);
+        background-color: white;
+
     }
 }
 

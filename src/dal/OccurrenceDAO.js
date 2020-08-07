@@ -22,7 +22,6 @@ class OccurrenceDAO {
     }
 
     insert(occurence, token) {
-        console.log("insert", [occurence, token]);
 
         if (occurence != undefined && occurence != null) {
             const headers = {
@@ -145,7 +144,6 @@ class OccurrenceDAO {
     }
 
     uploadImage(file, token) {
-        console.log("uploadImage", [file, token]);
 
         const data = new FormData()
         data.append('file', file)

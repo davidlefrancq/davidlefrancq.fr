@@ -69,9 +69,6 @@ class Header extends Component {
 
     handleAuthentificationSuccess = (res) => {
 
-        console.log("res", res);
-        console.log("token", res.data.token);
-
         const state = {...this.state};
         const {setAuthentification, setToken} = this.props;
         const token = res.data.token;
@@ -84,8 +81,6 @@ class Header extends Component {
     }
 
     handleAuthentificationFailure = (res) => {
-
-        console.log("handleAuthentificationFailure res", res);
 
         const {setAuthentification} = this.props;
         const state = {...this.state};

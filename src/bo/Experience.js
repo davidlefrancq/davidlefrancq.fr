@@ -11,61 +11,90 @@ class Experience {
         this.links = links;
     }
 
+    compare(experience){
+        let result = true;
 
-    getName() {
-        return this.name;
+        if(this.name != experience.name){
+            result = false;
+        }
+
+        if(this.enterprise != null){
+            if(!this.enterprise.compare(experience.enterprise)){
+                result = false;
+            }
+        }
+
+        if(this.technologicalCategories != null){
+            if(!this.compareTechnologicalCategories(experience.technologicalCategories)){
+                result = false;
+            }
+        }
+
+        if(this.workstudy != experience.workstudy){
+            result = false;
+        }
+
+        if(this.links != null){
+            if(!this.compareLinks(experience.links)){
+                result = false;
+            }
+        }
+
+        return result;
     }
 
-    setName(value) {
-        this.name = value;
+    compareTechnologicalCategories(technologicalCategories){
+        let result = true;
+        if(this.technologicalCategories != undefined && this.technologicalCategories != null){
+
+            if(technologicalCategories == undefined || technologicalCategories == null){
+                result = false;
+            }else{
+
+                if(technologicalCategories.length == 0){
+                    result = false;
+                }else{
+
+                    if(this.technologicalCategories.length > 0){
+                        for(const technologicalCategory in this.technologicalCategories){
+                            if(technologicalCategory != null){
+                                if(!technologicalCategory.compares(technologicalCategories)){
+                                    result = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 
-    getComment() {
-        return this.comment;
-    }
+    compareLinks(links){
+        let result = true;
+        if(this.links != undefined && this.links != null){
 
-    setComment(value) {
-        this.comment = value;
-    }
+            if(links == undefined || links == null){
+                result = false;
+            }else{
 
-    getImg() {
-        return this.img;
-    }
+                if(links.length == 0){
+                    result = false;
+                }else{
 
-    setImg(value) {
-        this.img = value;
-    }
-
-    getEnterprise() {
-        return this.enterprise;
-    }
-
-    setEnterprise(value) {
-        this.enterprise = value;
-    }
-
-    getTechnologicalCategories() {
-        return this.technologicalCategories;
-    }
-
-    setTechnologicalCategories(value) {
-        this.technologicalCategories = value;
-    }
-
-    getWorkstudy() {
-        return this.workstudy;
-    }
-
-    setWorkstudy(value) {
-        this.workstudy = value;
-    }
-
-    getLinks() {
-        return this.links;
-    }
-
-    setLinks(value) {
-        this.links = value;
+                    if(this.links.length > 0){
+                        for(const link in this.links){
+                            if(link != null){
+                                if(!link.compares(links)){
+                                    result = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
 

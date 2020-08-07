@@ -4,18 +4,197 @@ import {actions} from "../../actions";
 import Carousel from "./Carousel";
 import Step from "../../bo/Step";
 import {SERVER_API} from "../../utils/urls";
+import {OCCURRENCE_EXPERIENCE, OCCURRENCE_QUALIFICATION} from "../Occurrence/occurence-type";
+import OccurrencesUtils from "../../utils/OccurrencesUtils";
+import VarUtils from "../../utils/VarUtils";
+import Occurrence from "../../bo/Occurrence";
 
 class CvCarousel extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            occurrences: [],
+            selected: 0,
+        };
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        this.dataInitializer(prevProps);
+        this.refresh();
+
+    }
+
+    dataInitializer(prevProps) {
+        if (prevProps.occurrences.length != this.props.occurrences.length) {
+            this.loadingOccurences();
+        }
+    }
+
+    refresh() {
+
+        if (VarUtils.isNotUndefinedNull(this.state.occurrences) && this.state.occurrences.length > 0) {
+
+            this.refreshActived().then((res)=>{
+                this.refreshOther();
+            }).catch((error)=>{
+                console.log(error);
+            });
+
+        }
+    }
+
+    refreshActived() {
+        return new Promise((resolve,reject)=>{
+
+            const actived = this.getActived();
+            const selected = this.state.occurrences[this.state.selected];
+            const idActived = (actived != null) ? actived.id : null;
+            let idSelected = null;
+
+            if (VarUtils.isNotUndefinedNull(selected)) {
+                idSelected = selected.id;
+            }
+
+            if (VarUtils.isNotUndefinedNull(idSelected)) {
+                if (VarUtils.isNotUndefinedNull(actived)) {
+
+                    if (idSelected != idActived) {
+
+                        let newSelected = idSelected;
+
+                        const keys = Object.keys(this.state.occurrences);
+                        keys.map((key) => {
+                            if (this.state.occurrences[key].id == idActived) {
+                                newSelected = key;
+                            }
+                        });
+
+                        if (newSelected != idSelected) {
+                            this.updateTarget(newSelected);
+                        }
+                    }else{
+                        this.props.setOccurrence(selected);
+                    }
+                }
+            }
+
+            resolve();
+
+        });
+    }
+
+    getActived = () => {
+        let occurence = null;
+
+        if (this.props.type == OCCURRENCE_EXPERIENCE) {
+            occurence = this.props.experience;
+        }
+
+        if (this.props.type == OCCURRENCE_QUALIFICATION) {
+            occurence = this.props.qualification;
+        }
+
+        return occurence;
+    }
+
+    getOtherActived(){
+        let occurrence = null;
+        if(this.props.type == OCCURRENCE_EXPERIENCE){
+            occurrence = this.props.qualification;
+        }
+        if(this.props.type == OCCURRENCE_QUALIFICATION){
+            occurrence = this.props.experience;
+        }
+        return occurrence;
+    }
+
+    refreshOther() {
+
+        if (VarUtils.isNotUndefinedNull(this.state.occurrences) && this.state.occurrences.length > 0) {
+
+            let newSelected = this.state.selected;
+            let actived = this.getActived();
+
+            if (actived == null) {
+                actived = this.getOtherActived();
+                const year = Occurrence.getYear(actived);
+
+                const curentType = OccurrencesUtils.getType(this.state.occurrences[0]);
+                if(curentType == OCCURRENCE_EXPERIENCE){
+                    actived = this.props.qualification;
+                }
+                if(curentType == OCCURRENCE_QUALIFICATION){
+                    actived = this.props.experience;
+                }
+
+                let activedType = OccurrencesUtils.getType(actived);
+                if (curentType != activedType && activedType != null) {
+
+                    const keys = Object.keys(this.state.occurrences);
+                    keys.map((key) => {
+
+                        const occurrence = this.state.occurrences[key];
+                        const occurrenceYear = Occurrence.getYear(occurrence);
+
+                        if (occurrenceYear <= year || key == 0) {
+
+                            const occurenceSelected = this.state.occurrences[this.state.selected];
+                            const occurenceSelectedYear = Occurrence.getYear(occurenceSelected);
+
+                            if(occurrenceYear > occurenceSelectedYear || occurenceSelectedYear > year){
+
+                                if(eval(this.state.selected) != eval(key)){
+
+                                    newSelected = key;
+                                }
+                            }
+                        }
+                    });
+
+                    if(newSelected != this.state.selected){
+                        const state = {...this.state};
+                        state.selected = newSelected;
+                        this.setState(state);
+                    }
+                }
+            }
+        }
+    }
+
+    loadingOccurences() {
+        const {type} = this.props;
+        if (type == OCCURRENCE_EXPERIENCE) {
+            this.loadingExperiences();
+        } else if (type == OCCURRENCE_QUALIFICATION) {
+            this.loadingQualifications();
+        }
+    }
+
+    loadingQualifications = () => {
+        const state = {...this.state};
+        const {occurrences} = this.props;
+
+        state.occurrences = OccurrencesUtils.getQualifications(occurrences);
+
+        this.setState(state);
+    }
+
+    loadingExperiences = () => {
+        const state = {...this.state};
+        const {occurrences} = this.props;
+
+        state.occurrences = OccurrencesUtils.getExperiences(occurrences);
+
+        this.setState(state);
     }
 
     getItemsCarousel = () => {
         const items = [];
         let i = 0;
 
-        const {occurrences} = this.props;
+        const {occurrences} = this.state;
         const occurrencesKeys = Object.keys(occurrences);
         occurrencesKeys.map((key) => {
 
@@ -48,7 +227,7 @@ class CvCarousel extends Component {
                 dateStart = occurrence.dateStart ? new Date(occurrence.dateStart) : null;
                 dateEnd = occurrence.dateEnd ? new Date(occurrence.dateEnd) : null;
 
-                if (occurrence.experience.img != undefined && occurrence.experience.img != null && occurrence.experience.img != "") {
+                if (VarUtils.isNotUndefinedNull(occurrence.experience.img) && occurrence.experience.img != "") {
                     image = occurrence.experience.img;
                 }
             }
@@ -58,7 +237,7 @@ class CvCarousel extends Component {
                 title += occurrence.qualification.name;
                 dateEnd = occurrence.dateEnd ? new Date(occurrence.dateEnd) : null;
 
-                if (occurrence.qualification.img != undefined && occurrence.qualification.img != null && occurrence.qualification.img != "") {
+                if (VarUtils.isNotUndefinedNull(occurrence.qualification.img) && occurrence.qualification.img != "") {
                     image = occurrence.qualification.img;
                 }
             }
@@ -68,7 +247,7 @@ class CvCarousel extends Component {
             step.dateStart = dateStart;
             step.dateEnd = dateEnd;
 
-            if (image != undefined && image != null && image != "") {
+            if (VarUtils.isNotUndefinedNull(image) && image != "") {
                 step.image = `${SERVER_API}${image}`;
             } else if (occurrence.qualification instanceof Object) {
                 step.image = `default-background-qualification.jpg`;
@@ -98,24 +277,11 @@ class CvCarousel extends Component {
         return step;
     }
 
-    getTarget = () => {
-
-        const {occurrences} = this.props;
+    getSelected = () => {
         let target = 0;
 
-        const occurrencesKeys = Object.keys(occurrences);
-        if (occurrencesKeys.length > 0) {
-
-            const occurrence = occurrences[occurrencesKeys[0]];
-
-            if (occurrence.experience instanceof Object) {
-                target = this.props.experienceSelected;
-            }
-
-            if (occurrence.qualification instanceof Object) {
-                target = this.props.qualificationSeleted;
-            }
-
+        if (this.state.selected) {
+            target = this.state.selected;
         }
 
         return target;
@@ -123,59 +289,122 @@ class CvCarousel extends Component {
 
     updateTarget = (target) => {
 
-        const {occurrences} = this.props;
-
-        const occurrencesKeys = Object.keys(occurrences);
-        if (occurrencesKeys.length > 0) {
-
-            const occurrence = occurrences[occurrencesKeys[0]];
-
-            if (occurrence.experience instanceof Object) {
-                this.props.setExperienceSelected(target);
-                this.props.setOccurrence(occurrences[target]);
-            }
-
-            if (occurrence.qualification instanceof Object) {
-                this.props.setQualificationSelected(target);
-                this.props.setOccurrence(occurrences[target]);
+        if (VarUtils.isNotUndefinedNull(target)) {
+            if (target >= 0) {
+                const state = {...this.state};
+                state.selected = eval(target);
+                this.setState(state);
+                this.updateOccurence(target);
             }
         }
     }
 
-    getStepDisplayed = () => {
+    updateOccurence(target) {
+
+        const {occurrences} = this.props;
+        if (occurrences && occurrences.length > 0) {
+
+            let occurrence = null;
+            const occurrenceTargeted = this.state.occurrences[target];
+
+            const keys = Object.keys(occurrences);
+            keys.map((key) => {
+                if (occurrences[key].id == occurrenceTargeted.id) {
+                    occurrence = occurrences[key];
+                }
+            });
+
+            if (occurrence != null) {
+                this.props.setOccurrence(occurrence);
+                if (Occurrence.isExperience(occurrence)) {
+                    this.props.setExperience(occurrence);
+                }
+                if (Occurrence.isQualification(occurrence)) {
+                    this.props.setQualification(occurrence);
+                }
+            }
+        }
+    }
+
+    getOccurenceDisplayed = () => {
         const {occurrence} = this.props;
-        let step = this.occurenceToStep(occurrence);
-        return step;
+        return occurrence;
+    }
+
+    prevent = (target) => {
+        this.updateTarget(target)
+    }
+    next = (target) => {
+        this.updateTarget(target)
+    }
+
+    isActived(selected) {
+        const {occurrence, type} = this.props;
+        let result = false;
+
+        if (occurrence) {
+            if (type == OCCURRENCE_EXPERIENCE) {
+                const experience = this.state.occurrences[selected];
+
+                if (experience) {
+                    if (occurrence.id == experience.id) {
+                        result = true;
+                    }
+                }
+            }
+
+            if (type == OCCURRENCE_QUALIFICATION) {
+                const qualification = this.state.occurrences[selected];
+                if (qualification) {
+                    if (occurrence.id == qualification.id) {
+                        result = true;
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     render() {
+
+        const items = this.getItemsCarousel();
+        const selected = this.getSelected();
+        const isActived = this.isActived(selected);
+
         return (
             <Carousel
-                items={this.getItemsCarousel()}
-                target={this.getTarget()}
-                updateTarget={this.updateTarget}
-                displayed={this.getStepDisplayed()}
+                items={items}
+                selected={selected}
+                actived={isActived}
+
+                prevent={this.prevent}
+                next={this.next}
+
+                // displayed={this.getStepDisplayed()}
             />
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    const qualificationSeleted = state.QualificationReducer.selected;
-    const experienceSelected = state.ExperienceReducer.selected;
     const occurrence = state.OccurrencesReducer.occurrence;
+    const occurrences = state.OccurrencesReducer.occurrences;
+    const experience = state.ExperienceReducer.occurrence;
+    const qualification = state.QualificationReducer.occurrence;
     return {
-        qualificationSeleted,
-        experienceSelected,
+        occurrences,
         occurrence,
+        experience,
+        qualification,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setExperienceSelected: (id) => dispatch(actions.experience.setExperienceSelected(id)),
-        setQualificationSelected: (id) => dispatch(actions.qualification.setQualificationSelected(id)),
         setOccurrence: (occurrence) => dispatch(actions.occurrences.setOccurrence(occurrence)),
+        setExperience: (occurrence) => dispatch(actions.experience.setExperience(occurrence)),
+        setQualification: (occurrence) => dispatch(actions.qualification.setQualification(occurrence)),
     };
 }
 

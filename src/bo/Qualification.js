@@ -10,61 +10,98 @@ class Qualification {
         this.links = links;
     }
 
+    compare(qualification){
+        let result = true;
 
-    getName() {
-        return this.name;
+        if(this.name != qualification.name){
+            result = false;
+        }
+
+        if(this.img != qualification.img){
+            result = false;
+        }
+
+        if(this.level != qualification.level){
+            result = false;
+        }
+
+        if(this.trainingCenter != null){
+            if(!this.trainingCenter.compare(qualification.trainingCenter)){
+                result = false;
+            }
+        }
+
+        if(this.objectives != qualification.objectives){
+            result = false;
+        }
+
+        if(this.jobs != null){
+            if(!this.compareJobs(qualification.jobs)){
+                result = false;
+            }
+        }
+
+        if(this.links != null){
+            if(!this.compareLinks(qualification.links)){
+                result = false;
+            }
+        }
+
+        return result;
     }
 
-    setName(value) {
-        this.name = value;
+    compareJobs(jobs){
+        let result = true;
+        if(this.jobs != undefined && this.jobs != null){
+
+            if(jobs == undefined || jobs == null){
+                result = false;
+            }else{
+
+                if(jobs.length == 0){
+                    result = false;
+                }else{
+
+                    if(this.jobs.length > 0){
+                        for(const job in this.jobs){
+                            if(job != null){
+                                if(!job.compares(jobs)){
+                                    result = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 
-    getImg() {
-        return this.img;
-    }
+    compareLinks(links){
+        let result = true;
+        if(this.links != undefined && this.links != null){
 
-    setImg(value) {
-        this.img = value;
-    }
+            if(links == undefined || links == null){
+                result = false;
+            }else{
 
-    getLevel() {
-        return this.level;
-    }
+                if(links.length == 0){
+                    result = false;
+                }else{
 
-    setLevel(value) {
-        this.level = value;
-    }
-
-    getTrainingCenter() {
-        return this.trainingCenter;
-    }
-
-    setTrainingCenter(value) {
-        this.trainingCenter = value;
-    }
-
-    getObjectives() {
-        return this.objectives;
-    }
-
-    setObjectives(value) {
-        this.objectives = value;
-    }
-
-    getJobs() {
-        return this.jobs;
-    }
-
-    setJobs(value) {
-        this.jobs = value;
-    }
-
-    getLinks() {
-        return this.links;
-    }
-
-    setLinks(value) {
-        this.links = value;
+                    if(this.links.length > 0){
+                        for(const link in this.links){
+                            if(link != null){
+                                if(!link.compares(links)){
+                                    result = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
 

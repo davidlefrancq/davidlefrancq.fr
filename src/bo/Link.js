@@ -5,20 +5,36 @@ class Link {
         this.url = url;
     }
 
-    getName() {
-        return this.name;
+    compare(link){
+        let result = true;
+
+        if(this.name != link.name){
+            result = false;
+        }
+
+        if(this.url != link.url){
+            result = false;
+        }
+
+        return result;
     }
 
-    setName(value) {
-        this.name = value;
-    }
+    compares(links){
+        let result = true;
 
-    getUrl() {
-        return this.url;
-    }
+        if(links != undefined && links != null && links.length > 0){
 
-    setUrl(value) {
-        this.url = value;
+            for(const link in links){
+                if(!this.compare(link)){
+                    result = false;
+                }
+            }
+
+        }else{
+            result = false
+        }
+
+        return result;
     }
 }
 

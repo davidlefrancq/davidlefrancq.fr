@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import TechnologicalCategorie from "../../../bo/TechnologicalCategorie";
+import TechnologicalCategory from "../../../bo/TechnologicalCategory";
 import {Col, Form} from "react-bootstrap";
 import {FaSave} from "react-icons/fa";
 import {connect} from "react-redux";
@@ -11,7 +11,7 @@ class EditTechnologicalCategory extends Component {
         super(props);
         this.state = {
             key: null,
-            technology: new TechnologicalCategorie("", ""),
+            technology: new TechnologicalCategory("", ""),
         }
     }
 
@@ -74,7 +74,7 @@ class EditTechnologicalCategory extends Component {
      */
     reset(){
         this.setState({
-            technology: new TechnologicalCategorie("", ""),
+            technology: new TechnologicalCategory("", ""),
             key: null,
         });
     }

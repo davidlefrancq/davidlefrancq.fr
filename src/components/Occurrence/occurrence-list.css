@@ -1,0 +1,27 @@
+:root {
+    --carousel-background-color: rgba(0, 0, 0, 0.9);
+    --carousel-experience-background-color: rgba(71, 107, 4, 0.9);
+    --carousel-qualification-color: rgba(0, 45, 110, 0.9);
+}
+
+.logo-carousel {
+    position: relative;
+    color: white;
+    top: -5px;
+    left: -5px;
+    z-index: 9999;
+    background-color: var(--carousel-background-color);
+    padding: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    box-shadow: var(--carousel-box-shadow);
+}
+
+.logo-carousel-experience {
+    background-color: var(--carousel-experience-background-color);
+}
+
+.logo-carousel-qualification {
+    background-color: var(--carousel-qualification-color);
+}

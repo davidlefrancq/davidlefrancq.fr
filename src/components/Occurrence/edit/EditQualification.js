@@ -169,9 +169,6 @@ class EditQualification extends Component {
         const {token} = this.props;
         const file = e.target.files[0];
 
-        console.log(e);
-        console.log("file", file);
-
         const occurrenceDAO = daoFactory.getOccurrenceDAO();
         occurrenceDAO.uploadImage(file, token).then(this.uploadQualificationLogoSuccess, this.uploadQualificationLogoError);
     }
@@ -600,8 +597,6 @@ class EditQualification extends Component {
         const {occurrence} = this.props;
         const {dateEnd, qualification} = occurrence;
         const {name, img, level, trainingCenter, objectives, jobs, links} = qualification;
-
-        console.log("occurrence objectives", occurrence.qualification.objectives);
 
         const occurrenceValidate = {...occurrence};
         if (!(occurrenceValidate.dateEnd instanceof Date) && occurrenceValidate.dateEnd != "") {

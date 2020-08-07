@@ -1,59 +1,23 @@
 class Enterprise {
-    constructor(name,logo,address,postalCode,city,url) {
+    constructor(name,logo,address,postalCode,city,url,lat,lng) {
         this.name = name;
         this.logo = logo;
         this.address = address;
         this.postalCode = postalCode;
         this.city = city;
         this.url = url;
+        this.lat = lat;
+        this.lng = lng;
     }
 
-    getName() {
-        return this.name;
-    }
+    compare(enterprise){
+        let result = true;
 
-    setName(value) {
-        this.name = value;
-    }
+        if(this.name != enterprise.name){
+            result = false;
+        }
 
-    getLogo() {
-        return this.logo;
-    }
-
-    setLogo(value) {
-        this.logo = value;
-    }
-
-    getAddress() {
-        return this.address;
-    }
-
-    setAddress(value) {
-        this.address = value;
-    }
-
-    getPostalCode() {
-        return this.postalCode;
-    }
-
-    setPostalCode(value) {
-        this.postalCode = value;
-    }
-
-    getCity() {
-        return this.city;
-    }
-
-    setCity(value) {
-        this.city = value;
-    }
-
-    getUrl() {
-        return this.url;
-    }
-
-    setUrl(value) {
-        this.url = value;
+        return result;
     }
 }
 

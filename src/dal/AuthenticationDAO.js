@@ -4,7 +4,6 @@ import {URL_LOGIN} from "./server-url";
 class AuthenticationDAO {
 
     login(email, password) {
-        console.log("URL_LOGIN",URL_LOGIN);
         const headers = {
             'Content-Type': 'application/json',
         }

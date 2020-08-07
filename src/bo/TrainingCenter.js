@@ -1,60 +1,52 @@
 class TrainingCenter {
 
-    constructor(name, logo, address, postalCode, city, url) {
+    constructor(name, logo, address, postalCode, city, url, lat, lng) {
         this.name = name;
         this.logo = logo;
         this.address = address;
         this.postalCode = postalCode;
         this.city = city;
         this.url = url;
+        this.lat = lat;
+        this.lng = lng;
     }
 
-    getName() {
-        return this.name;
-    }
+    compare(trainingCenter){
+        let result = true;
 
-    setName(value) {
-        this.name = value;
-    }
+        if(this.name != trainingCenter.name){
+            result = false;
+        }
 
-    getLogo() {
-        return this.logo;
-    }
+        if(this.logo != trainingCenter.logo){
+            result = false;
+        }
 
-    setLogo(value) {
-        this.logo = value;
-    }
+        if(this.address != trainingCenter.address){
+            result = false;
+        }
 
-    getAddress() {
-        return this.address;
-    }
+        if(this.postalCode != trainingCenter.postalCode){
+            result = false;
+        }
 
-    setAddress(value) {
-        this.address = value;
-    }
+        if(this.city != trainingCenter.city){
+            result = false;
+        }
 
-    getPostalCode() {
-        return this.postalCode;
-    }
+        if(this.url != trainingCenter.url){
+            result = false;
+        }
 
-    setPostalCode(value) {
-        this.postalCode = value;
-    }
+        if(this.lat != trainingCenter.lat){
+            result = false;
+        }
 
-    getCity() {
-        return this.city;
-    }
+        if(this.lng != trainingCenter.lng){
+            result = false;
+        }
 
-    setCity(value) {
-        this.city = value;
-    }
-
-    getUrl() {
-        return this.url;
-    }
-
-    setUrl(value) {
-        this.url = value;
+        return result;
     }
 }
 
