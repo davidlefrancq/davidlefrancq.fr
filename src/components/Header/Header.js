@@ -1,12 +1,13 @@
 import React, {Component, Fragment} from 'react';
 import {Jumbotron} from 'react-bootstrap';
 import {connect} from "react-redux";
-import {actions} from '../actions';
+import {actions} from '../../actions';
 import {Link} from "react-router-dom";
-import DAOFactory from "../dal/DAOFactory";
-import LoginForm from "./LoginForm/LoginForm";
-import {STRING_LOGIN, STRING_LOGOUT} from "../translation/fr-fr";
+import DAOFactory from "../../dal/DAOFactory";
+import LoginForm from "../LoginForm/LoginForm";
+import {STRING_LOGIN, STRING_LOGOUT} from "../../translation/fr-fr";
 import {AiOutlineLogin, AiOutlineLogout} from "react-icons/ai";
+import "./header.css";
 
 class Header extends Component {
 
@@ -124,6 +125,17 @@ class Header extends Component {
         }
     }
 
+    renderButtonHome(){
+        const {isLoggedIn} = this.props;
+        if (isLoggedIn) {
+            return (
+                <li className="nav-item">
+                    <Link className="nav-link" to="/">Accueil</Link>
+                </li>
+            );
+        }
+    }
+
     renderButtonAdmin() {
         const {isLoggedIn} = this.props;
         if (isLoggedIn) {
@@ -162,11 +174,8 @@ class Header extends Component {
         return (
             <Fragment>
 
-                <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
-                    <a className="navbar-brand" href="/">
-                        {/*<img*/}
-                        {/*    src={"/logo.png"}*/}
-                        {/*    alt={"log"} style={{width: "40px"}}/>*/}
+                <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-0 mt-0 ml-0 mr-0 mb-4">
+                    <a className="navbar-brand p-0 m-0" href="/">
                         <div className={`logo ${logoAnimation}`}
                              onMouseEnter={this.logoEnterAnimation}
                              onMouseLeave={this.logoLeaveAnimation}
@@ -178,11 +187,10 @@ class Header extends Component {
                         </div>
                     </a>
 
-                    <ul className="navbar-nav mr-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/">Accueil</Link>
-                        </li>
+                    <h1 className={"ml-3 text-white"}>Concepteur Développeur Informatique</h1>
 
+                    <ul className="navbar-nav mr-auto ml-auto menu">
+                        {this.renderButtonHome()}
                         {this.renderButtonAdmin()}
                     </ul>
 
@@ -196,10 +204,10 @@ class Header extends Component {
 
                 </nav>
 
-                <Jumbotron>
-                    <h1>Concepteur Développeur Informatique</h1>
-                    {/*<p>David Lefrancq</p>*/}
-                </Jumbotron>
+                {/*<Jumbotron>*/}
+                {/*    <h1>Concepteur Développeur Informatique</h1>*/}
+                {/*    /!*<p>David Lefrancq</p>*!/*/}
+                {/*</Jumbotron>*/}
 
                 <div className={`auth-form ${authFormAnimation} ${dNone}`}>
                     <LoginForm handleAuthentification={this.handleAuthentification}/>

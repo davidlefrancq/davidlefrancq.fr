@@ -44,23 +44,25 @@
 }
 
 .datebar-title-enter{
-    animation: datebar-title-enter-animation 0.3s ease-in forwards !important;
+    animation: datebar-title-enter-animation 0.1s ease-in forwards !important;
 }
 @keyframes datebar-title-enter-animation {
     0% {
         color: rgba(0,0,0,0.5);
         border: 1px solid rgba(0,0,0,0.5);
         background-color: white;
+        box-shadow: 1px 2px 3px rgba(0,0,0,0.4);
     }
     100% {
         color: white;
         background-color: rgba(0, 87, 227,1);
         border: 1px solid rgba(0, 87, 227,1);
+        box-shadow: 1px 2px 3px rgba(0,0,0,0.4);
     }
 }
 
 .datebar-title-leave{
-    animation: datebar-title-leave-animation 0.3s ease-in forwards;
+    animation: datebar-title-leave-animation 0.1s ease-in forwards;
 }
 
 @keyframes datebar-title-leave-animation {
@@ -68,13 +70,14 @@
         color: white;
         background-color: rgba(0, 87, 227,1);
         border: 1px solid rgba(0, 87, 227,1);
+        box-shadow: 1px 2px 3px rgba(0,0,0,0.4);
     }
     100% {
         /*color: rgba(0,0,0,0.5);*/
         color: rgba(0,0,0,0.5);
         border: 1px solid rgba(0,0,0,0.5);
         background-color: white;
-
+        box-shadow: 1px 2px 3px rgba(0,0,0,0.4);
     }
 }
 

@@ -419,7 +419,7 @@ class ExperienceCard extends Component {
 
                         <div className={"col-12 pl-5"}>
 
-                            <button className={"btn btn-outline-primary m-1 pt-1 pb-2 pr-3 pl-3 "}
+                            <button className={"btn btn-outline-primary m-1 pt-1 pb-2 pr-3 pl-3"}
                                     onClick={this.showComment}>
                                 <BsFillInfoCircleFill/>
                             </button>

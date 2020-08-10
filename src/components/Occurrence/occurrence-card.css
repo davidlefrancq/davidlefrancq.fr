@@ -1,65 +1,65 @@
-.card{
-    box-shadow: 2px 3px 9px rgba(0,0,0,0.3);
+.card {
+    box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.3);
 }
 
-.occurrence-card{
+.occurrence-card {
     position: relative;
-    border: 1px solid rgba(0,0,0,0.9);
+    border: 3px solid rgba(255, 255, 255, 0.9);
     border-radius: 25px 0 25px 0;
 }
 
-.occurrence-card .card-header{
+.occurrence-card .card-header {
     border-radius: 23px 0 25px 0;
-    background-color: rgba(0,0,0,0.9);
+    background-color: rgba(0, 0, 0, 0.9);
     color: white;
 }
 
-.occurrence-card .card-body h4{
-    background-color: rgba(0,0,0,0.9);
+.occurrence-card .card-body h4 {
+    background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    padding: 10px 10px 13px 20px;
-    border-radius: 3px 25px 3px 25px;
+    padding-top: 6px;
+    padding-bottom: 8px;
+    border-radius: 25px 25px 25px 25px;
     text-align: center;
 }
 
-.occurrence-card .logo{
+.occurrence-card .logo {
     position: absolute;
-    color: rgba(0,0,0,9);
-    border: 1px solid rgba(0,0,0,9);
+    color: rgba(0, 0, 0, 9);
+    border: 1px solid rgba(0, 0, 0, 9);
     top: -15px;
     right: -15px;
     padding: 10px;
     z-index: 9999;
-    background-color: rgba(255,255,255,1);
+    background-color: rgba(255, 255, 255, 1);
     width: 50px;
     height: 50px;
     border-radius: 25px;
 }
 
-.qualification .logo{
-    color: rgb(255,255,255);
-    border: 1px solid rgba(255,255,255,1);
-    /*background-color: rgba(255,255,255,1);*/
+.qualification .logo {
+    color: rgb(255, 255, 255);
+    border: 1px solid rgba(255, 255, 255, 1);
     background-color: rgb(0, 45, 110);
     text-align: center;
 }
 
-.experience .logo{
-    color: rgb(255,255,255);
-    border: 1px solid rgba(255,255,255,1);
-    /*background-color: rgba(255,255,255,1);*/
+.experience .logo {
+    color: rgb(255, 255, 255);
+    border: 1px solid rgba(255, 255, 255, 1);
     background-color: rgb(71, 107, 4);
     text-align: center;
 }
 
-.occurrence-card-logo-date{
-    color: rgba(255,255,255,1);
-    border: 1px solid rgba(0,0,0,8);
-    background-color: rgba(0,0,0,8);
-    padding:10px;
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
+.occurrence-card-logo-date {
+    color: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding-top: 11px;
+    padding-right: 2px;
+    width: 56px;
+    height: 56px;
+    border-radius: 29px;
     text-align: center;
 }
 
@@ -67,7 +67,7 @@
     max-height: 45px;
 }
 
-.google-map-link{
+.google-map-link {
     background-image: url("/google-map.jpg");
     filter: grayscale(65%);
     background-size: cover;
@@ -77,49 +77,66 @@
     min-height: 75px;
 }
 
-.google-map-link:hover{
+.google-map-link:hover {
     animation: google-map-enter-animation 0.2s ease-in forwards;
 }
+
 @keyframes google-map-enter-animation {
-    0%{
+    0% {
         filter: grayscale(65%);
         border-radius: 0;
     }
-    100%{
+    100% {
         filter: grayscale(0%);
         border-radius: 25px;
     }
 }
-.google-map-link a{
+
+.google-map-link a {
     display: block;
     width: 100%;
     height: 100%;
-    color: #007bff;
-    text-shadow: 1px 1px 2px rgba(255,255,255,1);
+    color: rgba(0, 87, 227, 1);
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);
     padding-top: 25px;
 }
 
-.google-map-link a:hover{
+.google-map-link a:hover {
     text-decoration: none !important;
     animation: google-map-link-enter-animation 0.2s ease-in forwards;
 }
 
 @keyframes google-map-link-enter-animation {
-    0%{
+    0% {
         border-radius: 0;
         padding-top: 25px;
         font-weight: initial;
         font-size: initial;
-        box-shadow: 4px 4px 6px rgba(0,0,0,0);
-        text-shadow: 2px 3px 6px rgba(0,0,0,0);
+        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0);
+        text-shadow: 2px 3px 6px rgba(0, 0, 0, 0);
     }
-    100%{
+    100% {
         border-radius: 25px;
-        color: rgba(255,255,255,0.9);
+        color: rgba(255, 255, 255, 0.9);
         padding-top: 17px;
         font-weight: bold;
         font-size: x-large;
-        box-shadow: 4px 4px 6px rgba(0,0,0,0.4);
-        text-shadow: 2px 3px 6px rgba(0,0,0,0.8);
+        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
+        text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.8);
     }
+}
+
+.btn-outline-primary {
+    border: 1px solid rgba(0, 87, 227, 1);
+    color: rgba(0, 87, 227, 1);
+    border-radius: 25px;
+    width: 50px;
+    height: 50px;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.4);
+}
+
+.btn-outline-primary:hover {
+    border: 1px solid rgba(0, 87, 227, 1);
+    color: white;
+    background-color: rgba(0, 87, 227, 1);
 }
