@@ -11,6 +11,8 @@ class DateBar extends Component {
             steps: [],
             target: 0,
         };
+
+        this.isWorking = false;
     }
 
     componentDidMount() {
@@ -22,6 +24,34 @@ class DateBar extends Component {
         }
 
         this.initStep(data);
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        const prevDateTarget = prevProps.dateTarget;
+        const {dateTarget} = this.props;
+
+
+        if (prevDateTarget != dateTarget && this.isWorking == false) {
+            if (dateTarget != this.state.steps[this.state.target].title) {
+
+                let newTarget = null;
+                const keys = Object.keys(this.state.steps);
+                keys.map((key)=>{
+
+                    const step = this.state.steps[key];
+                    if(step.title == dateTarget){
+                        newTarget = key;
+                    }
+
+                });
+                if(newTarget != null){
+                    this.updateStep(newTarget);
+                }
+
+            }
+        }
+
     }
 
     initStep(list) {
@@ -36,23 +66,24 @@ class DateBar extends Component {
             return this.instanciateStep(item);
         });
 
+        const target = steps.length - 1;
         state.steps = steps;
+        state.target = target;
         this.setState(state);
 
-        setTimeout(()=>{
+        setTimeout(() => {
 
-            let target = steps.length - 1;
             this.updateStep(target)
 
-        },300);
+        }, 300);
     }
 
-    instanciateStep(item){
+    instanciateStep(item) {
 
         const {title, description, action, onClick} = item
         let stepDateBare = null;
 
-        if(item != undefined && item != null){
+        if (item != undefined && item != null) {
 
             stepDateBare = new DateBareStep(title, description);
             stepDateBare.onClick = onClick;
@@ -69,7 +100,7 @@ class DateBar extends Component {
     }
 
     handleStep = (e) => {
-
+        this.isWorking = true;
         const id = eval(e.target.getAttribute("name"));
         this.updateStep(id);
     }
@@ -85,19 +116,20 @@ class DateBar extends Component {
 
 
     activeStep = (target) => {
-        if (target > this.state.target) {
+        if (eval(target) > eval(this.state.target)) {
             this.animateSteps(target).then(() => {
                 const state = {...this.state};
                 state.target = target;
                 this.setState(state);
+                this.isWorking = false;
             });
-        } else if (target < this.state.target) {
+        } else if (eval(target) < eval(this.state.target)) {
             this.animateStepsReverted(target).then(() => {
                 const state = {...this.state};
                 state.target = target;
                 this.setState(state);
+                this.isWorking = false;
             });
-
         }
     }
 
