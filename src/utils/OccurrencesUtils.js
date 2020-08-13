@@ -3,33 +3,41 @@ import {OCCURRENCE_EXPERIENCE, OCCURRENCE_QUALIFICATION} from "../components/Occ
 
 class OccurrencesUtils {
 
-    static getClosestToYear(occurence1,occurence2,year){
+    static getClosestToYear(occurence1, occurence2, year) {
         let occurence = null;
 
         const dateControl = new Date(`${year}-12-31T23:59:59`);
         const date1 = OccurrencesUtils.getDate(occurence1);
         const date2 = OccurrencesUtils.getDate(occurence2);
 
-        if(date1 == null || date2 == null){
-            if(date1 != null){
+        if (date1 == null || date2 == null) {
+            if (date1 != null) {
                 occurence = occurence1;
             }
-            if(date2 != null){
+            if (date2 != null) {
                 occurence = occurence2;
             }
-        }else{
+        } else {
             const diff1 = Math.abs(dateControl - date1);
             const diff2 = Math.abs(dateControl - date2);
 
-            if(diff1 <= diff2){
+            if (diff1 <= diff2) {
                 occurence = occurence1;
-            }else{
+            } else {
                 occurence = occurence2;
             }
         }
 
         return occurence;
     }
+
+    static getOccurrenceClosestToYear(occurrences, year) {
+        const experience = OccurrencesUtils.getExperienceByYear(occurrences, year);
+        const qualification = OccurrencesUtils.getQualificationByYear(occurrences, year);
+        const occurrence = OccurrencesUtils.getClosestToYear(experience, qualification, year);
+        return occurrence;
+    }
+
 
     static getExperienceByYear(occurrences, year) {
 
@@ -175,10 +183,10 @@ class OccurrencesUtils {
         return result;
     }
 
-    static getType(occurrence){
+    static getType(occurrence) {
         let curentType = null;
 
-        if (Occurrence.isExperience(occurrence)){
+        if (Occurrence.isExperience(occurrence)) {
             curentType = OCCURRENCE_EXPERIENCE;
         } else if (Occurrence.isQualification(occurrence)) {
             curentType = OCCURRENCE_QUALIFICATION;
@@ -189,15 +197,18 @@ class OccurrencesUtils {
 
     static getDate(occurrence) {
 
-        const {dateStart, dateEnd} = occurrence;
         let date = null;
 
-        if (dateStart != undefined && dateStart != null) {
-            date = new Date(dateStart);
-        }
+        if (occurrence != undefined && occurrence != null) {
+            const {dateStart, dateEnd} = occurrence;
 
-        if (dateEnd != undefined && dateEnd != null) {
-            date = new Date(dateEnd);
+            if (dateStart != undefined && dateStart != null) {
+                date = new Date(dateStart);
+            }
+
+            if (dateEnd != undefined && dateEnd != null) {
+                date = new Date(dateEnd);
+            }
         }
 
         return date;

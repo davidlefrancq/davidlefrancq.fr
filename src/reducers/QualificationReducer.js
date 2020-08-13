@@ -1,13 +1,13 @@
 import {
     SET_QUALIFICATION,
     SET_QUALIFICATION_LIST,
-    SET_QUALIFICATION_SELECTED
+    // SET_QUALIFICATION_SELECTED
 } from "../actions/qualification-action-type";
 
 const initialState = {
     occurrences: {},
     occurrence: null,
-    selected: 0,
+    // selected: 0,
 };
 
 export default function QualificationReducer(state = initialState, action) {
@@ -22,12 +22,12 @@ export default function QualificationReducer(state = initialState, action) {
                 selected,
             }
 
-        case SET_QUALIFICATION_SELECTED:
-            return {
-                occurrences,
-                occurrence,
-                selected: action.payload,
-            }
+        // case SET_QUALIFICATION_SELECTED:
+        //     return {
+        //         occurrences,
+        //         occurrence,
+        //         selected: action.payload,
+        //     }
 
         case SET_QUALIFICATION_LIST:
             return {

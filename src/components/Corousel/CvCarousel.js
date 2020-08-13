@@ -17,6 +17,7 @@ class CvCarousel extends Component {
             occurrences: [],
             selected: 0,
         };
+        this.isActivatedRefresh = true;
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -34,15 +35,25 @@ class CvCarousel extends Component {
 
     refresh() {
 
-        if (VarUtils.isNotUndefinedNull(this.state.occurrences) && this.state.occurrences.length > 0) {
+        if(this.isActivatedRefresh){
+            if (VarUtils.isNotUndefinedNull(this.state.occurrences) && this.state.occurrences.length > 0) {
 
-            this.refreshActived().then((res)=>{
-                this.refreshOther();
-            }).catch((error)=>{
-                console.log(error);
-            });
+                this.refreshActived().then((res)=>{
+                    this.refreshOther();
+                }).catch((error)=>{
+                    console.log(error);
+                });
 
+            }
         }
+    }
+
+    activeRefresh(){
+        this.isActivatedRefresh = true;
+    }
+
+    unactiveRefresh(){
+        this.isActivatedRefresh = false;
     }
 
     refreshActived() {
@@ -74,7 +85,7 @@ class CvCarousel extends Component {
                         if (newSelected != idSelected) {
                             this.updateTarget(newSelected);
                         }
-                    }else{
+                    } else{
                         this.props.setOccurrence(selected);
                     }
                 }
@@ -154,9 +165,7 @@ class CvCarousel extends Component {
                     });
 
                     if(newSelected != this.state.selected){
-                        const state = {...this.state};
-                        state.selected = newSelected;
-                        this.setState(state);
+                        this.setSelected(newSelected);
                     }
                 }
             }
@@ -291,12 +300,18 @@ class CvCarousel extends Component {
 
         if (VarUtils.isNotUndefinedNull(target)) {
             if (target >= 0) {
-                const state = {...this.state};
-                state.selected = eval(target);
-                this.setState(state);
+                this.setSelected(target);
                 this.updateOccurence(target);
             }
         }
+
+        // this.activeRefresh();
+    }
+
+    setSelected(target){
+        const state = {...this.state};
+        state.selected = eval(target);
+        this.setState(state);
     }
 
     updateOccurence(target) {
@@ -307,24 +322,32 @@ class CvCarousel extends Component {
             let occurrence = null;
             const occurrenceTargeted = this.state.occurrences[target];
 
+
             const keys = Object.keys(occurrences);
             keys.map((key) => {
-                if (occurrences[key].id == occurrenceTargeted.id) {
+                let id1 = '' + occurrences[key].id;
+                let id2 = '' + occurrenceTargeted.id;
+                if (id1 == id2) {
                     occurrence = occurrences[key];
                 }
             });
 
-            if (occurrence != null) {
-                this.props.setOccurrence(occurrence);
-                if (Occurrence.isExperience(occurrence)) {
-                    this.props.setExperience(occurrence);
-                }
-                if (Occurrence.isQualification(occurrence)) {
-                    this.props.setQualification(occurrence);
-                }
-            }
+            this.props.setOccurrence(occurrence);
         }
     }
+
+    // setOccurrence = (occurrence) => {
+    //     if (occurrence != null) {
+    //         this.props.setOccurrence(occurrence);
+    //         if (Occurrence.isExperience(occurrence)) {
+    //             this.props.setExperience(occurrence);
+    //             this.props.setQualification(null);
+    //         }else if (Occurrence.isQualification(occurrence)) {
+    //             this.props.setExperience(null);
+    //             this.props.setQualification(occurrence);
+    //         }
+    //     }
+    // }
 
     getOccurenceDisplayed = () => {
         const {occurrence} = this.props;
@@ -332,9 +355,11 @@ class CvCarousel extends Component {
     }
 
     prevent = (target) => {
+        this.unactiveRefresh();
         this.updateTarget(target)
     }
     next = (target) => {
+        this.unactiveRefresh();
         this.updateTarget(target)
     }
 
@@ -402,9 +427,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setOccurrence: (occurrence) => dispatch(actions.occurrences.setOccurrence(occurrence)),
-        setExperience: (occurrence) => dispatch(actions.experience.setExperience(occurrence)),
-        setQualification: (occurrence) => dispatch(actions.qualification.setQualification(occurrence)),
+        // setOccurrence: (occurrence) => dispatch(actions.occurrences.setOccurrence(occurrence)),
+        // setExperience: (occurrence) => dispatch(actions.experience.setExperience(occurrence)),
+        // setQualification: (occurrence) => dispatch(actions.qualification.setQualification(occurrence)),
     };
 }
 

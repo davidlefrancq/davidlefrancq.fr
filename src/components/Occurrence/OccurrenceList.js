@@ -15,6 +15,7 @@ import {OCCURRENCE_EXPERIENCE, OCCURRENCE_QUALIFICATION} from "./occurence-type"
 import Occurrence from "../../bo/Occurrence";
 import "./occurrence-list.css";
 import OccurrencesUtils from "../../utils/OccurrencesUtils";
+import VarUtils from "../../utils/VarUtils";
 
 const daoFactory = new DAOFactory();
 
@@ -78,18 +79,8 @@ class OccurrenceList extends Component {
 
         for (const id in occurrences) {
             const occurrence = occurrences[id];
-            const {dateStart, dateEnd} = occurrence;
 
-            let date = null;
-
-            if (dateStart != undefined && dateStart != null) {
-                date = new Date(dateStart);
-            }
-
-            if (dateEnd != undefined && dateEnd != null) {
-                date = new Date(dateEnd);
-            }
-
+            let date = OccurrencesUtils.getDate(occurrence)
             if (date != null && !isNaN(date.getTime())) {
 
                 let dateExist = false;
@@ -102,25 +93,7 @@ class OccurrenceList extends Component {
                 });
 
                 if (dateExist == false) {
-                    let stepDate = new Step(date.getFullYear(), "");
-                    stepDate.onClick = (year) => {
-
-                        if (year != undefined && year != null) {
-
-                            const experience = OccurrencesUtils.getExperienceByYear(this.props.occurrences, year);
-                            const qualification = OccurrencesUtils.getQualificationByYear(this.props.occurrences, year);
-
-                            const occurrence = OccurrencesUtils.getClosestToYear(experience,qualification,year);
-                            if(Occurrence.isExperience(occurrence)){
-                                this.props.setExperience(experience)
-                                this.props.setQualification(null)
-                            }else if(Occurrence.isQualification(occurrence)) {
-                                this.props.setExperience(null)
-                                this.props.setQualification(qualification)
-                            }
-
-                        }
-                    };
+                    let stepDate = this.initiateStepDate(date);
                     dates.push(stepDate);
                 }
             }
@@ -128,6 +101,18 @@ class OccurrenceList extends Component {
 
         return dates;
     }
+
+    initiateStepDate = (date) => {
+        let stepDate = new Step(date.getFullYear(), "");
+        stepDate.onClick = (year) => {
+            if (year != undefined && year != null) {
+                const occurrence = OccurrencesUtils.getOccurrenceClosestToYear(this.props.occurrences,year);
+                this.setOccurrence(occurrence);
+            }
+        };
+        return stepDate;
+    }
+
 
     renderOccurrences = () => {
         const {occurrences} = this.props;
@@ -166,14 +151,28 @@ class OccurrenceList extends Component {
         }
 
         if (i > 1) {
+            const dateTarget = this.getTargetDateBar();
             const stepsDates = this.getStepsDates();
 
             return (
-                <DateBar steps={stepsDates}/>
+                <DateBar steps={stepsDates} dateTarget={dateTarget}/>
             );
         }
     }
 
+    getTargetDateBar(){
+        let dateTarget = null;
+
+        const {occurrence} = this.props;
+        if(VarUtils.isNotUndefinedNull(occurrence)){
+            const date = OccurrencesUtils.getDate(this.props.occurrence);
+            if(date instanceof Date){
+                dateTarget = date.getFullYear();
+            }
+        }
+
+        return dateTarget;
+    }
 
     showQualification = () => {
         const state = {...this.state};
@@ -334,6 +333,19 @@ class OccurrenceList extends Component {
         return keyResult;
     }
 
+    setOccurrence = (occurrence) => {
+        if (occurrence != null) {
+            this.props.setOccurrence(occurrence);
+            if (Occurrence.isExperience(occurrence)) {
+                this.props.setExperience(occurrence);
+                this.props.setQualification(null);
+            }else if (Occurrence.isQualification(occurrence)) {
+                this.props.setExperience(null);
+                this.props.setQualification(occurrence);
+            }
+        }
+    }
+
     renderCvCarousel() {
         const {qualificationDisplay, experienceDisplay} = this.state.style;
         return (
@@ -368,7 +380,7 @@ class OccurrenceList extends Component {
                         </div>
                     </OverlayTrigger>
                 </div>
-                <CvCarousel type={OCCURRENCE_EXPERIENCE}/>
+                <CvCarousel type={OCCURRENCE_EXPERIENCE} setOccurrence={this.setOccurrence}/>
             </Fragment>
         );
     }
@@ -390,7 +402,7 @@ class OccurrenceList extends Component {
                         </div>
                     </OverlayTrigger>
                 </div>
-                <CvCarousel type={OCCURRENCE_QUALIFICATION}/>
+                <CvCarousel type={OCCURRENCE_QUALIFICATION} setOccurrence={this.setOccurrence}/>
             </Fragment>
         );
     }

@@ -1,9 +1,13 @@
-import {SET_EXPERIENCE, SET_EXPERIENCE_LIST, SET_EXPERIENCE_SELECTED} from "../actions/experience-action-type";
+import {
+    SET_EXPERIENCE,
+    SET_EXPERIENCE_LIST,
+    // SET_EXPERIENCE_SELECTED
+} from "../actions/experience-action-type";
 
 const initialState = {
     occurrences: {},
     occurrence: null,
-    selected: 0,
+    // selected: 0,
 };
 
 export default function ExperienceReducer(state = initialState, action) {
@@ -18,12 +22,12 @@ export default function ExperienceReducer(state = initialState, action) {
                 selected,
             }
 
-        case SET_EXPERIENCE_SELECTED:
-            return {
-                occurrences,
-                occurrence,
-                selected: action.payload,
-            }
+        // case SET_EXPERIENCE_SELECTED:
+        //     return {
+        //         occurrences,
+        //         occurrence,
+        //         selected: action.payload,
+        //     }
 
         case SET_EXPERIENCE_LIST:
             return {
