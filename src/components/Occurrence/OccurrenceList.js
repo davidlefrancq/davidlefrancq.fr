@@ -524,7 +524,7 @@ class OccurrenceList extends Component {
 
                 <div className={"row"}>
 
-                    <div className={"col-12"} style={{zIndex: 999999999}}>
+                    <div className={"col-12"} style={{zIndex: 999999999, marginTop:"-100px"}}>
                         {this.renderDateBar()}
                     </div>
 

@@ -9,14 +9,16 @@ class OccurrenceItem extends Component {
     }
 
     renderOccurrence(occurrence) {
-        if (occurrence.experience) {
+        if (occurrence.experience && (this.props.lastDate || this.props.lastDate)) {
 
             return this.renderExperience(occurrence);
 
-        } else if (occurrence.qualification) {
+        } else if (occurrence.qualification && (this.props.firstDate || this.props.lastDate)) {
 
             return this.renderQualification(occurrence);
 
+        }else{
+            return;
         }
     }
 
