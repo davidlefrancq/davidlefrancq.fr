@@ -21,11 +21,11 @@ class OccurrenceItem extends Component {
     }
 
     renderQualification(occurrence) {
-        return <QualificationCard occurrence={occurrence}/>
+        return <QualificationCard occurrence={occurrence} firstDate={this.props.firstDate} lastDate={this.props.lastDate}/>
     }
 
     renderExperience(occurrence) {
-        return <ExperienceCard occurrence={occurrence}/>
+        return <ExperienceCard occurrence={occurrence} firstDate={this.props.firstDate} lastDate={this.props.lastDate}/>
     }
 
     render() {

@@ -25,3 +25,75 @@
 .logo-carousel-qualification {
     background-color: var(--carousel-qualification-color);
 }
+
+.timeline{
+    display: block;
+    border-top: 1px solid rgba(255, 255, 255, 1);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+}
+
+.timeline .gradualness {
+    display: block;
+    position: relative;
+}
+
+.timeline .gradualness .startPoint, .timeline .gradualness .endPoint {
+    position: absolute;
+    z-index: 1;
+    border: 2px solid white;
+    background-color: rgba(100,100,100,1);
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.8);
+    top: -11px;
+}
+
+.timeline .gradualness .datePoint {
+    position: absolute;
+    z-index: 1;
+    border: 2px solid white;
+    background-color: rgba(0, 87, 227, 0.75);
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.8);
+    top: -11px;
+}
+
+.timeline .gradualness .progressbar {
+    position: absolute;
+    top:-2px;
+    height: 2px;
+    z-index: 9;
+}
+
+.timeline .gradualness .progressbar .background{
+    display: block;
+    background-color: rgba(0, 87, 227, 0.5);
+    height: 5px;
+    border-top: 1px solid rgba(255,255,255,1);
+    border-bottom: 1px solid rgba(255,255,255,1);
+}
+
+.timeline .gradualness .start {
+    position: absolute;
+    top: 30px;
+    transform: rotate(-90deg);
+    z-index: 1;
+}
+.timeline .gradualness .end {
+    position: absolute;
+    top: 30px;
+    transform: rotate(-90deg);
+    z-index: 1;
+}
+.timeline .gradualness .date {
+    position: absolute;
+    top: 30px;
+    font-weight: bold;
+    transform: rotate(-90deg);
+    z-index: 10;
+    background-color: rgba(255,255,255,0.85);
+    border-radius: 12px;
+}

@@ -1,9 +1,9 @@
 export const STRING_LOGIN = "Connexion";
 export const STRING_LOGOUT = "Déconnexion";
-export const STRING_EXPERIENCE_JOB_DESCRIPTION = "Description du poste";
+export const STRING_EXPERIENCE_JOB_DESCRIPTION = "Description";
 export const STRING_EXPERIENCE_TECH = "Techno(s)";
 export const STRING_LINKS = "Lien(s)";
 export const STRING_PROFESSIONAL_EXPERIENCE = "Expérience Professionnelle";
 export const STRING_DEGREE = "Diplôme";
-export const STRING_QUALIFICATION_ROLES = "Rôles";
-export const STRING_QUALIFICATION_ACCESSIBLE_EMPLOYMENT = "Emplois accessibles";
+export const STRING_QUALIFICATION_ROLES = "Description";
+export const STRING_QUALIFICATION_ACCESSIBLE_EMPLOYMENT = "Emplois cible";

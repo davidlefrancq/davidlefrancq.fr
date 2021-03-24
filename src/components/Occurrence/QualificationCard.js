@@ -1,12 +1,12 @@
 import React, {Component, Fragment} from 'react';
-import {Button, Card, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import {Card} from 'react-bootstrap';
 import MonthFr from "../../utils/MonthFr";
 import FirstCharUppercase from "../../utils/FirstCharUppercase";
 import {BsBuilding, BsFillInfoCircleFill, BsLink, BsCalendar, BsLink45Deg} from "react-icons/bs";
 import {GoCalendar} from "react-icons/go";
 import {GiDiploma} from 'react-icons/gi';
 import {MdWork} from "react-icons/md";
-import {FaCalendarAlt} from "react-icons/fa";
+import {FaGraduationCap} from "react-icons/fa";
 import DOMPurify from 'dompurify';
 import {
     STRING_DEGREE, STRING_LINKS, STRING_QUALIFICATION_ACCESSIBLE_EMPLOYMENT,
@@ -28,9 +28,9 @@ class QualificationCard extends Component {
                 display: "none",
             },
         };
-        this.showObjectives = this.showObjectives.bind(this)
-        this.showJobs = this.showJobs.bind(this)
-        this.showLinks = this.showLinks.bind(this)
+        this.showObjectives = this.showObjectives.bind(this);
+        this.showJobs = this.showJobs.bind(this);
+        this.showLinks = this.showLinks.bind(this);
     }
 
 
@@ -110,9 +110,13 @@ class QualificationCard extends Component {
     renderJob(job) {
         if (job != undefined && job != null) {
             return (
-                <div className={"col-6"}>
-                    <div className={"border border-top-0 border-left-0 border-right-0 p-2 mb-2"}>
-                        {job.name}
+                <div className={"col-12"}>
+                    <div className={"row"}>
+                        <div className="col-2"></div>
+                        <div className="col-8 border border-top-0 border-left-0 border-right-0 p-2 mb-2">
+                            {job.name}
+
+                        </div>
                     </div>
                 </div>
             );
@@ -205,7 +209,10 @@ class QualificationCard extends Component {
         );
     }
 
-    renderTrainingCenterLogo(url, logo) {
+    renderTrainingCenterLogo(trainingCenter) {
+
+        const {logo, url} = trainingCenter;
+
         if (url != undefined && url != null && url != "") {
             return (
                 <a href={url}>
@@ -219,7 +226,9 @@ class QualificationCard extends Component {
         }
     }
 
-    renderTrainingCenterLink(url, name) {
+    renderTrainingCenterLink(trainingCenter) {
+
+        const {name, url} = trainingCenter;
 
         if (url != undefined && url != null && url != "") {
             return (
@@ -236,12 +245,21 @@ class QualificationCard extends Component {
         }
     }
 
-    renderTrainingCenterLinkGoogleMap(address) {
-        if (address != undefined && address != null && address != "") {
+    renderTrainingCenterLinkGoogleMap(trainingCenter) {
+        const {address, postalCode, city} = trainingCenter;
+
+        let fullAddress = "";
+        fullAddress += address ? address : "";
+        fullAddress += address && postalCode ? " " : "";
+        fullAddress += postalCode ? postalCode : "";
+        fullAddress += postalCode && fullAddress ? " " : "";
+        fullAddress += city ? city : "";
+
+        if (fullAddress != undefined && fullAddress != null && fullAddress != "") {
             return (
                 <div className={"google-map-link text-center"} style={{height: "100px"}}>
                     <a
-                        href={`https://www.google.fr/maps/search/${address}?hl=fr`}
+                        href={`https://www.google.fr/maps/search/${fullAddress}?hl=fr`}
                         target={"_blank"}
                     >
                         <span className={"legend"}>Google Map</span>
@@ -262,44 +280,88 @@ class QualificationCard extends Component {
 
         if (date != undefined && date != null) {
 
-            const month = MonthFr.convert(date.getMonth());
-            const year = date.getFullYear();
+            // const month = MonthFr.convert(date.getMonth());
+            // const year = date.getFullYear();
 
             return (
-                <div className={"ml-auto mr-auto"} style={{
-                    width: "100%",
-                    height: "75px",
-                }}>
+                <div style={{minHeight:"100px"} }>
 
+                    {this.renderTimeline(date)}
 
-                    <div className={"row m-0 p-0"}>
-                        <div className={"col-4 m-0 p-0"}>
-                            <div className={"row p-0 m-0"}>
-                                <div className={"col-auto ml-auto mr-auto"}>
-                                    <div
-                                        className={"occurrence-card-logo-date"}
-                                    >
-                                        <GoCalendar
-                                            style={{
-                                                fontSize: "x-large",
-                                            }}
-                                        />
-                                    </div>
+                    {/*{this.formatDate(date)}*/}
 
-                                </div>
-                            </div>
-                        </div>
-                        <div className={"col-8 m-0 p-0"}>
-                            <div className={"row m-0 p-0 h-100"}>
-                                <div className={"col-6 m-0 p-0 text-center p-2"}>
-                                    {this.formatDate(date)}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {/*<div className={"row m-0 p-0"}>*/}
+                    {/*    <div className={"col-4 m-0 p-0"}>*/}
+                    {/*        <div className={"row p-0 m-0"}>*/}
+                    {/*            <div className={"col-auto ml-auto mr-auto"}>*/}
+                    {/*                <div*/}
+                    {/*                    className={"occurrence-card-logo-date"}*/}
+                    {/*                >*/}
+                    {/*                    <GoCalendar*/}
+                    {/*                        style={{*/}
+                    {/*                            fontSize: "x-large",*/}
+                    {/*                        }}*/}
+                    {/*                    />*/}
+                    {/*                </div>*/}
+
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*    <div className={"col-8 m-0 p-0"}>*/}
+                    {/*        <div className={"row m-0 p-0 h-100"}>*/}
+                    {/*            <div className={"col-6 m-0 p-0 text-center p-2"}>*/}
+                    {/*                {this.formatDate(date)}*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
             );
         }
+    }
+
+    renderTimeline = (date) => {
+        const {firstDate, lastDate} = this.props;
+
+        const startYear = firstDate.getFullYear();
+        const endYear = lastDate.getFullYear();
+        const year = date.getFullYear();
+
+        const positionStart = 0;
+        const positionEnd = 100;
+        const positionDate = ((((year - startYear) * positionEnd) / (endYear - startYear)));
+        const leftStart = positionStart.toString() + "%";
+        const leftDate = positionDate.toString() + "%";
+        const leftEnd = positionEnd.toString() + "%";
+
+        console.log("start", startYear, "date", year, "end", endYear);
+
+        return (
+            <div className={"timeline"}>
+
+                <div className={"gradualness"}>
+
+                    <div className={"startPoint"} style={{left: leftStart, marginLeft:"-6px"}}></div>
+                    <div className={"start"} style={{left: leftStart, marginLeft:"-12px"}}>
+                        {startYear}
+                    </div>
+
+                    <div className={"endPoint"} style={{left: leftEnd, marginLeft:"-6px"}}></div>
+                    <div className={"end"} style={{left: leftEnd, marginLeft:"-12px"}}>
+                        {endYear}
+                    </div>
+
+                    <div className={"datePoint"} style={{left: leftDate, marginLeft:"-6px"}}></div>
+                    <div className={"date"} style={{left: leftDate, marginLeft:"-12px"}}>
+                        {year}
+                    </div>
+
+                </div>
+
+            </div>
+        );
+
+
     }
 
     formatDate(date) {
@@ -325,14 +387,6 @@ class QualificationCard extends Component {
         }
     }
 
-    renderTooltipQualification = (props) => {
-        return (
-            <Tooltip id="card-tooltip-qualification" {...props}>
-                {STRING_DEGREE}
-            </Tooltip>
-        );
-    }
-
     render() {
         const {dateStart, dateEnd, qualification} = this.props.occurrence;
         const {name, img, level, trainingCenter, objectives, jobs, links} = qualification;
@@ -340,18 +394,9 @@ class QualificationCard extends Component {
         return (
             <Card className={"mt-0 occurrence-card qualification"}>
 
-                <OverlayTrigger
-                    placement="right"
-                    delay={{show: 250, hide: 400}}
-                    overlay={this.renderTooltipQualification}
-                >
-                    <div className={"logo"}>
-                        <GiDiploma
-                            className={""}
-                            style={{fontSize: "x-large"}}
-                        />
-                    </div>
-                </OverlayTrigger>
+                <div className={"logo"}>
+                    <FaGraduationCap/>
+                </div>
 
                 <Card.Header className={"pb-1"}>
                     <Card.Title className={"pb-0"}>
@@ -364,69 +409,102 @@ class QualificationCard extends Component {
                 <Card.Body>
 
                     <div className={"row"}>
-                        <div className={"col-12"}>
-                            <div className={"mt-2 row"}>
 
-                                <div className={"col-12 col-xl-4"}>
+                        <div className={"col-12 row"}>
+
+                            <div className={"col-3"}>
+                                {this.renderTrainingCenterLogo(trainingCenter)}
+                            </div>
+                            <div className={"col-9 col-xl-9 row p-0 m-0"}>
+                                <div className={"col-7 col-xl-5 pl-0 pr-0 pt-3"}>
                                     {this.renderDate(dateEnd)}
                                 </div>
-
-                                <div className={"d-block d-xl-none w-100 pl-5 pr-5 pb-3"}>
-                                    <hr className={"ml-5 mr-5"}/>
+                                <div className={"col-5 col-xl-7 pl-5 pr-5"}>
+                                    {this.renderTrainingCenterLinkGoogleMap(trainingCenter)}
                                 </div>
-
-                                <div className={"col-12 col-xl-8"}>
-                                    {this.renderTrainingCenter(trainingCenter)}
-                                </div>
-
                             </div>
-                        </div>
 
-                        <div className={"w-100 pl-5 pr-5"}>
-                            <br/>
-                        </div>
+                            <div className={"col-12 border-top mt-1"}>
+                                {this.renderTrainingCenterLink(trainingCenter)}
+                            </div>
 
-                        <div className={"col-12 pl-5"}>
-
-                            <button className={"btn btn-outline-primary m-1 pt-1 pb-2 pr-3 pl-3"}
-                                    onClick={this.showObjectives}>
-                                <BsFillInfoCircleFill/>
-                            </button>
-
-                            <button className={"btn btn-outline-primary m-1 pt-1 pb-2 pr-3 pl-3"}
-                                    onClick={this.showJobs}>
-                                <MdWork/>
-                            </button>
-
-                            <button className={"btn btn-outline-primary m-1 pt-1 pb-2 pr-3 pl-3"}
-                                    onClick={this.showLinks}>
-                                <BsLink/>
-                            </button>
 
                         </div>
+
+
+                        {/*<div className={"col-12"}>*/}
+                        {/*    <div className={"mt-2 row"}>*/}
+
+                        {/*        <div className={"col-12 col-xl-4"}>*/}
+                        {/*            {this.renderDate(dateEnd)}*/}
+                        {/*        </div>*/}
+
+                        {/*        <div className={"d-block d-xl-none w-100 pl-5 pr-5 pb-3"}>*/}
+                        {/*            <hr className={"ml-5 mr-5"}/>*/}
+                        {/*        </div>*/}
+
+                        {/*        <div className={"col-12 col-xl-8"}>*/}
+                        {/*            {this.renderTrainingCenter(trainingCenter)}*/}
+                        {/*        </div>*/}
+
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                    </div>
+
+
+                    <div className={"row"}>
 
                         <div className={"col-12 pl-4 pr-4"}>
 
-                            <div className={"text-justify p-3"} style={{display: this.state.objectives.display}}>
-                                <h4>
-                                    {STRING_QUALIFICATION_ROLES}
-                                </h4>
-                                {this.renderObjectives(objectives)}
+                            <div className={"row h-100"}>
+                                <div className={"occurrence-card-menu col-3 h-100"}>
+                                    <div className={"btn-group h-100"}>
+                                        <button className={"btn btn-primary outer"} onClick={this.showObjectives}>
+                                            <div className={"inner"}>
+                                                <BsFillInfoCircleFill/> &nbsp;
+                                                {STRING_QUALIFICATION_ROLES}
+                                            </div>
+                                        </button>
+                                        <button className={"btn btn-primary outer"} onClick={this.showJobs}>
+                                            <div className={"inner"}>
+                                                <MdWork/> &nbsp;
+                                                {STRING_QUALIFICATION_ACCESSIBLE_EMPLOYMENT}
+                                            </div>
+                                        </button>
+                                        <button className={"btn btn-primary outer"} onClick={this.showLinks}>
+                                            <div className={"inner"}>
+                                                <BsLink/> &nbsp;
+                                                {STRING_LINKS}
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className={"col-9"} style={{minHeight: "400px"}}>
+                                    <div className={"text-justify p-3"}
+                                         style={{display: this.state.objectives.display}}>
+                                        <h4>
+                                            {STRING_QUALIFICATION_ROLES}
+                                        </h4>
+                                        {this.renderObjectives(objectives)}
+                                    </div>
+
+                                    <div className={"text-justify p-3"} style={{display: this.state.jobs.display}}>
+                                        <h4>
+                                            {STRING_QUALIFICATION_ACCESSIBLE_EMPLOYMENT}
+                                        </h4>
+                                        {this.renderJobs(jobs)}
+                                    </div>
+
+                                    <div className={"p-3"} style={{display: this.state.links.display}}>
+                                        <h4>
+                                            {STRING_LINKS}
+                                        </h4>
+                                        {this.renderLinks(links)}
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className={"text-justify p-3"} style={{display: this.state.jobs.display}}>
-                                <h4>
-                                    {STRING_QUALIFICATION_ACCESSIBLE_EMPLOYMENT}
-                                </h4>
-                                {this.renderJobs(jobs)}
-                            </div>
-
-                            <div className={"p-3"} style={{display: this.state.links.display}}>
-                                <h4>
-                                    {STRING_LINKS}
-                                </h4>
-                                {this.renderLinks(links)}
-                            </div>
                         </div>
                     </div>
                 </Card.Body>

@@ -183,6 +183,24 @@ class OccurrencesUtils {
         return result;
     }
 
+    static dateCompare(date1, date2){
+
+        let result = null;
+
+        if(date1 instanceof Date && date2 instanceof Date){
+            if(date1.getTime() === date2.getTime()){
+                result = 0;
+            }
+            else if(date1.getTime() > date2.getTime()){
+                result = 1;
+            } if(date1.getTime() < date2.getTime()){
+                result = -1;
+            }
+        }
+
+        return result;
+    }
+
     static getType(occurrence) {
         let curentType = null;
 
@@ -199,16 +217,31 @@ class OccurrencesUtils {
 
         let date = null;
 
-        if (occurrence != undefined && occurrence != null) {
+        if (occurrence !== undefined && occurrence !== null) {
             const {dateStart, dateEnd} = occurrence;
 
-            if (dateStart != undefined && dateStart != null) {
-                date = new Date(dateStart);
+            // Occurrence Type : Experience or Qualification
+            const type = OccurrencesUtils.getType(occurrence);
+
+            // If Expérience
+            if(type === OCCURRENCE_EXPERIENCE){
+
+                if (dateStart !== undefined && dateStart !== null) {
+                    date = new Date(dateStart);
+                }
+
+            }
+            // If Qualification
+            else if(type === OCCURRENCE_QUALIFICATION){
+                if (dateStart !== undefined && dateStart !== null) {
+                    date = new Date(dateStart);
+                }
+
+                if (dateEnd !== undefined && dateEnd !== null) {
+                    date = new Date(dateEnd);
+                }
             }
 
-            if (dateEnd != undefined && dateEnd != null) {
-                date = new Date(dateEnd);
-            }
         }
 
         return date;

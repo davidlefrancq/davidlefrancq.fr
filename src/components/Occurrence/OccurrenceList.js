@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, createRef, Fragment} from 'react';
 import OccurrenceItem from "./OccurrenceItem";
 import CvCarousel from "../Corousel/CvCarousel";
 import DateBar from "../DateBar/DateBar";
@@ -32,6 +32,7 @@ class OccurrenceList extends Component {
             },
             screenSize: screenSize,
         };
+        this.refOverlayQualification = createRef();
     }
 
     componentDidMount() {
@@ -55,15 +56,15 @@ class OccurrenceList extends Component {
         const state = {...this.state};
         const screenSize = ScreenDetection.getBootstrapSize();
 
-        if (state.screenSize != screenSize || force == true) {
+        if (state.screenSize !== screenSize || force === true) {
 
             state.screenSize = screenSize;
 
-            if (screenSize == "col-xl") {
+            if (screenSize === "col-xl") {
                 state.style.qualificationDisplay = "";
                 state.style.experienceDisplay = "";
             } else {
-                if (state.style.qualificationDisplay != "d-none" && state.style.experienceDisplay != "d-none") {
+                if (state.style.qualificationDisplay !== "d-none" && state.style.experienceDisplay !== "d-none") {
                     state.style.qualificationDisplay = "";
                     state.style.experienceDisplay = "d-none";
                 }
@@ -87,12 +88,12 @@ class OccurrenceList extends Component {
 
                 dates.forEach((item) => {
 
-                    if (date.getFullYear() == item.title) {
+                    if (date.getFullYear() === item.title) {
                         dateExist = true;
                     }
                 });
 
-                if (dateExist == false) {
+                if (dateExist === false) {
                     let stepDate = this.initiateStepDate(date);
                     dates.push(stepDate);
                 }
@@ -105,7 +106,7 @@ class OccurrenceList extends Component {
     initiateStepDate = (date) => {
         let stepDate = new Step(date.getFullYear(), "");
         stepDate.onClick = (year) => {
-            if (year != undefined && year != null) {
+            if (year !== undefined && year !== null) {
                 const occurrence = OccurrencesUtils.getOccurrenceClosestToYear(this.props.occurrences,year);
                 this.setOccurrence(occurrence);
             }
@@ -125,11 +126,11 @@ class OccurrenceList extends Component {
         });
     }
 
-    renderOcurence = () => {
+    renderOcurence = (firstDate, lastDate) => {
         const {occurrence} = this.props;
-        if (occurrence != undefined && occurrence != null) {
+        if (occurrence !== undefined && occurrence !== null) {
             return (
-                <OccurrenceItem occurrence={occurrence}/>
+                <OccurrenceItem occurrence={occurrence} firstDate={firstDate} lastDate={lastDate}/>
             );
         } else {
             return (
@@ -190,7 +191,7 @@ class OccurrenceList extends Component {
 
     renderMenu = () => {
         const {screenSize} = this.state
-        if (screenSize != "col-xl") {
+        if (screenSize !== "col-xl") {
             return (
                 <Fragment>
                     <div className={"text-center mb-3 p-0"}>
@@ -255,7 +256,7 @@ class OccurrenceList extends Component {
 
     updateOccurenceSelected = (target) => {
 
-        if (target != undefined && target != null) {
+        if (target !== undefined && target !== null) {
             if (this.isItemExistInOccurrences()) {
 
                 const occurrence = this.props.occurrences[target];
@@ -308,7 +309,7 @@ class OccurrenceList extends Component {
         if (occurrencesExperiences) {
             const keys = Object.keys(occurrencesExperiences);
             keys.map((key) => {
-                if (occurrence.id == occurrencesExperiences[key].id) {
+                if (occurrence.id === occurrencesExperiences[key].id) {
                     keyResult = key;
                 }
             });
@@ -324,7 +325,7 @@ class OccurrenceList extends Component {
         if (occurrencesQualifications) {
             const keys = Object.keys(occurrencesQualifications);
             keys.map((key) => {
-                if (occurrence.id == occurrencesQualifications[key].id) {
+                if (occurrence.id === occurrencesQualifications[key].id) {
                     keyResult = key;
                 }
             });
@@ -368,17 +369,17 @@ class OccurrenceList extends Component {
         return (
             <Fragment>
                 <div style={{height: 0}}>
-                    <OverlayTrigger
-                        placement="left"
-                        delay={{show: 250, hide: 400}}
-                        overlay={this.renderTooltipExperience}
-                    >
+                    {/*<OverlayTrigger*/}
+                    {/*    placement="left"*/}
+                    {/*    delay={{show: 250, hide: 400}}*/}
+                    {/*    overlay={this.renderTooltipExperience}*/}
+                    {/*>*/}
                         <div className={"logo-carousel logo-carousel-experience text-center"}>
                             <BsBuilding style={{
                                 fontSize: "x-large"
                             }}/>
                         </div>
-                    </OverlayTrigger>
+                    {/*</OverlayTrigger>*/}
                 </div>
                 <CvCarousel type={OCCURRENCE_EXPERIENCE} setOccurrence={this.setOccurrence}/>
             </Fragment>
@@ -390,17 +391,17 @@ class OccurrenceList extends Component {
         return (
             <Fragment>
                 <div style={{height: 0}}>
-                    <OverlayTrigger
-                        placement="left"
-                        delay={{show: 250, hide: 400}}
-                        overlay={this.renderTooltipQualification}
-                    >
-                        <div className={"logo-carousel logo-carousel-qualification text-center"}>
+                    {/*<OverlayTrigger*/}
+                    {/*    placement="left"*/}
+                    {/*    delay={{show: 250, hide: 400}}*/}
+                    {/*    overlay={this.renderTooltipQualification}*/}
+                    {/*>*/}
+                        <div ref={this.refOverlayQualification} className={"logo-carousel logo-carousel-qualification text-center"}>
                             <GiDiploma style={{
                                 fontSize: "x-large"
                             }}/>
                         </div>
-                    </OverlayTrigger>
+                    {/*</OverlayTrigger>*/}
                 </div>
                 <CvCarousel type={OCCURRENCE_QUALIFICATION} setOccurrence={this.setOccurrence}/>
             </Fragment>
@@ -408,7 +409,115 @@ class OccurrenceList extends Component {
     }
 
 
+    getFirstDate = () => {
+
+        let firstDate = null;
+
+        const {occurrences} = this.props;
+        const keys = Object.keys(occurrences);
+        keys.map((key)=>{
+
+            const occurrence = occurrences[key];
+            const type = OccurrencesUtils.getType(occurrence)
+            if(type !== null){
+
+                // Qualification
+                if(type === OCCURRENCE_QUALIFICATION){
+
+                    var tmpDate = OccurrencesUtils.getDate(occurrence);
+                    if(tmpDate !== null){
+
+                        // Date of Qualification
+                        if(firstDate === null) {
+                            firstDate = tmpDate;
+                        }else{
+                            if(OccurrencesUtils.dateCompare(tmpDate,firstDate) < 0){
+                                firstDate = tmpDate;
+                            }
+                        }
+                    }
+                }
+
+                // Experience
+                if(type === OCCURRENCE_EXPERIENCE){
+
+                    var tmpDate = OccurrencesUtils.getDate(occurrence);
+                    if(tmpDate !== null){
+
+                        // Date of Qualification
+                        if(firstDate === null) {
+                            firstDate = tmpDate;
+                        }else{
+                            if(OccurrencesUtils.dateCompare(tmpDate,firstDate) < 0){
+                                firstDate = tmpDate;
+                            }
+                        }
+                    }
+                }
+
+            }
+        });
+
+        return firstDate;
+    }
+
+    getLastDate = () => {
+
+        let lastDate = null;
+
+        const {occurrences} = this.props;
+        const keys = Object.keys(occurrences);
+        keys.map((key)=>{
+
+            const occurrence = occurrences[key];
+            const type = OccurrencesUtils.getType(occurrence)
+            if(type !== null){
+
+                // Qualification
+                if(type === OCCURRENCE_QUALIFICATION){
+
+                    var tmpDate = OccurrencesUtils.getDate(occurrence);
+                    if(tmpDate !== null){
+
+                        // Date of Qualification
+                        if(lastDate === null) {
+                            lastDate = tmpDate;
+                        }else{
+                            if(OccurrencesUtils.dateCompare(tmpDate,lastDate) > 0){
+                                lastDate = tmpDate;
+                            }
+                        }
+                    }
+                }
+
+                // Experience
+                if(type === OCCURRENCE_EXPERIENCE){
+
+                    var tmpDate = OccurrencesUtils.getDate(occurrence);
+                    if(tmpDate !== null){
+
+                        // Date of Qualification
+                        if(lastDate === null) {
+                            lastDate = tmpDate;
+                        }else{
+                            if(OccurrencesUtils.dateCompare(tmpDate,lastDate) > 0){
+                                lastDate = tmpDate;
+                            }
+                        }
+                    }
+                }
+
+            }
+        });
+
+        return lastDate;
+    }
+
+
     render() {
+
+        const firstDate = this.getFirstDate();
+        const lastDate = this.getLastDate();
 
         return (
             <Fragment>
@@ -426,18 +535,18 @@ class OccurrenceList extends Component {
                                     {this.renderMenu()}
                                 </div>
 
-                                <div className={"d-none d-xl-block col-xl-3 text-left"}>
-                                    <Earth
-                                        updateOccurenceSelected={this.updateOccurenceSelected}
-                                    />
-                                </div>
+                                {/*<div className={"d-none d-xl-block col-xl-3 text-left"}>*/}
+                                {/*    <Earth*/}
+                                {/*        updateOccurenceSelected={this.updateOccurenceSelected}*/}
+                                {/*    />*/}
+                                {/*</div>*/}
 
-                                <div className={"col-12 col-xl-3"}>
+                                <div className={"col-12 col-xl-4"}>
                                     {this.renderCvCarousel()}
                                 </div>
 
-                                <div className={"col-12 col-xl-6 pl-5 pr-5"}>
-                                    {this.renderOcurence()}
+                                <div className={"col-12 col-xl-8 pl-5 pr-5"}>
+                                    {this.renderOcurence(firstDate, lastDate)}
                                 </div>
                             </div>
                         </div>
