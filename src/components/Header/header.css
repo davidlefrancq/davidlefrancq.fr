@@ -1,34 +1,119 @@
 /* ********* */
 /* JUMBOTRON */
 .jumbotron {
-    padding: 0;
+    /*padding: 0;*/
     background-color: rgba(255,255,255,0.8);
     border-radius: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    /*padding-top: 0;*/
+    /*padding-bottom: 0;*/
     margin-top:0;
     margin-bottom: 25px;
     box-shadow: 1px 0px 10px rgba(0,0,0,0.1);
 }
 
 .jumbotron h1{
-    margin: 0;
-    color: rgba(0,0,0,0.8);
-    padding-left: 25px;
-    padding-top: 3px;
-    padding-bottom: 10px;
-    margin: 0;
+/*    margin: 0;*/
+/*    color: rgba(0,0,0,0.8);*/
+/*    padding-left: 25px;*/
+/*    padding-top: 3px;*/
+/*    padding-bottom: 10px;*/
+/*    margin: 0;*/
+}
+
+.jumbotron p{
+    color: rgba(0,0,0,1);
+}
+
+.jumbotron .subtitle-hover{
+    animation: subtitle-hover 0.2s ease-in forwards;
+    padding-left: 0;
+}
+@keyframes subtitle-hover {
+    0%{
+        color: rgba(0,0,0,1);
+        padding-left: 0;
+    }
+    100%{
+        color: rgba(0,0,0,0);
+        padding-left: 50%;
+    }
+}
+
+.jumbotron .subtitle-leave{
+    animation: subtitle-leave 0.2s ease-in forwards;
+}
+@keyframes subtitle-leave {
+    0%{
+        color: rgba(0,0,0,0);
+        padding-left: 50%;
+    }
+    100%{
+        color: rgba(0,0,0,1);
+        padding-left: 0;
+    }
 }
 
 /* ****** */
 /* NAVBAR */
 .navbar{
-    background-color: rgba(0,0,0,0.9) !important;
+    margin-bottom: 0 !important;
+    /*background-color: rgba(29,40,51,1) !important;*/
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+}
+
+.navbar .login-form{
+    display: none;
+    /*border: 1px solid black;*/
+}
+
+.navbar .login-form.active-animation{
+    display: inline-block;
+    /*animation: open-login-form 0.5s ease-in;*/
+
+    animation-duration: 0.5s;
+    animation-name: open-login-form;
+    animation-iteration-count: 1;
+    animation-direction: alternate;
+
+}
+
+@keyframes open-login-form {
+    0%{
+        display: inline-block;
+        opacity:0;
+    }
+    100%{
+        opacity:1;
+    }
+}
+
+.navbar .login-form.inactive-animation{
+    display: none;
+    /*animation: close-login-form 0.5s ease-in;*/
+    animation-duration: 0.5s;
+    animation-name: close-login-form;
+    animation-iteration-count: 1;
+    animation-direction: alternate;
+}
+
+@keyframes close-login-form {
+    0%{
+        display: inline-block;
+        opacity:1;
+    }
+    99%{
+        opacity:0;
+    }
+    100%{
+        display: none;
+    }
 }
 
 .navbar-brand .logo {
     height: 40px;
-    background-color: grey;
+    background-color: rgba(0,123,255,0);
+    border: 1px solid white;
+    margin-left: 2px;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 2px;
@@ -41,9 +126,12 @@
 @keyframes logo-hover {
     0%{
         border-radius: 0;
+        margin-left: 2px;
     }
     100%{
-        border-radius: 0 25px 25px 0;
+        border-radius: 25px 25px 25px 25px;
+        margin-left: 4px;
+        padding-left: 25px;
         padding-right: 25px;
     }
 }
@@ -52,10 +140,14 @@
 }
 @keyframes logo-leave {
     0%{
-        border-radius: 0 25px 25px 0;
+        border-radius: 25px 25px 25px 25px;
+        margin-left: 4px;
+        padding-left: 25px;
+        padding-right: 25px;
     }
     100%{
         border-radius: 0;
+        margin-left: 2px;
     }
 }
 

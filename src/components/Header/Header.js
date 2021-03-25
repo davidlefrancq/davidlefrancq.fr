@@ -20,9 +20,11 @@ class Header extends Component {
                 authFormAnimation: "",
             },
             style: {
+                subtitleAnimation:"",
                 logoAnimation: "",
                 logoFirstAnimation: "",
                 logoLastAnimation: "",
+                loginFormActive: "",
             }
         };
     }
@@ -30,14 +32,16 @@ class Header extends Component {
     openFormAuth = () => {
         const state = {...this.state};
         state.connection.authForm = true;
-        state.connection.authFormAnimation = "auth-form-on";
+        // state.connection.authFormAnimation = "auth-form-on";
+        state.style.loginFormActive = "active-animation";
         this.setState(state);
     }
 
     closeFormAuth = () => {
         const state = {...this.state};
         state.connection.authForm = false;
-        state.connection.authFormAnimation = "auth-form-off";
+        // state.connection.authFormAnimation = "auth-form-off";
+        state.style.loginFormActive = "inactive-animation";
         this.setState(state);
     }
 
@@ -48,7 +52,7 @@ class Header extends Component {
         setAuthentification(false);
         state.connection.title = STRING_LOGIN;
         state.connection.authForm = false;
-        state.connection.authFormAnimation = "";
+        // state.connection.authFormAnimation = "";
         this.setState(state);
     }
 
@@ -99,7 +103,7 @@ class Header extends Component {
         const state = {...this.state};
 
         if (!isLoggedIn) {
-            state.connection.authFormAnimation = "auth-form-off";
+            // state.connection.authFormAnimation = "auth-form-off";
             this.setState(state);
 
             daoFactory
@@ -149,6 +153,7 @@ class Header extends Component {
 
     logoEnterAnimation = () => {
         const state = {...this.state};
+        state.style.subtitleAnimation = "subtitle-hover"
         state.style.logoAnimation = "logo-hover"
         state.style.logoFirstAnimation = "logo-first-action-hover"
         state.style.logoLastAnimation = "logo-last-action-hover"
@@ -157,6 +162,7 @@ class Header extends Component {
 
     logoLeaveAnimation = () => {
         const state = {...this.state};
+        state.style.subtitleAnimation = "subtitle-leave"
         state.style.logoAnimation = "logo-leave"
         state.style.logoFirstAnimation = "logo-first-action-leave"
         state.style.logoLastAnimation = "logo-last-action-leave"
@@ -166,16 +172,19 @@ class Header extends Component {
     render() {
         const {isLoggedIn} = this.props;
         const {authFormAnimation} = this.state.connection;
-        const {logoFirstAnimation, logoLastAnimation, logoAnimation} = this.state.style;
+        const {subtitleAnimation, logoFirstAnimation, logoLastAnimation, logoAnimation, loginFormActive} = this.state.style;
         let dNone = "";
         if (isLoggedIn) {
             dNone = "d-none";
         }
+
+
         return (
             <Fragment>
 
-                <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-0 mt-0 ml-0 mr-0 mb-4">
-                    <a className="navbar-brand p-0 m-0" href="/">
+                <nav className="navbar navbar-expand-sm navbar-dark bg-primary p-0 mt-0 ml-0 mr-0 mb-4">
+                    <Link className={"col-auto navbar-brand p-0 m-0"} to={"/"}>
+                    {/*<a className="col-auto navbar-brand p-0 m-0" href="/">*/}
                         <div className={`logo ${logoAnimation}`}
                              onMouseEnter={this.logoEnterAnimation}
                              onMouseLeave={this.logoLeaveAnimation}
@@ -185,18 +194,26 @@ class Header extends Component {
                             <div className={"initial"}>L</div>
                             <div className={`last-name ${logoLastAnimation}`}>efrancq</div>
                         </div>
-                    </a>
+                    {/*</a>*/}
+                    </Link>
 
-                    <h1 className={"ml-3 text-white"}>Concepteur Développeur Informatique</h1>
+                    {/*<h1 className={"col-auto ml-3 text-white"}>Concepteur Développeur Informatique</h1>*/}
 
                     <ul className="navbar-nav mr-auto ml-auto menu">
                         {this.renderButtonHome()}
                         {this.renderButtonAdmin()}
                     </ul>
 
+                    {/*<div className={`navbar-nav login-form auth-form ${authFormAnimation} ${dNone}`}>*/}
+                    <div className={`navbar-nav login-form ${loginFormActive} ${dNone}`}>
+                        <form>
+                            <LoginForm handleAuthentification={this.handleAuthentification}/>
+                        </form>
+                    </div>
+
                     <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <a className="nav-link" onClick={this.handleAuthForm}>
+                        <li className="nav-item" onClick={this.handleAuthForm} style={{userSelect:"none"}}>
+                            <a className="nav-link">
                                 {this.renderAuthentificationLabel()}
                             </a>
                         </li>
@@ -204,14 +221,11 @@ class Header extends Component {
 
                 </nav>
 
-                {/*<Jumbotron>*/}
-                {/*    <h1>Concepteur Développeur Informatique</h1>*/}
-                {/*    /!*<p>David Lefrancq</p>*!/*/}
-                {/*</Jumbotron>*/}
+                <Jumbotron className={"pt-4"}>
+                    <h1 className={``}>Concepteur Développeur Informatique</h1>
+                    <p className={`${subtitleAnimation}`}>David Lefrancq</p>
+                </Jumbotron>
 
-                <div className={`auth-form ${authFormAnimation} ${dNone}`}>
-                    <LoginForm handleAuthentification={this.handleAuthentification}/>
-                </div>
             </Fragment>
         );
     }
