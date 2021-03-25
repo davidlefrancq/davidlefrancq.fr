@@ -77,6 +77,12 @@ class OccurrencesUtils {
         return experienceOccurence;
     }
 
+    static getOccurrences(occurrences) {
+        const result = occurrences;
+        result.sort(OccurrencesUtils.occurrenceSort);
+        return result;
+    }
+
     static getExperiences(occurrences) {
         const experinceOccurences = [];
 
@@ -141,6 +147,46 @@ class OccurrencesUtils {
 
         qualificationOccurences.sort(OccurrencesUtils.occurrenceSort);
         return qualificationOccurences;
+    }
+
+    static occurrenceRevertSort(a,b){
+        let result = 0;
+
+        let dateA = null;
+        let dateB = null;
+
+        if (a.dateStart) {
+            dateA = a.dateStart;
+        }
+        if (b.dateStart) {
+            dateB = b.dateStart
+        }
+        if (a.dateEnd) {
+            dateA = a.dateEnd;
+        }
+        if (b.dateEnd) {
+            dateB = b.dateEnd
+        }
+
+        if (dateA != null && dateB != null) {
+            if (dateA < dateB) {
+                result = 1;
+            }
+
+            if (dateA > dateB) {
+                result = -1;
+            }
+        }
+
+        if (dateA != null && dateB == null) {
+            result = -1;
+        }
+
+        if (dateA == null && dateB != null) {
+            result = 1;
+        }
+
+        return result;
     }
 
     static occurrenceSort(a, b) {
