@@ -323,9 +323,9 @@ class QualificationCard extends Component {
     renderTimeline = (date) => {
         const {firstDate, lastDate} = this.props;
 
-        const startYear = firstDate.getFullYear();
-        const endYear = lastDate.getFullYear();
-        const year = date.getFullYear();
+        const startYear = firstDate ? firstDate.getFullYear() : 1900;
+        const endYear = lastDate ? lastDate.getFullYear() : Date.now().getFullYear();
+        const year = date ? date.getFullYear() : 1900;
 
         const positionStart = 0;
         const positionEnd = 100;
