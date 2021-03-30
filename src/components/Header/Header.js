@@ -1,14 +1,15 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, createRef, Fragment} from 'react';
 import {Jumbotron} from 'react-bootstrap';
 import {connect} from "react-redux";
 import {actions} from '../../actions';
 import {Link} from "react-router-dom";
 import DAOFactory from "../../dal/DAOFactory";
 import LoginForm from "../LoginForm/LoginForm";
+import copy from "copy-to-clipboard";
 import {STRING_LOGIN, STRING_LOGOUT} from "../../translation/fr-fr";
 import {AiOutlineFilePdf, AiOutlineLogin, AiOutlineLogout} from "react-icons/ai";
-import {GrDocumentPdf, MdPictureAsPdf} from "react-icons/all";
 import "./header.css";
+import {BsArrowBarRight, FaClipboardList, FcRight, FiChevronLeft, FiChevronRight, GoMail} from "react-icons/all";
 
 class Header extends Component {
 
@@ -21,13 +22,16 @@ class Header extends Component {
                 authFormAnimation: "",
             },
             style: {
-                subtitleAnimation:"",
+                subtitleAnimation: "",
                 logoAnimation: "",
                 logoFirstAnimation: "",
                 logoLastAnimation: "",
                 loginFormActive: "",
-            }
+                msgCopyEmail: "msg-copy-email-disabled",
+            },
+            email: "@EMail",
         };
+        this.refEmail = createRef();
     }
 
     openFormAuth = () => {
@@ -130,7 +134,7 @@ class Header extends Component {
         }
     }
 
-    renderButtonHome(){
+    renderButtonHome() {
         const {isLoggedIn} = this.props;
         if (isLoggedIn) {
             return (
@@ -170,10 +174,36 @@ class Header extends Component {
         this.setState(state);
     }
 
+    copyEmail = () => {
+        let address = "david.lefrancq";
+        address += "@gmail.com";
+
+        try {
+            copy(address);
+            const state = {...this.state};
+            state.style.msgCopyEmail = "msg-copy-email";
+            this.setState(state);
+            setTimeout(this.hideMsgCopyEmail,5000);
+        }catch (error){
+            console.log(error);
+        }
+    }
+    hideMsgCopyEmail = () => {
+        const state = {...this.state};
+        state.style.msgCopyEmail = "msg-copy-email-disabled";
+        this.setState(state);
+    }
+
     render() {
         const {isLoggedIn} = this.props;
         const {authFormAnimation} = this.state.connection;
-        const {subtitleAnimation, logoFirstAnimation, logoLastAnimation, logoAnimation, loginFormActive} = this.state.style;
+        const {
+            subtitleAnimation,
+            logoFirstAnimation,
+            logoLastAnimation,
+            logoAnimation,
+            loginFormActive
+        } = this.state.style;
         let dNone = "";
         if (isLoggedIn) {
             dNone = "d-none";
@@ -185,7 +215,7 @@ class Header extends Component {
 
                 <nav className="navbar navbar-expand-sm navbar-dark bg-primary p-0 mt-0 ml-0 mr-0 mb-4">
                     <Link className={"col-auto navbar-brand p-0 m-0"} to={"/"}>
-                    {/*<a className="col-auto navbar-brand p-0 m-0" href="/">*/}
+                        {/*<a className="col-auto navbar-brand p-0 m-0" href="/">*/}
                         <div className={`logo ${logoAnimation}`}
                              onMouseEnter={this.logoEnterAnimation}
                              onMouseLeave={this.logoLeaveAnimation}
@@ -195,7 +225,7 @@ class Header extends Component {
                             <div className={"initial"}>L</div>
                             <div className={`last-name ${logoLastAnimation}`}>efrancq</div>
                         </div>
-                    {/*</a>*/}
+                        {/*</a>*/}
                     </Link>
 
                     {/*<h1 className={"col-auto ml-3 text-white"}>Concepteur Développeur Informatique</h1>*/}
@@ -213,7 +243,7 @@ class Header extends Component {
                     </div>
 
                     <ul className="navbar-nav">
-                        <li className="nav-item" onClick={this.handleAuthForm} style={{userSelect:"none"}}>
+                        <li className="nav-item" onClick={this.handleAuthForm} style={{userSelect: "none"}}>
                             <a className="nav-link">
                                 {this.renderAuthentificationLabel()}
                             </a>
@@ -225,17 +255,40 @@ class Header extends Component {
                 <Jumbotron className={"pt-4"}>
                     <h1 className={``}>Concepteur Développeur Informatique</h1>
                     <p className={`${subtitleAnimation}`}>David Lefrancq</p>
-                    <a className={"btn btn-danger"} href={"./David LEFRANCQ - CV Web.pdf"} target={"_blank"}>
-                        {/*<MdPictureAsPdf/>*/}
-                        <AiOutlineFilePdf className={"mb-2"}/>
-                        <span className={"ml-2"}>CV</span>
-                    </a>
+
+                    <div className={"utils"}>
+                        <a className={"btn btn-danger"} href={"./David LEFRANCQ - CV Web.pdf"} target={"_blank"}>
+                            {/*<MdPictureAsPdf/>*/}
+                            <AiOutlineFilePdf className={"mb-2"}/>
+                            <span className={"ml-2"}>CV</span>
+                        </a>
+
+                        <button className={"btn btn-primary"} onClick={this.copyEmail}>
+                            <span ref={this.refEmail}>
+                                {/*{this.state.email}*/}
+                                <GoMail/>
+                                {/*<BsArrowBarRight/>*/}
+                                {/*<FcRight/>*/}
+                                {/*<FiChevronRight/>*/}
+                            </span>
+                        </button>
+                        <div className={`p-3 ${this.state.style.msgCopyEmail}`}>
+                            <div className={"h3 border-bottom pb-1"}>
+                                <FaClipboardList/>
+                                <FiChevronLeft/>
+                                <GoMail/>
+                            </div>
+                            Mon EMail à été copié dans votre presse papier.
+                        </div>
+                    </div>
+
                 </Jumbotron>
 
             </Fragment>
         );
     }
 }
+
 
 const mapStateToProps = (state) => {
     return {
