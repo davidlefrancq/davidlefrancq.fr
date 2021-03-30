@@ -137,23 +137,23 @@
     }
 }
 
-.btn-group .btn-primary {
+.occurrence-card-menu .btn-group .btn-primary {
     min-width: 80px;
     padding-bottom: 10px;
     font-size: large;
 }
 
-.btn-primary {
+.occurrence-card-menu .btn-primary {
     /*border: 1px solid rgba(0, 87, 227, 1);*/
     border: 1px solid rgba(255, 255, 255, 0.7);
     /*color: rgba(0, 87, 227, 1);*/
     /*border-radius: 25px;*/
     width: 50px;
-    height: 50px;
+    /*height: 50px;*/
     /*box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.4);*/
 }
 
-.btn-primary:hover {
+.occurrence-card-menu .btn-primary:hover {
     border: 1px solid rgba(0, 87, 227, 1);
     color: white;
     background-color: rgba(0, 87, 227, 1);
