@@ -6,7 +6,8 @@ import {Link} from "react-router-dom";
 import DAOFactory from "../../dal/DAOFactory";
 import LoginForm from "../LoginForm/LoginForm";
 import {STRING_LOGIN, STRING_LOGOUT} from "../../translation/fr-fr";
-import {AiOutlineLogin, AiOutlineLogout} from "react-icons/ai";
+import {AiOutlineFilePdf, AiOutlineLogin, AiOutlineLogout} from "react-icons/ai";
+import {GrDocumentPdf, MdPictureAsPdf} from "react-icons/all";
 import "./header.css";
 
 class Header extends Component {
@@ -224,6 +225,11 @@ class Header extends Component {
                 <Jumbotron className={"pt-4"}>
                     <h1 className={``}>Concepteur Développeur Informatique</h1>
                     <p className={`${subtitleAnimation}`}>David Lefrancq</p>
+                    <a className={"btn btn-danger"} href={"./David LEFRANCQ - CV Web.pdf"} target={"_blank"}>
+                        {/*<MdPictureAsPdf/>*/}
+                        <AiOutlineFilePdf className={"mb-2"}/>
+                        <span className={"ml-2"}>CV</span>
+                    </a>
                 </Jumbotron>
 
             </Fragment>

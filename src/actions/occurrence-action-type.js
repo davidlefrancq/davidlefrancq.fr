@@ -3,3 +3,4 @@ export const SET_TARGET_DATE = "SET_TARGET_DATE";
 export const SET_OCCURRENCE = "SET_OCCURRENCE";
 export const ADD_OCCURRENCE = "ADD_OCCURRENCE";
 export const SET_OCCURRENCE_EDIT = "SET_OCCURRENCE_EDIT";
+export const SET_YEAR = "SET_YEAR";

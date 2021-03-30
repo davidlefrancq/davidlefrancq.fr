@@ -4,6 +4,21 @@
     --carousel-qualification-color: rgba(0, 45, 110, 0.9);
 }
 
+.occurrence-list{
+    border-top: 1px solid rgba(255,255,255,1);
+    background-color: rgba(0,0,0,0.15);
+    min-height: 35px;
+}
+
+.occurrence-list:last-child{
+    border-bottom: 1px solid rgba(255,255,255,1);
+}
+
+.occurrence-list-selected{
+    background-color: rgba(71, 107, 4, 0.5);
+    box-shadow: var(--carousel-box-shadow);
+}
+
 .logo-carousel {
     position: relative;
     color: white;

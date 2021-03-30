@@ -1,3 +1,15 @@
+:root {
+    --primary-color:rgba(0, 0, 0, 0.95);
+    --secondary-color:rgba(0, 0, 0,0.95);
+    --tertiary-color:rgba(0, 0, 0,0.95);
+    --quaternary-color:rgba(0, 0, 0,0.95);
+    --quiquenary-color:rgba(0, 0, 0,0.95);
+}
+
+.bg-primary{
+    background-color: var(--primary-color) !important;
+}
+
 .card {
     box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.3);
 }
@@ -5,19 +17,19 @@
 .occurrence-card {
     position: relative;
     border: 3px solid rgba(255, 255, 255, 0.9);
-    border-radius: 25px 0 25px 0;
-    margin-bottom: 150px;
+    border-radius: 0 0 0 0;
+    /*margin-bottom: 150px;*/
 }
 
 .occurrence-card .card-header {
-    border-radius: 23px 0 25px 0;
-    background-color: rgba(0, 0, 0, 0.9);
-    color: white;
+    border-radius: 0 25px 25px 25px;
+    background-color: var(--secondary-color);
+    color: rgba(255, 255, 255, 1);
 }
 
 .occurrence-card .card-body h4 {
-    background-color: rgba(0, 0, 0, 0.9);
-    color: white;
+    background-color: var(--secondary-color);
+    color: rgba(255, 255, 255, 1);
     padding-top: 6px;
     padding-bottom: 8px;
     border-radius: 25px 25px 25px 25px;
@@ -27,12 +39,12 @@
 .occurrence-card .logo {
     position: absolute;
     font-size: xx-large;
-    top: -20px;
-    right: -20px;
-    padding: 10px;
+    top: -25px;
+    right: -25px;
+    padding: 0 0 0 1px;
     z-index: 9999;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 40px;
 }
 

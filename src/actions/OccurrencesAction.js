@@ -3,7 +3,8 @@ import {
     SET_TARGET_DATE,
     SET_OCCURRENCE,
     ADD_OCCURRENCE,
-    SET_OCCURRENCE_EDIT
+    SET_OCCURRENCE_EDIT,
+    SET_YEAR
 } from "./occurrence-action-type";
 
 class OccurrencesAction {
@@ -41,6 +42,13 @@ class OccurrencesAction {
             type: SET_OCCURRENCE_EDIT,
             payload: edit,
         }
+    }
+
+    static setYear(year){
+        return{
+            type: SET_YEAR,
+            payload: year,
+        };
     }
 }
 

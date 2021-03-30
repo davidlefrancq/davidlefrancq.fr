@@ -32,12 +32,50 @@ class OccurrencesUtils {
     }
 
     static getOccurrenceClosestToYear(occurrences, year) {
-        const experience = OccurrencesUtils.getExperienceByYear(occurrences, year);
-        const qualification = OccurrencesUtils.getQualificationByYear(occurrences, year);
-        const occurrence = OccurrencesUtils.getClosestToYear(experience, qualification, year);
-        return occurrence;
+        return OccurrencesUtils.getOccurrenceByYear(occurrences, year);
     }
 
+
+    static getOccurrenceByYear(occurrences, year) {
+        let occurrence = null;
+
+        if (occurrences.length && occurrences.length > 0) {
+            for (const key in occurrences) {
+
+                const occurrenceTargeted = occurrences[key];
+
+                if (occurrence === null) {
+                    occurrence = occurrenceTargeted;
+                } else {
+
+                    const dateControlMax = new Date(`${year}-12-31T23:59:59`);
+                    const dateControlMin = new Date(`${year}-01-01T00:00:00`);
+                    const dateOccurrenceTargeted = OccurrencesUtils.getDate(occurrenceTargeted);
+                    const dateSelected = OccurrencesUtils.getDate(occurrence);
+
+                    const yearSelected = eval(OccurrencesUtils.getYear(dateSelected));
+                    const yearTargeted = eval(OccurrencesUtils.getYear(dateOccurrenceTargeted));
+
+                    if (dateOccurrenceTargeted !== dateSelected) {
+                        if (dateOccurrenceTargeted > dateControlMin && dateOccurrenceTargeted <= dateControlMax) {
+
+                            // If same date
+                            if (yearTargeted === yearSelected) {
+                                // Take occurrence with the first date in year
+                                if(dateOccurrenceTargeted < dateSelected){
+                                    occurrence = occurrenceTargeted;
+                                }
+                            }else {
+                                occurrence = occurrenceTargeted;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return occurrence;
+    }
 
     static getExperienceByYear(occurrences, year) {
 
@@ -149,7 +187,7 @@ class OccurrencesUtils {
         return qualificationOccurences;
     }
 
-    static occurrenceRevertSort(a,b){
+    static occurrenceRevertSort(a, b) {
         let result = 0;
 
         let dateA = null;
@@ -229,17 +267,17 @@ class OccurrencesUtils {
         return result;
     }
 
-    static dateCompare(date1, date2){
+    static dateCompare(date1, date2) {
 
         let result = null;
 
-        if(date1 instanceof Date && date2 instanceof Date){
-            if(date1.getTime() === date2.getTime()){
+        if (date1 instanceof Date && date2 instanceof Date) {
+            if (date1.getTime() === date2.getTime()) {
                 result = 0;
-            }
-            else if(date1.getTime() > date2.getTime()){
+            } else if (date1.getTime() > date2.getTime()) {
                 result = 1;
-            } if(date1.getTime() < date2.getTime()){
+            }
+            if (date1.getTime() < date2.getTime()) {
                 result = -1;
             }
         }
@@ -270,7 +308,7 @@ class OccurrencesUtils {
             const type = OccurrencesUtils.getType(occurrence);
 
             // If Expérience
-            if(type === OCCURRENCE_EXPERIENCE){
+            if (type === OCCURRENCE_EXPERIENCE) {
 
                 if (dateStart !== undefined && dateStart !== null) {
                     date = new Date(dateStart);
@@ -278,7 +316,7 @@ class OccurrencesUtils {
 
             }
             // If Qualification
-            else if(type === OCCURRENCE_QUALIFICATION){
+            else if (type === OCCURRENCE_QUALIFICATION) {
                 if (dateStart !== undefined && dateStart !== null) {
                     date = new Date(dateStart);
                 }
@@ -291,6 +329,10 @@ class OccurrencesUtils {
         }
 
         return date;
+    }
+
+    static getYear(date) {
+        return date.getFullYear();
     }
 }
 

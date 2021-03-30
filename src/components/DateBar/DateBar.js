@@ -28,29 +28,30 @@ class DateBar extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        const prevDateTarget = prevProps.dateTarget;
-        const {dateTarget} = this.props;
+        const prevYear = prevProps.year;
+        const {year} = this.props;
 
-
-        if (prevDateTarget != dateTarget && this.isWorking == false) {
-            if (dateTarget != this.state.steps[this.state.target].title) {
+        if (prevYear != year && this.isWorking == false) {
+            if (year != this.state.steps[this.state.target].title) {
 
                 let newTarget = null;
+
                 const keys = Object.keys(this.state.steps);
                 keys.map((key)=>{
 
                     const step = this.state.steps[key];
-                    if(step.title == dateTarget){
+                    if(step.title == year){
                         newTarget = key;
                     }
 
                 });
-                if(newTarget != null){
-                    this.updateStep(newTarget);
-                }
 
+                if(newTarget != null){
+                    this.activeStep(newTarget)
+                }
             }
         }
+
 
     }
 

@@ -11,7 +11,7 @@ import {BsBuilding} from 'react-icons/bs';
 import {GiDiploma} from 'react-icons/gi';
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import Earth from "../Planets/Earth";
-import {OCCURRENCE_EXPERIENCE, OCCURRENCE_QUALIFICATION} from "./occurence-type";
+import {OCCURRENCE_ALL, OCCURRENCE_EXPERIENCE, OCCURRENCE_QUALIFICATION} from "./occurence-type";
 import Occurrence from "../../bo/Occurrence";
 import "./occurrence-list.css";
 import OccurrencesUtils from "../../utils/OccurrencesUtils";
@@ -26,10 +26,10 @@ class OccurrenceList extends Component {
         const screenSize = ScreenDetection.getBootstrapSize();
         this.state = {
             occurrence: {},
-            style: {
-                qualificationDisplay: "",
-                experienceDisplay: "",
-            },
+            // style: {
+            //     qualificationDisplay: "",
+            //     experienceDisplay: "",
+            // },
             screenSize: screenSize,
         };
         this.refOverlayQualification = createRef();
@@ -60,15 +60,15 @@ class OccurrenceList extends Component {
 
             state.screenSize = screenSize;
 
-            if (screenSize === "col-xl") {
-                state.style.qualificationDisplay = "";
-                state.style.experienceDisplay = "";
-            } else {
-                if (state.style.qualificationDisplay !== "d-none" && state.style.experienceDisplay !== "d-none") {
-                    state.style.qualificationDisplay = "";
-                    state.style.experienceDisplay = "d-none";
-                }
-            }
+            // if (screenSize === "col-xl") {
+            //     state.style.qualificationDisplay = "";
+            //     state.style.experienceDisplay = "";
+            // } else {
+            //     if (state.style.qualificationDisplay !== "d-none" && state.style.experienceDisplay !== "d-none") {
+            //         state.style.qualificationDisplay = "";
+            //         state.style.experienceDisplay = "d-none";
+            //     }
+            // }
 
             this.setState(state);
         }
@@ -107,7 +107,7 @@ class OccurrenceList extends Component {
         let stepDate = new Step(date.getFullYear(), "");
         stepDate.onClick = (year) => {
             if (year !== undefined && year !== null) {
-                const occurrence = OccurrencesUtils.getOccurrenceClosestToYear(this.props.occurrences,year);
+                const occurrence = OccurrencesUtils.getOccurrenceClosestToYear(this.props.occurrences, year);
                 this.setOccurrence(occurrence);
             }
         };
@@ -152,22 +152,22 @@ class OccurrenceList extends Component {
         }
 
         if (i > 1) {
-            const dateTarget = this.getTargetDateBar();
             const stepsDates = this.getStepsDates();
+            const {year} = this.props;
 
             return (
-                <DateBar steps={stepsDates} dateTarget={dateTarget}/>
+                <DateBar steps={stepsDates} year={year}/>
             );
         }
     }
 
-    getTargetDateBar(){
+    getTargetDateBar() {
         let dateTarget = null;
 
         const {occurrence} = this.props;
-        if(VarUtils.isNotUndefinedNull(occurrence)){
+        if (VarUtils.isNotUndefinedNull(occurrence)) {
             const date = OccurrencesUtils.getDate(this.props.occurrence);
-            if(date instanceof Date){
+            if (date instanceof Date) {
                 dateTarget = date.getFullYear();
             }
         }
@@ -175,66 +175,66 @@ class OccurrenceList extends Component {
         return dateTarget;
     }
 
-    showQualification = () => {
-        const state = {...this.state};
-        state.style.experienceDisplay = "d-none";
-        state.style.qualificationDisplay = "";
-        this.setState(state);
-    }
+    // showQualification = () => {
+    //     const state = {...this.state};
+    //     state.style.experienceDisplay = "d-none";
+    //     state.style.qualificationDisplay = "";
+    //     this.setState(state);
+    // }
+    //
+    // showExperience = () => {
+    //     const state = {...this.state};
+    //     state.style.experienceDisplay = "";
+    //     state.style.qualificationDisplay = "d-none";
+    //     this.setState(state);
+    // }
 
-    showExperience = () => {
-        const state = {...this.state};
-        state.style.experienceDisplay = "";
-        state.style.qualificationDisplay = "d-none";
-        this.setState(state);
-    }
+    // renderMenu = () => {
+    //     const {screenSize} = this.state
+    //     if (screenSize !== "col-xl") {
+    //         return (
+    //             <Fragment>
+    //                 <div className={"text-center mb-3 p-0"}>
+    //
+    //                     {/* Boutton Diplome */}
+    //                     {this.renderButtonQualification()}
+    //
+    //                     {/* Boutton Experience */}
+    //                     {this.renderButtonExperience()}
+    //
+    //                 </div>
+    //             </Fragment>
+    //         );
+    //     }
+    // }
 
-    renderMenu = () => {
-        const {screenSize} = this.state
-        if (screenSize !== "col-xl") {
-            return (
-                <Fragment>
-                    <div className={"text-center mb-3 p-0"}>
-
-                        {/* Boutton Diplome */}
-                        {this.renderButtonQualification()}
-
-                        {/* Boutton Experience */}
-                        {this.renderButtonExperience()}
-
-                    </div>
-                </Fragment>
-            );
-        }
-    }
-
-    renderButtonExperience() {
-        return (
-            <button className={"btn btn-secondary m-1 col-5 col-xl-12"}
-                    onClick={this.showExperience}
-                    style={{fontSize: "large"}}
-            >
-                <span style={{fontSize: "x-large", marginRight: "5px"}}>
-                    <BsBuilding/>
-                </span>
-                <span> Expérience</span>
-            </button>
-        );
-    }
-
-    renderButtonQualification() {
-        return (
-            <button className={"btn btn-secondary m-1 col-5 col-xl-12"}
-                    onClick={this.showQualification}
-                    style={{fontSize: "large"}}
-            >
-                <span style={{fontSize: "x-large"}}>
-                    <GiDiploma/>
-                </span>
-                <span> Diplome</span>
-            </button>
-        );
-    }
+    // renderButtonExperience() {
+    //     return (
+    //         <button className={"btn btn-secondary m-1 col-5 col-xl-12"}
+    //                 onClick={this.showExperience}
+    //                 style={{fontSize: "large"}}
+    //         >
+    //             <span style={{fontSize: "x-large", marginRight: "5px"}}>
+    //                 <BsBuilding/>
+    //             </span>
+    //             <span> Expérience</span>
+    //         </button>
+    //     );
+    // }
+    //
+    // renderButtonQualification() {
+    //     return (
+    //         <button className={"btn btn-secondary m-1 col-5 col-xl-12"}
+    //                 onClick={this.showQualification}
+    //                 style={{fontSize: "large"}}
+    //         >
+    //             <span style={{fontSize: "x-large"}}>
+    //                 <GiDiploma/>
+    //             </span>
+    //             <span> Diplome</span>
+    //         </button>
+    //     );
+    // }
 
     renderTooltipQualification = (props) => {
         return (
@@ -335,31 +335,127 @@ class OccurrenceList extends Component {
     }
 
     setOccurrence = (occurrence) => {
-        if (occurrence != null) {
-            this.props.setOccurrence(occurrence);
-            if (Occurrence.isExperience(occurrence)) {
-                this.props.setExperience(occurrence);
-                this.props.setQualification(null);
-            }else if (Occurrence.isQualification(occurrence)) {
-                this.props.setExperience(null);
-                this.props.setQualification(occurrence);
+        if (VarUtils.isNotUndefinedNull(occurrence)) {
+
+            const {year} = this.props;
+            const newDate = OccurrencesUtils.getDate(occurrence);
+            const newYear = OccurrencesUtils.getYear(newDate);
+
+            if(eval(year) !== eval(newYear)){
+
+                this.props.setYear(newYear);
             }
+
+
+            this.props.setOccurrence(occurrence);
+
+            // if (Occurrence.isExperience(occurrence)) {
+            //
+            //     this.props.setExperience(occurrence);
+            //     this.props.setQualification(null);
+            //
+            // }else if (Occurrence.isQualification(occurrence)) {
+            //
+            //     this.props.setExperience(null);
+            //     this.props.setQualification(occurrence);
+            //
+            // }
+        }
+    }
+
+    renderCvCarouselOccurrence = () => {
+        return (
+            <div>
+                <CvCarousel type={OCCURRENCE_ALL} setOccurrence={this.setOccurrence}/>
+            </div>
+        );
+    }
+
+    renderQualificationList = () => {
+
+        if (this.props.occurrences.length) {
+
+            const occurrences = this.props.occurrences;
+            const qualifications = OccurrencesUtils.getQualifications(occurrences).sort(OccurrencesUtils.occurrenceRevertSort);
+            const qualificationsKeys = Object.keys(qualifications);
+
+            return qualificationsKeys.map((key) => {
+                const occurrence = qualifications[key];
+                let selected = "";
+                if(occurrence && this.props.occurrence){
+                    if(occurrence.id == this.props.occurrence.id){
+                        selected = "occurrence-list-selected";
+                    }
+                }
+
+                // console.log(occurrence);
+
+                return (
+                    <div key={occurrence.id} className={`occurrence-list pl-2 pr-2 ${selected}`}>
+                        {occurrence.qualification.name}
+                    </div>
+                );
+
+            });
+        }
+    }
+
+    renderExperienceList = () => {
+        if (this.props.occurrences.length) {
+
+            const occurrences = this.props.occurrences;
+            const experiences = OccurrencesUtils.getExperiences(occurrences).sort(OccurrencesUtils.occurrenceRevertSort);
+            const experiencesKeys = Object.keys(experiences);
+
+            return experiencesKeys.map((key) => {
+                const occurrence = experiences[key];
+                let selected = "";
+                if(occurrence && this.props.occurrence){
+                    if(occurrence.id == this.props.occurrence.id){
+                        selected = "occurrence-list-selected";
+                    }
+                }
+
+                return (
+                    <div key={occurrence.id} className={`occurrence-list pl-2 pr-2 ${selected}`}>
+                        {occurrence.experience.enterprise.name}
+                    </div>
+                );
+            });
         }
     }
 
     renderCvCarousel() {
-        const {qualificationDisplay, experienceDisplay} = this.state.style;
+        // const {qualificationDisplay, experienceDisplay} = this.state.style;
         return (
             <div className={"row"}>
-                <div className={`col-12 mb-3 ${qualificationDisplay}`}>
-                    {this.renderCvCarouselQualification()}
+
+                <div className={`col-12 mb-3`}>
+                    {this.renderCvCarouselOccurrence()}
                 </div>
 
-                <div className={"col-12 d-none d-xl-block"} style={{height: "25px"}}></div>
+                <div className={"col-12 d-none d-xl-block"}>
 
-                <div className={`col-12 mb-3 ${experienceDisplay}`}>
-                    {this.renderCvCarouselExperience()}
+                    <div className={"row m-0 p-3"}>
+                        <div className={"col-6 p-0"}>
+                            {this.renderQualificationList()}
+                        </div>
+                        <div className={"col-6"}>
+                            {this.renderExperienceList()}
+                        </div>
+                    </div>
+
                 </div>
+
+                {/*<div className={`col-12 mb-3 ${qualificationDisplay}`}>*/}
+                {/*    {this.renderCvCarouselQualification()}*/}
+                {/*</div>*/}
+
+                {/*<div className={"col-12 d-none d-xl-block"} style={{height: "25px"}}></div>*/}
+
+                {/*<div className={`col-12 mb-3 ${experienceDisplay}`}>*/}
+                {/*    {this.renderCvCarouselExperience()}*/}
+                {/*</div>*/}
             </div>
         );
     }
@@ -374,11 +470,11 @@ class OccurrenceList extends Component {
                     {/*    delay={{show: 250, hide: 400}}*/}
                     {/*    overlay={this.renderTooltipExperience}*/}
                     {/*>*/}
-                        <div className={"logo-carousel logo-carousel-experience text-center"}>
-                            <BsBuilding style={{
-                                fontSize: "x-large"
-                            }}/>
-                        </div>
+                    <div className={"logo-carousel logo-carousel-experience text-center"}>
+                        <BsBuilding style={{
+                            fontSize: "x-large"
+                        }}/>
+                    </div>
                     {/*</OverlayTrigger>*/}
                 </div>
                 <CvCarousel type={OCCURRENCE_EXPERIENCE} setOccurrence={this.setOccurrence}/>
@@ -396,11 +492,12 @@ class OccurrenceList extends Component {
                     {/*    delay={{show: 250, hide: 400}}*/}
                     {/*    overlay={this.renderTooltipQualification}*/}
                     {/*>*/}
-                        <div ref={this.refOverlayQualification} className={"logo-carousel logo-carousel-qualification text-center"}>
-                            <GiDiploma style={{
-                                fontSize: "x-large"
-                            }}/>
-                        </div>
+                    <div ref={this.refOverlayQualification}
+                         className={"logo-carousel logo-carousel-qualification text-center"}>
+                        <GiDiploma style={{
+                            fontSize: "x-large"
+                        }}/>
+                    </div>
                     {/*</OverlayTrigger>*/}
                 </div>
                 <CvCarousel type={OCCURRENCE_QUALIFICATION} setOccurrence={this.setOccurrence}/>
@@ -415,23 +512,23 @@ class OccurrenceList extends Component {
 
         const {occurrences} = this.props;
         const keys = Object.keys(occurrences);
-        keys.map((key)=>{
+        keys.map((key) => {
 
             const occurrence = occurrences[key];
             const type = OccurrencesUtils.getType(occurrence)
-            if(type !== null){
+            if (type !== null) {
 
                 // Qualification
-                if(type === OCCURRENCE_QUALIFICATION){
+                if (type === OCCURRENCE_QUALIFICATION) {
 
                     var tmpDate = OccurrencesUtils.getDate(occurrence);
-                    if(tmpDate !== null){
+                    if (tmpDate !== null) {
 
                         // Date of Qualification
-                        if(firstDate === null) {
+                        if (firstDate === null) {
                             firstDate = tmpDate;
-                        }else{
-                            if(OccurrencesUtils.dateCompare(tmpDate,firstDate) < 0){
+                        } else {
+                            if (OccurrencesUtils.dateCompare(tmpDate, firstDate) < 0) {
                                 firstDate = tmpDate;
                             }
                         }
@@ -439,16 +536,16 @@ class OccurrenceList extends Component {
                 }
 
                 // Experience
-                if(type === OCCURRENCE_EXPERIENCE){
+                if (type === OCCURRENCE_EXPERIENCE) {
 
                     var tmpDate = OccurrencesUtils.getDate(occurrence);
-                    if(tmpDate !== null){
+                    if (tmpDate !== null) {
 
                         // Date of Qualification
-                        if(firstDate === null) {
+                        if (firstDate === null) {
                             firstDate = tmpDate;
-                        }else{
-                            if(OccurrencesUtils.dateCompare(tmpDate,firstDate) < 0){
+                        } else {
+                            if (OccurrencesUtils.dateCompare(tmpDate, firstDate) < 0) {
                                 firstDate = tmpDate;
                             }
                         }
@@ -467,23 +564,23 @@ class OccurrenceList extends Component {
 
         const {occurrences} = this.props;
         const keys = Object.keys(occurrences);
-        keys.map((key)=>{
+        keys.map((key) => {
 
             const occurrence = occurrences[key];
             const type = OccurrencesUtils.getType(occurrence)
-            if(type !== null){
+            if (type !== null) {
 
                 // Qualification
-                if(type === OCCURRENCE_QUALIFICATION){
+                if (type === OCCURRENCE_QUALIFICATION) {
 
                     var tmpDate = OccurrencesUtils.getDate(occurrence);
-                    if(tmpDate !== null){
+                    if (tmpDate !== null) {
 
                         // Date of Qualification
-                        if(lastDate === null) {
+                        if (lastDate === null) {
                             lastDate = tmpDate;
-                        }else{
-                            if(OccurrencesUtils.dateCompare(tmpDate,lastDate) > 0){
+                        } else {
+                            if (OccurrencesUtils.dateCompare(tmpDate, lastDate) > 0) {
                                 lastDate = tmpDate;
                             }
                         }
@@ -491,16 +588,16 @@ class OccurrenceList extends Component {
                 }
 
                 // Experience
-                if(type === OCCURRENCE_EXPERIENCE){
+                if (type === OCCURRENCE_EXPERIENCE) {
 
                     var tmpDate = OccurrencesUtils.getDate(occurrence);
-                    if(tmpDate !== null){
+                    if (tmpDate !== null) {
 
                         // Date of Qualification
-                        if(lastDate === null) {
+                        if (lastDate === null) {
                             lastDate = tmpDate;
-                        }else{
-                            if(OccurrencesUtils.dateCompare(tmpDate,lastDate) > 0){
+                        } else {
+                            if (OccurrencesUtils.dateCompare(tmpDate, lastDate) > 0) {
                                 lastDate = tmpDate;
                             }
                         }
@@ -524,16 +621,17 @@ class OccurrenceList extends Component {
 
                 <div className={"row"}>
 
-                    <div className={"col-12"} style={{zIndex: 999999999, marginTop:"-100px"}}>
+                    <div className={"col-12"} style={{zIndex: 999999999, marginTop: "-100px"}}>
+                        <div className={"d-block d-xl-none"} style={{height: "100px"}}></div>
                         {this.renderDateBar()}
                     </div>
 
                     <div className={"col-12"}>
                         <div className={"container-fluid"}>
                             <div className={"row pr-4"}>
-                                <div className={"col-12"}>
-                                    {this.renderMenu()}
-                                </div>
+                                {/*<div className={"col-12"}>*/}
+                                {/*    {this.renderMenu()}*/}
+                                {/*</div>*/}
 
                                 {/*<div className={"d-none d-xl-block col-xl-3 text-left"}>*/}
                                 {/*    <Earth*/}
@@ -568,7 +666,7 @@ class OccurrenceList extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {occurrences, occurrence} = state.OccurrencesReducer;
+    const {occurrences, occurrence, year} = state.OccurrencesReducer;
     const experience = state.ExperienceReducer.occurrence;
     const qualification = state.QualificationReducer.occurrence;
     return {
@@ -576,6 +674,7 @@ const mapStateToProps = (state) => {
         occurrence,
         experience,
         qualification,
+        year,
     };
 };
 
@@ -588,6 +687,7 @@ const mapDispatchToProps = (dispatch) => {
         setOccurrences: (occurrences) => dispatch(actions.occurrences.setOccurrences(occurrences)),
         setQualification: (occurrence) => dispatch(actions.qualification.setQualification(occurrence)),
         setExperience: (occurrence) => dispatch(actions.experience.setExperience(occurrence)),
+        setYear: (year) => dispatch(actions.occurrences.setYear(year)),
     };
 };
 

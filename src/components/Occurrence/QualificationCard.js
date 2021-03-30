@@ -19,12 +19,15 @@ class QualificationCard extends Component {
         super(props);
         this.state = {
             objectives: {
+                css: "active",
                 display: "block",
             },
             jobs: {
+                css: "",
                 display: "none",
             },
             links: {
+                css: "",
                 display: "none",
             },
         };
@@ -33,47 +36,80 @@ class QualificationCard extends Component {
         this.showLinks = this.showLinks.bind(this);
     }
 
-
     showObjectives() {
-        this.setState({
-            objectives: {
-                display: "block",
-            },
-            jobs: {
-                display: "none",
-            },
-            links: {
-                display: "none",
-            },
-        });
+        const {qualification} = this.props.occurrence;
+        const {objectives} = qualification;
+        const disabled = (objectives && objectives != "") ? false : true;
+
+        if(!disabled) {
+
+            const state = this.setObjectivesSelected();
+
+            state.objectives.display = "block";
+            state.jobs.display = "none";
+            state.links.display = "none";
+
+            this.setState(state);
+        }
     }
 
     showJobs() {
-        this.setState({
-            objectives: {
-                display: "none",
-            },
-            jobs: {
-                display: "block",
-            },
-            links: {
-                display: "none",
-            },
-        });
+        const {qualification} = this.props.occurrence;
+        const {jobs} = qualification;
+        const disabled = jobs.length > 0 ? false : true;
+
+        if(!disabled) {
+
+            const state = this.setJobsSelected();
+
+            state.objectives.display = "none";
+            state.jobs.display = "block";
+            state.links.display = "none";
+
+            this.setState(state);
+        }
     }
 
     showLinks() {
-        this.setState({
-            objectives: {
-                display: "none",
-            },
-            jobs: {
-                display: "none",
-            },
-            links: {
-                display: "block",
-            },
-        });
+        const {qualification} = this.props.occurrence;
+        const {links} = qualification;
+        const disabled = links.length > 0 ? false : true;
+
+        if(!disabled) {
+
+            const state = this.setLinksSelected();
+
+            state.objectives.display = "none";
+            state.jobs.display = "none";
+            state.links.display = "block";
+
+            this.setState(state);
+        }
+    }
+
+
+    setObjectivesSelected = () => {
+        const state = {...this.state};
+        state.objectives.css = "active";
+        state.jobs.css = "";
+        state.links.css = "";
+        return state;
+    }
+
+    setJobsSelected = () => {
+        const state = {...this.state};
+        state.objectives.css = "";
+        state.jobs.css = "active";
+        state.links.css = "";
+        return state;
+    }
+
+    setLinksSelected = () => {
+        const state = {...this.state};
+        state.objectives.css = "";
+        state.jobs.css = "";
+        state.links.css = "active";
+        return state;
     }
 
     isLessOneYear(date) {
@@ -210,9 +246,7 @@ class QualificationCard extends Component {
     }
 
     renderTrainingCenterLogo(trainingCenter) {
-
         const {logo, url} = trainingCenter;
-
         if (url != undefined && url != null && url != "") {
             return (
                 <a href={url}>
@@ -221,7 +255,7 @@ class QualificationCard extends Component {
             );
         } else if (logo != undefined && logo != null && logo != "") {
             return (
-                <img className={"mr-1"} src={logo}/>
+                <img className={"mr-1"} src={logo} style={{height: "100px"}}/>
             );
         }
     }
@@ -279,42 +313,9 @@ class QualificationCard extends Component {
         }
 
         if (date != undefined && date != null) {
-
-            // const month = MonthFr.convert(date.getMonth());
-            // const year = date.getFullYear();
-
             return (
-                <div style={{minHeight:"100px"} }>
-
+                <div>
                     {this.renderTimeline(date)}
-
-                    {/*{this.formatDate(date)}*/}
-
-                    {/*<div className={"row m-0 p-0"}>*/}
-                    {/*    <div className={"col-4 m-0 p-0"}>*/}
-                    {/*        <div className={"row p-0 m-0"}>*/}
-                    {/*            <div className={"col-auto ml-auto mr-auto"}>*/}
-                    {/*                <div*/}
-                    {/*                    className={"occurrence-card-logo-date"}*/}
-                    {/*                >*/}
-                    {/*                    <GoCalendar*/}
-                    {/*                        style={{*/}
-                    {/*                            fontSize: "x-large",*/}
-                    {/*                        }}*/}
-                    {/*                    />*/}
-                    {/*                </div>*/}
-
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className={"col-8 m-0 p-0"}>*/}
-                    {/*        <div className={"row m-0 p-0 h-100"}>*/}
-                    {/*            <div className={"col-6 m-0 p-0 text-center p-2"}>*/}
-                    {/*                {this.formatDate(date)}*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                 </div>
             );
         }
@@ -334,25 +335,23 @@ class QualificationCard extends Component {
         const leftDate = positionDate.toString() + "%";
         const leftEnd = positionEnd.toString() + "%";
 
-        console.log("start", startYear, "date", year, "end", endYear);
-
         return (
             <div className={"timeline"}>
 
                 <div className={"gradualness"}>
 
-                    <div className={"startPoint"} style={{left: leftStart, marginLeft:"-6px"}}></div>
-                    <div className={"start"} style={{left: leftStart, marginLeft:"-12px"}}>
+                    <div className={"startPoint"} style={{left: leftStart, marginLeft: "-6px"}}></div>
+                    <div className={"start"} style={{left: leftStart, marginLeft: "-12px"}}>
                         {startYear}
                     </div>
 
-                    <div className={"endPoint"} style={{left: leftEnd, marginLeft:"-6px"}}></div>
-                    <div className={"end"} style={{left: leftEnd, marginLeft:"-12px"}}>
+                    <div className={"endPoint"} style={{left: leftEnd, marginLeft: "-6px"}}></div>
+                    <div className={"end"} style={{left: leftEnd, marginLeft: "-12px"}}>
                         {endYear}
                     </div>
 
-                    <div className={"datePoint"} style={{left: leftDate, marginLeft:"-6px"}}></div>
-                    <div className={"date"} style={{left: leftDate, marginLeft:"-12px"}}>
+                    <div className={"datePoint"} style={{left: leftDate, marginLeft: "-6px"}}></div>
+                    <div className={"date"} style={{left: leftDate, marginLeft: "-12px"}}>
                         {year}
                     </div>
 
@@ -387,9 +386,30 @@ class QualificationCard extends Component {
         }
     }
 
+    renderButtonLinks = () => {
+        const {qualification} = this.props.occurrence;
+        const {links} = qualification;
+
+        if(links.length > 0){
+            const linksDisable = links.length > 0 ? "" : "disabled";
+
+            return(
+                <button className={`btn btn-primary outer ${this.state.links.css} ${linksDisable}`} onClick={this.showLinks}>
+                    <div className={"inner"}>
+                        <BsLink/> &nbsp;
+                        {STRING_LINKS}
+                    </div>
+                </button>
+            );
+        }
+    }
+
     render() {
         const {dateStart, dateEnd, qualification} = this.props.occurrence;
         const {name, img, level, trainingCenter, objectives, jobs, links} = qualification;
+
+        const objectivesDisable = (objectives && objectives != "") ? "" : "disabled";
+        const jobsDisable = jobs.length > 0 ? "" : "disabled";
 
         return (
             <Card className={"mt-0 occurrence-card qualification"}>
@@ -409,12 +429,12 @@ class QualificationCard extends Component {
                 <Card.Body>
 
                     <div className={"row"}>
-
                         <div className={"col-12 row"}>
 
                             <div className={"col-3"}>
                                 {this.renderTrainingCenterLogo(trainingCenter)}
                             </div>
+
                             <div className={"col-9 col-xl-9 row p-0 m-0"}>
                                 <div className={"col-7 col-xl-5 pl-0 pr-0 pt-3"}>
                                     {this.renderDate(dateEnd)}
@@ -428,55 +448,34 @@ class QualificationCard extends Component {
                                 {this.renderTrainingCenterLink(trainingCenter)}
                             </div>
 
-
                         </div>
-
-
-                        {/*<div className={"col-12"}>*/}
-                        {/*    <div className={"mt-2 row"}>*/}
-
-                        {/*        <div className={"col-12 col-xl-4"}>*/}
-                        {/*            {this.renderDate(dateEnd)}*/}
-                        {/*        </div>*/}
-
-                        {/*        <div className={"d-block d-xl-none w-100 pl-5 pr-5 pb-3"}>*/}
-                        {/*            <hr className={"ml-5 mr-5"}/>*/}
-                        {/*        </div>*/}
-
-                        {/*        <div className={"col-12 col-xl-8"}>*/}
-                        {/*            {this.renderTrainingCenter(trainingCenter)}*/}
-                        {/*        </div>*/}
-
-                        {/*    </div>*/}
-                        {/*</div>*/}
                     </div>
 
 
                     <div className={"row"}>
 
                         <div className={"col-12 pl-4 pr-4"}>
-
                             <div className={"row h-100"}>
+
                                 <div className={"occurrence-card-menu col-3 h-100"}>
                                     <div className={"btn-group h-100"}>
-                                        <button className={"btn btn-primary outer"} onClick={this.showObjectives}>
+
+                                        <button className={`btn btn-primary outer ${this.state.objectives.css} ${objectivesDisable}`} onClick={this.showObjectives}>
                                             <div className={"inner"}>
                                                 <BsFillInfoCircleFill/> &nbsp;
                                                 {STRING_QUALIFICATION_ROLES}
                                             </div>
                                         </button>
-                                        <button className={"btn btn-primary outer"} onClick={this.showJobs}>
+
+                                        <button className={`btn btn-primary outer ${this.state.jobs.css} ${jobsDisable}`} onClick={this.showJobs}>
                                             <div className={"inner"}>
                                                 <MdWork/> &nbsp;
                                                 {STRING_QUALIFICATION_ACCESSIBLE_EMPLOYMENT}
                                             </div>
                                         </button>
-                                        <button className={"btn btn-primary outer"} onClick={this.showLinks}>
-                                            <div className={"inner"}>
-                                                <BsLink/> &nbsp;
-                                                {STRING_LINKS}
-                                            </div>
-                                        </button>
+
+                                        {this.renderButtonLinks()}
+
                                     </div>
                                 </div>
 
@@ -504,7 +503,6 @@ class QualificationCard extends Component {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </Card.Body>

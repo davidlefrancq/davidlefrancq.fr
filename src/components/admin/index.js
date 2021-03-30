@@ -11,8 +11,6 @@ import Enterprise from "../../bo/Enterprise";
 import DAOFactory from "../../dal/DAOFactory";
 import EditExperience from "../Occurrence/edit/EditExperience";
 
-const daoFactory = new DAOFactory();
-
 class Admin extends Component {
 
     constructor(props) {
@@ -20,6 +18,7 @@ class Admin extends Component {
         this.state = {
             createNewOccurrence: false,
         };
+        this.daoFactory = new DAOFactory();
     }
 
     handleNewOccurrence = () => {
@@ -51,7 +50,7 @@ class Admin extends Component {
 
     handelDeleteOccurrence = (occurrence) => {
         const {token,setOccurrences} = this.props;
-        daoFactory.getOccurenceDAO().delete(occurrence,token).then((res) => {
+        this.daoFactory.getOccurrenceDAO().delete(occurrence,token).then((res) => {
             const occurrences = {...this.props.occurrences};
             this.deleteOccurrenceInList(occurrences,occurrence);
             setOccurrences(occurrences);

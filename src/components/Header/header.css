@@ -25,31 +25,27 @@
 }
 
 .jumbotron .subtitle-hover{
-    animation: subtitle-hover 0.2s ease-in forwards;
+    animation: subtitle-hover 0.3s ease-in forwards;
     padding-left: 0;
 }
 @keyframes subtitle-hover {
     0%{
         color: rgba(0,0,0,1);
-        padding-left: 0;
     }
     100%{
         color: rgba(0,0,0,0);
-        padding-left: 50%;
     }
 }
 
 .jumbotron .subtitle-leave{
-    animation: subtitle-leave 0.2s ease-in forwards;
+    animation: subtitle-leave 0.3s ease-in forwards;
 }
 @keyframes subtitle-leave {
     0%{
         color: rgba(0,0,0,0);
-        padding-left: 50%;
     }
     100%{
         color: rgba(0,0,0,1);
-        padding-left: 0;
     }
 }
 
@@ -121,7 +117,7 @@
 }
 
 .navbar-brand .logo-hover{
-    animation: logo-hover 0.2s ease-in forwards;
+    animation: logo-hover 0.3s ease-in forwards;
 }
 @keyframes logo-hover {
     0%{
@@ -136,7 +132,7 @@
     }
 }
 .navbar-brand .logo-leave{
-    animation: logo-leave 0.2s ease-in forwards;
+    animation: logo-leave 0.3s ease-in forwards;
 }
 @keyframes logo-leave {
     0%{

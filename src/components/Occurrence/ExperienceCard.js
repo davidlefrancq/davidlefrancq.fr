@@ -24,12 +24,15 @@ class ExperienceCard extends Component {
 
         this.state = {
             comment: {
+                css: "active",
                 display: "block",
             },
             technology: {
+                css: "",
                 display: "none",
             },
             links: {
+                css: "",
                 display: "none",
             },
         };
@@ -39,63 +42,92 @@ class ExperienceCard extends Component {
     }
 
     showComment() {
+        const {experience} = this.props.occurrence;
+        const {comment} = experience;
+        const disabled = (comment && comment != "") ? false : true;
 
-        let display = 'block';
-        if (this.state.comment.display == display) {
-            display = "none";
+        if(!disabled) {
+
+            const state = this.setCommentSelected();
+
+            let display = 'block';
+            if (this.state.comment.display == display) {
+                display = "none";
+            }
+
+            state.comment.display = `${display}`;
+            state.technology.display = "none";
+            state.links.display = "none";
+
+            this.setState(state);
         }
-
-        this.setState({
-            comment: {
-                display: `${display}`,
-            },
-            technology: {
-                display: "none",
-            },
-            links: {
-                display: "none",
-            },
-        });
     }
 
     showTechnology() {
+        const {experience} = this.props.occurrence;
+        const {technologicalCategories} = experience;
+        const disabled = technologicalCategories.length > 0 ? false : true;
 
-        let display = 'block';
-        if (this.state.technology.display == display) {
-            display = "none";
+        if(!disabled) {
+
+            const state = this.setTechnologySelected();
+
+            let display = 'block';
+            if (this.state.technology.display == display) {
+                display = "none";
+            }
+
+            state.comment.display = "none";
+            state.technology.display = `${display}`;
+            state.links.display = "none";
+
+            this.setState(state);
         }
-
-        this.setState({
-            comment: {
-                display: "none",
-            },
-            technology: {
-                display: `${display}`,
-            },
-            links: {
-                display: "none",
-            },
-        });
     }
 
     showLinks() {
+        const {experience} = this.props.occurrence;
+        const {links} = experience;
+        const disabled = links.length > 0 ? false : true;
 
-        let display = 'block';
-        if (this.state.links.display == display) {
-            display = "none";
+        if(!disabled) {
+            const state = this.setLinksSelected();
+
+            let display = 'block';
+            if (this.state.links.display == display) {
+                display = "none";
+            }
+
+            state.comment.display = "none";
+            state.technology.display = "none";
+            state.links.display = `${display}`;
+
+            this.setState(state);
         }
+    }
 
-        this.setState({
-            comment: {
-                display: "none",
-            },
-            technology: {
-                display: "none",
-            },
-            links: {
-                display: `${display}`,
-            },
-        });
+    setCommentSelected = () => {
+        const state = {...this.state};
+        state.comment.css = "active";
+        state.technology.css = "";
+        state.links.css = "";
+        return state;
+    }
+
+    setTechnologySelected = () => {
+        const state = {...this.state};
+        state.comment.css = "";
+        state.technology.css = "active";
+        state.links.css = "";
+        return state;
+    }
+
+    setLinksSelected = () => {
+        const state = {...this.state};
+        state.comment.css = "";
+        state.technology.css = "";
+        state.links.css = "active";
+        return state;
     }
 
     isLessOneYear(date) {
@@ -119,7 +151,7 @@ class ExperienceCard extends Component {
             );
         } else if (logo != undefined && logo != null && logo != "") {
             return (
-                <img className={"mr-1"} src={logo}/>
+                <img className={"mr-1"} src={logo} style={{height: "100px"}}/>
             );
         }
     }
@@ -184,7 +216,6 @@ class ExperienceCard extends Component {
         }
 
         if (dateStart instanceof Date || dateEnd instanceof Date) {
-
             return (
                 <div>
                     {this.renderTimeline(dateStart,dateEnd)}
@@ -339,10 +370,32 @@ class ExperienceCard extends Component {
         }
     }
 
+    renderButtonLinks = () => {
+        const {experience} = this.props.occurrence;
+        const {links} = experience;
+
+        if(links.length > 0){
+            const linksDisable = links.length > 0 ? "" : "disabled";
+
+            return(
+                <button className={`btn btn-primary outer ${this.state.links.css} ${linksDisable}`} onClick={this.showLinks}>
+                    <div className={"inner"}>
+                        <BsLink/> &nbsp;
+                        {STRING_LINKS}
+                    </div>
+                </button>
+            );
+        }
+    }
+
     render() {
         let image = "https://alchimistedelajoie.com/wp-content/uploads/2018/12/business-camera-coffee-1509428-reduit-1080x675.jpg";
         const {dateStart, dateEnd, experience} = this.props.occurrence;
         const {name, comment, img, enterprise, technologicalCategories, workstudy, links} = experience;
+
+        const commentDisable = (comment && comment != "") ? "" : "disabled";
+        const technologyDisable = technologicalCategories.length > 0 ? "" : "disabled";
+        const linksDisable = links.length > 0 ? "" : "disabled";
 
         return (
             <Card className={"m-0 occurrence-card experience"}>
@@ -381,15 +434,9 @@ class ExperienceCard extends Component {
                                 {this.renderEnterpriseLink(enterprise)}
                             </div>
 
-
-
-                                {/*<div className={"col-12 col-xl-8"}>*/}
-                                {/*    {this.renderEnterprise(enterprise)}*/}
-                                {/*</div>*/}
-
                         </div>
-
                     </div>
+
 
                     <div className={"row"}>
 
@@ -398,24 +445,23 @@ class ExperienceCard extends Component {
 
                                 <div className={"occurrence-card-menu col-3 h-100"}>
                                     <div className={"btn-group h-100"}>
-                                        <button className={"btn btn-primary outer"} onClick={this.showComment}>
+
+                                        <button className={`btn btn-primary outer ${this.state.comment.css} ${commentDisable}`} onClick={this.showComment}>
                                             <div className={"inner"}>
                                                 <BsFillInfoCircleFill/> &nbsp;
                                                 {STRING_EXPERIENCE_JOB_DESCRIPTION}
                                             </div>
                                         </button>
-                                        <button className={"btn btn-primary outer"} onClick={this.showTechnology}>
+
+                                        <button className={`btn btn-primary outer ${this.state.technology.css} ${technologyDisable}`} onClick={this.showTechnology}>
                                             <div className={"inner"}>
                                                 <GiComputing/> &nbsp;
                                                 {STRING_EXPERIENCE_TECH}
                                             </div>
                                         </button>
-                                        <button className={"btn btn-primary outer"} onClick={this.showLinks}>
-                                            <div className={"inner"}>
-                                                <BsLink/> &nbsp;
-                                                {STRING_LINKS}
-                                            </div>
-                                        </button>
+
+                                        {this.renderButtonLinks()}
+
                                     </div>
                                 </div>
 

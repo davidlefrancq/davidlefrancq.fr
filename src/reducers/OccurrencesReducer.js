@@ -2,7 +2,7 @@ import {
     ADD_OCCURRENCE,
     SET_OCCURRENCE,
     SET_OCCURRENCE_EDIT,
-    SET_OCCURRENCES,
+    SET_OCCURRENCES, SET_YEAR,
     // SET_TARGET_DATE
 } from "../actions/occurrence-action-type";
 
@@ -13,6 +13,7 @@ const initialState = {
     //     date: null,
     //     oldDate: null,
     // },
+    year: null,
     edit: {
         qualification: {
             technology: {
@@ -51,6 +52,10 @@ export default function OccurrencesReducer(state = initialState, action) {
         //     newState.target.oldDate = newState.target.date;
         //     newState.target.date = action.payload;
         //     return newState;
+
+        case SET_YEAR:
+            newState.year = action.payload;
+            return newState;
 
         case ADD_OCCURRENCE:
             newState.occurrences.push(action.payload);

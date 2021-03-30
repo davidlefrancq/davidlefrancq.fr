@@ -7,6 +7,7 @@ class Carousel extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            enableComponentDidUpdate:true,
             direction: null,
             lastTarget: null,
             style: {
@@ -78,17 +79,20 @@ class Carousel extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
 
-        const oldTarget = eval(prevProps.selected);
-        const newTarget = eval(this.props.selected);
+        if(this.state.enableComponentDidUpdate){
+            const oldTarget = eval(prevProps.selected);
+            const newTarget = eval(this.props.selected);
 
-        if (newTarget !== oldTarget) {
-            if (newTarget > oldTarget) {
-                this.setRightDirection();
-            } else if (newTarget < oldTarget) {
-                this.setLeftDirection();
+            if (newTarget !== oldTarget) {
+                if (newTarget > oldTarget) {
+                    // this.setRightDirection();
+                } else if (newTarget < oldTarget) {
+                    // this.setLeftDirection();
+                }
             }
+        }else{
+            this.activateComponentDidUpdate();
         }
-
     }
 
     togglePlayMouseEnter = () => {
@@ -158,9 +162,9 @@ class Carousel extends Component {
         const {mouseClick} = sfx;
 
         if (mouseClick.play) {
-            mouseClick.audio.pause();
-            state.sfx.mouseClick.play = false;
-            this.setState(state);
+            // mouseClick.audio.pause();
+            // state.sfx.mouseClick.play = false;
+            // this.setState(state);
         } else {
             mouseClick.audio.play();
             state.sfx.mouseClick.play = true;
@@ -169,18 +173,21 @@ class Carousel extends Component {
     }
 
     handlePrevent = () => {
-        const target = this.props.selected;
-        let newTarget = this.props.selected;
+        this.togglePlayMouseClick();
+
+        const target = eval(this.props.selected);
+        let newTarget = eval(this.props.selected);
 
         if (target > 0) {
-            newTarget = eval(target) - 1;
+            newTarget = target - 1;
             this.setLeftDirection();
+        }else{
+            const nItems = Object.keys(this.props.items).length - 1;
+            newTarget = nItems;
         }
 
         if (newTarget !== target) {
             this.setLastTarget(target)
-            this.props.prevent(newTarget);
-        }else if(eval(newTarget) === eval(target)){
             this.props.prevent(newTarget);
         }
     }
@@ -191,20 +198,36 @@ class Carousel extends Component {
         this.setState(state);
     }
 
+    activateComponentDidUpdate = () => {
+        const state = {...this.state};
+        state.enableComponentDidUpdate = true;
+        this.setState(state);
+    }
+    deactivateComponentDidUpdate = () => {
+        const state = {...this.state};
+        state.enableComponentDidUpdate = false;
+        this.setState(state);
+    }
+
     handleNext = () => {
+        this.togglePlayMouseClick();
+
         const target = eval(this.props.selected);
         let newTarget = eval(this.props.selected);
 
         const nItems = Object.keys(this.props.items).length;
-        if (target < nItems - 1) {
+
+        if (target < (nItems - 1)) {
             newTarget = target + 1;
-            this.setRightDirection();
+            // this.setRightDirection();
+        }else{
+            newTarget = 0;
+            // this.setLeftDirection();
         }
 
         if (newTarget !== target) {
-            this.setLastTarget(target)
-            this.props.next(newTarget);
-        }else if(newTarget === target){
+            this.deactivateComponentDidUpdate();
+            this.setLastTarget(target);
             this.props.next(newTarget);
         }
     }
@@ -217,10 +240,10 @@ class Carousel extends Component {
         const key = eval(e.target.name);
         if (key > target) {
             newTarget = key;
-            this.setRightDirection();
+            // this.setRightDirection();
         } else if (key < target) {
             newTarget = key;
-            this.setLeftDirection();
+            // this.setLeftDirection();
         }
 
         if (key !== target) {
@@ -302,11 +325,12 @@ class Carousel extends Component {
         e.preventDefault();
         this.togglePlayMouseClick();
 
-        const key = e.target.getAttribute('name');
-        const {items} = this.props;
-        if (items[key] !== undefined && items[key] !== null) {
-            items[key].onClick();
-        }
+        // const key = e.target.getAttribute('name');
+        // const {items} = this.props;
+        // if (items[key] !== undefined && items[key] !== null) {
+        //     items[key].onClick();
+        // }
+        this.handleNext();
     }
 
     // itemButtonsSelected = () => {
@@ -456,9 +480,9 @@ class Carousel extends Component {
         if (items !== undefined && items !== null) {
 
             const itemsKeys = Object.keys(items);
-
             return itemsKeys.map((key) => {
                 let targeted = "";
+
                 if (eval(selected) === eval(key) && actived) {
                     targeted = "targeted";
                 }
