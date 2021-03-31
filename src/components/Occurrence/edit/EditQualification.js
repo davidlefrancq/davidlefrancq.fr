@@ -181,7 +181,7 @@ class EditQualification extends Component {
         this.props.setOccurrence(occurrence);
     }
     uploadQualificationLogoError = (res) => {
-        console.log(res);
+        // console.log(res);
     }
 
 

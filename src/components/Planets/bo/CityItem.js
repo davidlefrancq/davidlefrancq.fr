@@ -9,7 +9,7 @@ class CityItem {
         this.population = population;
         this.altitude = altitude;
         this.onClick = () => {
-            console.log("onClick City Item");
+            console.log("Default empry function in CityItem.");
         };
 
     }

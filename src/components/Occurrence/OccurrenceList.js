@@ -43,7 +43,7 @@ class OccurrenceList extends Component {
 
             this.props.setOccurrences(items);
         }, (error) => {
-            console.log(error);
+            // console.log(error);
         });
 
         // Lorsque l'écran change de résolution

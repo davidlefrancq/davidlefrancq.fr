@@ -311,13 +311,13 @@ class CvCarousel extends Component {
     }
 
     prevent = (target) => {
-        console.log("target", target);
+        // console.log("target", target);
         this.updateTarget(target);
     }
 
     next = (target) => {
-        console.log("state", this.state);
-        console.log("target", target);
+        // console.log("state", this.state);
+        // console.log("target", target);
         this.updateTarget(target);
     }
 

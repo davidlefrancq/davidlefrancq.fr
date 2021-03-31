@@ -185,7 +185,7 @@ class Header extends Component {
             this.setState(state);
             setTimeout(this.hideMsgCopyEmail,5000);
         }catch (error){
-            console.log(error);
+            // console.log(error);
         }
     }
     hideMsgCopyEmail = () => {
