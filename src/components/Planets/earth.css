@@ -1,0 +1,18 @@
+:root {
+    --globe-size:  400px;
+}
+
+.earth{
+    text-align: left !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: var(--globe-size) !important;
+    height: var(--globe-size) !important;
+}
+
+.earth canvas{
+    border: 4px solid rgba(255,255,255,1);
+    border-radius: var(--globe-size);
+    box-shadow: 2px 4px 8px 2px rgba(0,0,0,0.5);
+    outline: 0;
+}
