@@ -1,5 +1,8 @@
 import axios from "axios";
 import {MEDIA_OBJECT_ADMIN, URL_OCCURRENCES, URL_OCCURRENCES_ADMIN} from "./server-url";
+import {readRemoteFile} from "react-papaparse";
+import cv from "../data/CV.csv";
+import DataConverter from "./DataConverter";
 
 const SELECT_ALL = URL_OCCURRENCES;
 const SELECT_BY_ID = URL_OCCURRENCES + "/{id}";
@@ -10,8 +13,38 @@ const UPLOAD_IMAGE = MEDIA_OBJECT_ADMIN;
 
 class OccurrenceDAO {
 
+    selectAllByCsv() {
+        return new Promise((resolve, reject) => {
+            try {
+                readRemoteFile(cv, {
+                    delimiter: ";",
+                    skipEmptyLines: true,
+                    complete: (result) => {
+                        const occurences = [];
+
+                        const {data} = result;
+                        for (const key in data) {
+
+                            const item = data[key];
+                            if (key != 0) {
+                                const occurence = DataConverter.occurenceParser(item);
+                                occurence.id = key;
+                                occurences.push(occurence);
+                            }
+                        }
+
+                        resolve(occurences);
+                    },
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
     selectAll() {
-        return axios.get(SELECT_ALL);
+        return this.selectAllByCsv();
+        //return axios.get(SELECT_ALL);
     }
 
     selectById(id) {

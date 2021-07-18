@@ -9,11 +9,11 @@ class OccurrenceItem extends Component {
     }
 
     renderOccurrence(occurrence) {
-        if (occurrence.experience && (this.props.lastDate || this.props.lastDate)) {
+        if (occurrence.experience) {
 
             return this.renderExperience(occurrence);
 
-        } else if (occurrence.qualification && (this.props.firstDate || this.props.lastDate)) {
+        } else if (occurrence.qualification) {
 
             return this.renderQualification(occurrence);
 
@@ -32,11 +32,10 @@ class OccurrenceItem extends Component {
 
     render() {
         const {occurrence} = this.props;
-
         return (
-            <Fragment>
+            <div>
                 {this.renderOccurrence(occurrence)}
-            </Fragment>
+            </div>
         );
     }
 }

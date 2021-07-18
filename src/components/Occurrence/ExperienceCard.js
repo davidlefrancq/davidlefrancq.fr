@@ -2,20 +2,12 @@ import React, {Component, Fragment} from 'react';
 import {Card} from 'react-bootstrap';
 import MonthFr from "../../utils/MonthFr";
 import FirstCharUppercase from "../../utils/FirstCharUppercase";
-import {BsBriefcaseFill, BsFillInfoCircleFill, BsBuilding, BsLink} from "react-icons/bs";
-import {FaCalendarAlt} from "react-icons/fa";
-import {GiComputing} from "react-icons/gi";
+import {BsLink} from "react-icons/bs";
 import "./occurrence-card.css";
 import {
-    STRING_EXPERIENCE_JOB_DESCRIPTION,
-    STRING_EXPERIENCE_TECH,
     STRING_LINKS,
-    STRING_PROFESSIONAL_EXPERIENCE,
-    STRING_QUALIFICATION_ACCESSIBLE_EMPLOYMENT,
-    STRING_QUALIFICATION_ROLES,
 } from "../../translation/fr-fr";
-import {GoCalendar} from "react-icons/go";
-import {MdWork} from "react-icons/md";
+import TechnoIcon from "./TechnoIcon";
 
 class ExperienceCard extends Component {
 
@@ -46,7 +38,7 @@ class ExperienceCard extends Component {
         const {comment} = experience;
         const disabled = (comment && comment != "") ? false : true;
 
-        if(!disabled) {
+        if (!disabled) {
 
             const state = this.setCommentSelected();
 
@@ -68,7 +60,7 @@ class ExperienceCard extends Component {
         const {technologicalCategories} = experience;
         const disabled = technologicalCategories.length > 0 ? false : true;
 
-        if(!disabled) {
+        if (!disabled) {
 
             const state = this.setTechnologySelected();
 
@@ -90,7 +82,7 @@ class ExperienceCard extends Component {
         const {links} = experience;
         const disabled = links.length > 0 ? false : true;
 
-        if(!disabled) {
+        if (!disabled) {
             const state = this.setLinksSelected();
 
             let display = 'block';
@@ -143,22 +135,38 @@ class ExperienceCard extends Component {
 
     renderEnterpriseLogo(enterprise) {
         const {url, logo} = enterprise;
-        if (url != undefined && url != null && url != "") {
+        if (url != undefined && url != null && url != "" && logo && logo != "") {
             return (
-                <a href={url}>
-                    <img className={"mr-1"} src={logo} style={{height: "100px"}}/>
+                <a href={url} className={"m-0 p-0"}>
+                    <div className={"enterprise-logo"}>
+                        <img className={"m-0"} src={`./image/${logo}`}/>
+                    </div>
                 </a>
             );
         } else if (logo != undefined && logo != null && logo != "") {
             return (
-                <img className={"mr-1"} src={logo} style={{height: "100px"}}/>
+                <div className={"enterprise-logo"}>
+                    <img className={"m-0"} src={`./image/${logo}`}/>
+                </div>
+            );
+        } else {
+            return (
+                <div className={"enterprise-logo"}>
+                    <img className={"m-0"} src={"./image/building.png"}/>
+                </div>
             );
         }
     }
 
     renderEnterpriseLink(enterprise) {
 
-        const {name, url} = enterprise;
+        const {
+            name
+            ,
+            url
+        }
+
+            = enterprise;
 
         if (url != undefined && url != null && url != "") {
             return (
@@ -188,7 +196,7 @@ class ExperienceCard extends Component {
 
         if (address != undefined && address != null && address != "") {
             return (
-                <div className={"google-map-link text-center"} style={{height: "100px"}}>
+                <div className={"mr-auto ml-auto google-map-link text-center rounded-circle"}>
                     <a
                         href={`https://www.google.fr/maps/search/${fullAddress}?hl=fr`}
                         target={"_blank"}
@@ -218,16 +226,16 @@ class ExperienceCard extends Component {
         if (dateStart instanceof Date || dateEnd instanceof Date) {
             return (
                 <div>
-                    {this.renderTimeline(dateStart,dateEnd)}
+                    {this.renderTimeline(dateStart, dateEnd)}
                 </div>
             );
         }
     }
 
-    renderTimeline = (dateStart,dateEnd) => {
+    renderTimeline = (dateStart, dateEnd) => {
         const {firstDate, lastDate} = this.props;
-        const startYear = firstDate.getFullYear();
-        const endYear = lastDate.getFullYear();
+        const startYear = firstDate ? firstDate.getFullYear() : 1900;
+        const endYear = lastDate ? lastDate.getFullYear() : new Date().getFullYear();
         const yearStartJob = dateStart.getFullYear();
         const yearEndJob = dateEnd.getFullYear();
 
@@ -247,27 +255,33 @@ class ExperienceCard extends Component {
 
                 <div className={"gradualness"}>
 
-                    <div className={"startPoint"} style={{left: leftStart, marginLeft:"-6px"}}></div>
-                    <div className={"start"} style={{left: leftStart, marginLeft:"-12px"}}>
+                    <div className={"startPoint"} style={{left: leftStart, marginLeft: "-6px"}}></div>
+                    <div className={"start"} style={{left: leftStart, marginLeft: "-12px"}}>
                         {startYear}
                     </div>
 
-                    <div className={"endPoint"} style={{left: leftEnd, marginLeft:"-6px"}}></div>
-                    <div className={"end"} style={{left: leftEnd, marginLeft:"-12px"}}>
+                    <div className={"endPoint"} style={{left: leftEnd, marginLeft: "-6px"}}></div>
+                    <div className={"end"} style={{left: leftEnd, marginLeft: "-12px"}}>
                         {endYear}
                     </div>
 
-                    <div className={"datePoint"} style={{left: leftYearStartJob, marginLeft:"-6px"}}></div>
-                    <div className={"date"} style={{left: leftYearStartJob, marginLeft:"-12px"}}>
+                    <div className={"datePoint"} style={{left: leftYearStartJob, marginLeft: "-6px"}}></div>
+                    <div className={"date"} style={{left: leftYearStartJob, marginLeft: "-12px"}}>
                         {yearStartJob}
                     </div>
 
-                    <div className={"datePoint"} style={{left: leftYearEndJob, marginLeft:"-6px"}}></div>
-                    <div className={"date"} style={{left: leftYearEndJob, marginLeft:"-12px"}}>
+                    <div className={"datePoint"} style={{left: leftYearEndJob, marginLeft: "-6px"}}></div>
+                    <div className={"date"} style={{left: leftYearEndJob, marginLeft: "-12px"}}>
                         {yearEndJob}
                     </div>
 
-                    <div className={"progressbar"} style={{left:leftYearStartJob, width:progressbarWidth, marginLeft:"6px", paddingLeft:"12px", paddingRight:"12px"}}>
+                    <div className={"progressbar"} style={{
+                        left: leftYearStartJob,
+                        width: progressbarWidth,
+                        marginLeft: "6px",
+                        paddingLeft: "12px",
+                        paddingRight: "12px"
+                    }}>
                         <div className={"background"}></div>
                     </div>
 
@@ -301,32 +315,21 @@ class ExperienceCard extends Component {
     }
 
     renderTechnonogies(technologies) {
-        return (
-            <div className={"container"}>
-                <div className={"row"}>
-                    {this.formatTechnologieRendering(technologies)}
-                </div>
-            </div>
-        );
+        return this.formatTechnologieRendering(technologies);
     }
 
     formatTechnologieRendering(technologies) {
-        const technologiesKeys = Object.keys(technologies);
-        return technologiesKeys.map((key) => {
-            const technology = technologies[key];
-            return (
-                <Fragment key={key}>
-                    {this.renderTechnology(technology)}
-                </Fragment>
-            );
+        return technologies.map((technology, index) => {
+            return this.renderTechnology(technology, index);
         });
     }
 
-    renderTechnology(technology) {
+    renderTechnology(technology, index) {
         const {name, logo} = technology;
         return (
-            <div className={"col-auto"}>
-                <img className={"experience-technology-logo mr-1"} src={logo}/>
+            <div key={index} className={"d-inline m-3"}>
+                {/*<img className={"experience-technology-logo mr-1"} src={`./image/${logo}`}/>*/}
+                <TechnoIcon name={name}/>
                 {name}
             </div>
         );
@@ -343,18 +346,18 @@ class ExperienceCard extends Component {
     }
 
     formatLinkRendering(links) {
-        const linksKeys = Object.keys(links);
-        return linksKeys.map((key) => {
-            const link = links[key];
-            return (
-                this.renderLink(link)
-            );
-        });
+        if (links && links.length > 0) {
+            return links.map((link, index) => {
+                return (
+                    this.renderLink(link, index)
+                );
+            });
+        }
     }
 
-    renderLink(link) {
+    renderLink(link, index) {
         return (
-            <a key={link.name} className={"btn btn-primary m-1"} href={link.url}>
+            <a key={index} className={"btn btn-primary m-1"} href={link.url}>
                 {link.name}
             </a>
         );
@@ -374,11 +377,12 @@ class ExperienceCard extends Component {
         const {experience} = this.props.occurrence;
         const {links} = experience;
 
-        if(links.length > 0){
+        if (links && links.length > 0) {
             const linksDisable = links.length > 0 ? "" : "disabled";
 
-            return(
-                <button className={`btn btn-primary outer ${this.state.links.css} ${linksDisable}`} onClick={this.showLinks}>
+            return (
+                <button className={`btn btn-primary outer ${this.state.links.css} ${linksDisable}`}
+                        onClick={this.showLinks}>
                     <div className={"inner"}>
                         <BsLink/> &nbsp;
                         {STRING_LINKS}
@@ -393,115 +397,62 @@ class ExperienceCard extends Component {
         const {dateStart, dateEnd, experience} = this.props.occurrence;
         const {name, comment, img, enterprise, technologicalCategories, workstudy, links} = experience;
 
-        const commentDisable = (comment && comment != "") ? "" : "disabled";
-        const technologyDisable = technologicalCategories.length > 0 ? "" : "disabled";
-        const linksDisable = links.length > 0 ? "" : "disabled";
-
         return (
-            <Card className={"m-0 occurrence-card experience"}>
-
-                <div className={"logo"}>
-                    <BsBriefcaseFill/>
-                </div>
+            <Card className={"bg-dark border-0 m-0 occurrence-card experience"}>
 
                 <Card.Header className={"pb-1"}>
                     <Card.Title className={"pb-0"}>
                         <h4 className={"mt-1 mb-0 pb-0"}>
-                            {FirstCharUppercase.convert(name)}
+                            <div className={"codeBlue"}>{'Experience Professionnel { '}</div>
+                            <span className={"ml-5"}>{FirstCharUppercase.convert(name)}</span>
+                            <div className={"codeBlue"}>{' }'}</div>
                         </h4>
                     </Card.Title>
                 </Card.Header>
 
                 <Card.Body>
 
-                    <div className={"row"}>
-                        <div className={"col-12 row"}>
+                    <div className={"row mb-5"}>
 
-                            <div className={"col-3"}>
+                        <div className={"col-9 clearfix"}>
+                            <div className={"float-left"}>
+
                                 {this.renderEnterpriseLogo(enterprise)}
                             </div>
-
-                            <div className={"col-9 col-xl-9 row p-0 m-0"}>
-                                <div className={"col-7 col-xl-5 pl-0 pr-0 pt-3"}>
-                                    {this.renderDate(dateStart, dateEnd)}
-                                </div>
-                                <div className={"col-5 col-xl-7 pl-5 pr-5"}>
-                                    {this.renderEnterpriseLinkGoogleMap(enterprise)}
-                                </div>
+                            <div className={"float-left mt-3 pl-3"}>
+                                <div>{enterprise.name}</div>
+                                <div>{enterprise.postalCode} {enterprise.city}</div>
                             </div>
+                        </div>
 
-                            <div className={"col-12 border-top mt-1"}>
-                                {this.renderEnterpriseLink(enterprise)}
-                            </div>
+                        <div className={"col-3"}>
+                            {this.renderEnterpriseLinkGoogleMap(enterprise)}
+                        </div>
 
+                        <div className={"offset-1 col-10 mt-5 mb-5"}>
+                            {this.renderDate(dateStart, dateEnd)}
                         </div>
                     </div>
 
 
                     <div className={"row"}>
 
-                        <div className={"col-12 pl-4 pr-4"}>
-                            <div className={"row h-100"}>
-
-                                <div className={"occurrence-card-menu col-3 h-100"}>
-                                    <div className={"btn-group h-100"}>
-
-                                        <button className={`btn btn-primary outer ${this.state.comment.css} ${commentDisable}`} onClick={this.showComment}>
-                                            <div className={"inner"}>
-                                                <BsFillInfoCircleFill/> &nbsp;
-                                                {STRING_EXPERIENCE_JOB_DESCRIPTION}
-                                            </div>
-                                        </button>
-
-                                        <button className={`btn btn-primary outer ${this.state.technology.css} ${technologyDisable}`} onClick={this.showTechnology}>
-                                            <div className={"inner"}>
-                                                <GiComputing/> &nbsp;
-                                                {STRING_EXPERIENCE_TECH}
-                                            </div>
-                                        </button>
-
-                                        {this.renderButtonLinks()}
-
-                                    </div>
-                                </div>
-
-                                <div className={"col-9"} style={{minHeight: "400px"}}>
-
-                                    <div className={"text-justify p-3"} style={{display: this.state.comment.display}}>
-                                        <h4>
-                                            {STRING_EXPERIENCE_JOB_DESCRIPTION}
-                                        </h4>
-                                        {this.renderComment(comment)}
-                                    </div>
-
-                                    <div className={"text-justify p-3"}
-                                         style={{display: this.state.technology.display}}>
-                                        <h4>
-                                            {STRING_EXPERIENCE_TECH}
-                                        </h4>
-                                        {this.renderTechnonogies(technologicalCategories)}
-                                    </div>
-
-                                    <div className={"p-3"} style={{display: this.state.links.display}}>
-                                        <h4>
-                                            {STRING_LINKS}
-                                        </h4>
-                                        {this.renderLinks(links)}
-                                    </div>
-
-                                </div>
-
-
-                            </div>
+                        <div className={"col-12 text-center p-3"}>
+                            {this.renderTechnonogies(technologicalCategories)}
                         </div>
+
+
+                        <div className={"col-12 text-justify p-3"}>
+                            {this.renderComment(comment)}
+                        </div>
+
+                        <div className={"col-12 p-3"}>
+                            {this.renderLinks(links)}
+                        </div>
+
                     </div>
 
                 </Card.Body>
-
-                {/*<Card.Footer className={"text-right"}>*/}
-                {/*    <button className={"btn btn-secondary m-1"} onClick={this.handleDeploy.bind(this)}>Action*/}
-                {/*    </button>*/}
-                {/*</Card.Footer>*/}
 
             </Card>
         );

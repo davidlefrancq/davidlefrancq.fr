@@ -6,12 +6,13 @@ import {BsBuilding, BsFillInfoCircleFill, BsLink, BsCalendar, BsLink45Deg} from 
 import {GoCalendar} from "react-icons/go";
 import {GiDiploma} from 'react-icons/gi';
 import {MdWork} from "react-icons/md";
-import {FaGraduationCap} from "react-icons/fa";
+import {FaGraduationCap, FaSchool, FaUniversity} from "react-icons/fa";
 import DOMPurify from 'dompurify';
 import {
     STRING_DEGREE, STRING_LINKS, STRING_QUALIFICATION_ACCESSIBLE_EMPLOYMENT,
     STRING_QUALIFICATION_ROLES
 } from "../../translation/fr-fr";
+import "./occurrence-card.css";
 
 class QualificationCard extends Component {
 
@@ -41,7 +42,7 @@ class QualificationCard extends Component {
         const {objectives} = qualification;
         const disabled = (objectives && objectives != "") ? false : true;
 
-        if(!disabled) {
+        if (!disabled) {
 
             const state = this.setObjectivesSelected();
 
@@ -58,7 +59,7 @@ class QualificationCard extends Component {
         const {jobs} = qualification;
         const disabled = jobs.length > 0 ? false : true;
 
-        if(!disabled) {
+        if (!disabled) {
 
             const state = this.setJobsSelected();
 
@@ -75,7 +76,7 @@ class QualificationCard extends Component {
         const {links} = qualification;
         const disabled = links.length > 0 ? false : true;
 
-        if(!disabled) {
+        if (!disabled) {
 
             const state = this.setLinksSelected();
 
@@ -125,63 +126,43 @@ class QualificationCard extends Component {
 
     renderJobs(jobs) {
         return (
-            <div className={"row"}>
+            <ul>
                 {this.formatJobRendering(jobs)}
-            </div>
+            </ul>
         );
     }
 
     formatJobRendering(jobs) {
-        const jobsKeys = Object.keys(jobs);
-        return jobsKeys.map((key) => {
-            const job = jobs[key];
-            return (
-                <Fragment key={key}>
-                    {this.renderJob(job)}
-                </Fragment>
-            );
+        return jobs.map((job, index) => {
+            return this.renderJob(job, index);
         });
     }
 
-    renderJob(job) {
-        if (job != undefined && job != null) {
+    renderJob(job, index) {
+        if (job != undefined && job != null && job.name != "") {
             return (
-                <div className={"col-12"}>
-                    <div className={"row"}>
-                        <div className="col-2"></div>
-                        <div className="col-8 border border-top-0 border-left-0 border-right-0 p-2 mb-2">
-                            {job.name}
-
-                        </div>
-                    </div>
-                </div>
+                <li key={index}>
+                    {job.name}
+                </li>
             );
         }
     }
 
     renderLinks(links) {
-        return (
-            <div className={"container"}>
-                <div className={"row"}>
-                    {this.formatLinkRendering(links)}
-                </div>
-            </div>
-        );
+        return this.formatLinkRendering(links);
     }
 
     formatLinkRendering(links) {
-        const linksKeys = Object.keys(links);
-        return linksKeys.map((key) => {
-            const link = links[key];
-            return (
-                this.renderLink(link)
-            );
-        });
+        if (links && links.length > 0) {
+            return links.map((link, index) => {
+                return this.renderLink(link, index);
+            });
+        }
     }
 
-    renderLink(link) {
+    renderLink(link, index) {
         return (
-            <a key={link.name} className={"col-4 btn btn-primary m-1 pl-2"} href={link.url} target={"_blank"}>
+            <a key={index} className={"btn btn-primary m-1 pl-2"} href={link.url} target={"_blank"}>
                 <BsLink45Deg style={{fontSize: "large"}}/> {link.name}
             </a>
         );
@@ -190,7 +171,7 @@ class QualificationCard extends Component {
     renderObjectives(objectives) {
         if (objectives != undefined && objectives != null) {
             return (
-                <div className={"text-justify p-3"}
+                <div className={"text-justify"}
                      dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(objectives)}}>
                     {/*{objectives}*/}
                 </div>
@@ -245,24 +226,42 @@ class QualificationCard extends Component {
         );
     }
 
+    renderImg(logo) {
+        if (logo) {
+            return <img className={"m-0"} src={`./image/${logo}`}/>;
+        } else {
+            return <FaUniversity size={55} style={{color: "rgba(0,0,0,0.80)"}}/>;
+        }
+    }
+
     renderTrainingCenterLogo(trainingCenter) {
         const {logo, url} = trainingCenter;
         if (url != undefined && url != null && url != "") {
             return (
-                <a href={url}>
-                    <img className={"mr-1"} src={logo} style={{height: "100px"}}/>
+                <a href={url} className={"m-0 p-0"}>
+                    <div className={"enterprise-logo"}>
+                        {this.renderImg(logo)}
+                    </div>
                 </a>
             );
         } else if (logo != undefined && logo != null && logo != "") {
             return (
-                <img className={"mr-1"} src={logo} style={{height: "100px"}}/>
+                <div className={"enterprise-logo"}>
+                    {this.renderImg(logo)}
+                </div>
             );
         }
     }
 
     renderTrainingCenterLink(trainingCenter) {
 
-        const {name, url} = trainingCenter;
+        const {
+            name
+            ,
+            url
+        }
+
+            = trainingCenter;
 
         if (url != undefined && url != null && url != "") {
             return (
@@ -291,7 +290,7 @@ class QualificationCard extends Component {
 
         if (fullAddress != undefined && fullAddress != null && fullAddress != "") {
             return (
-                <div className={"google-map-link text-center"} style={{height: "100px"}}>
+                <div className={"mr-auto ml-auto google-map-link text-center rounded-circle"}>
                     <a
                         href={`https://www.google.fr/maps/search/${fullAddress}?hl=fr`}
                         target={"_blank"}
@@ -325,7 +324,7 @@ class QualificationCard extends Component {
         const {firstDate, lastDate} = this.props;
 
         const startYear = firstDate ? firstDate.getFullYear() : 1900;
-        const endYear = lastDate ? lastDate.getFullYear() : Date.now().getFullYear();
+        const endYear = lastDate ? lastDate.getFullYear() : new Date().getFullYear();
         const year = date ? date.getFullYear() : 1900;
 
         const positionStart = 0;
@@ -390,11 +389,12 @@ class QualificationCard extends Component {
         const {qualification} = this.props.occurrence;
         const {links} = qualification;
 
-        if(links.length > 0){
+        if (links && links.length > 0) {
             const linksDisable = links.length > 0 ? "" : "disabled";
 
-            return(
-                <button className={`btn btn-primary outer ${this.state.links.css} ${linksDisable}`} onClick={this.showLinks}>
+            return (
+                <button className={`btn btn-primary outer ${this.state.links.css} ${linksDisable}`}
+                        onClick={this.showLinks}>
                     <div className={"inner"}>
                         <BsLink/> &nbsp;
                         {STRING_LINKS}
@@ -412,99 +412,52 @@ class QualificationCard extends Component {
         const jobsDisable = jobs.length > 0 ? "" : "disabled";
 
         return (
-            <Card className={"mt-0 occurrence-card qualification"}>
-
-                <div className={"logo"}>
-                    <FaGraduationCap/>
-                </div>
-
-                <Card.Header className={"pb-1"}>
-                    <Card.Title className={"pb-0"}>
-                        <h4 className={"mt-1 mb-0 pb-0"}>
-                            {FirstCharUppercase.convert(name)}
-                        </h4>
-                    </Card.Title>
-                </Card.Header>
+            <Card className={"bg-dark border-0 mt-0 occurrence-card qualification"}>
 
                 <Card.Body>
 
+                    <div className={"row mb-5"}>
+                        <div className={"offset-3 col-6 mt-3 mb-5"}>
+                            {this.renderDate(dateEnd)}
+                        </div>
+                    </div>
+
                     <div className={"row"}>
-                        <div className={"col-12 row"}>
 
-                            <div className={"col-3"}>
-                                {this.renderTrainingCenterLogo(trainingCenter)}
-                            </div>
-
-                            <div className={"col-9 col-xl-9 row p-0 m-0"}>
-                                <div className={"col-7 col-xl-5 pl-0 pr-0 pt-3"}>
-                                    {this.renderDate(dateEnd)}
+                        <div className={"col-6"}>
+                            <div className={"row"}>
+                                <div className={"col-12 text-center p-3"}>
+                                    {this.renderObjectives(objectives)}
                                 </div>
-                                <div className={"col-5 col-xl-7 pl-5 pr-5"}>
+
+                                <div className={"col-6 text-justify p-3"}>
+                                    {this.renderJobs(jobs)}
+                                </div>
+
+                                <div className={"col-6 p-3"}>
+                                    {this.renderLinks(links)}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={"col-6"}>
+                            <div className={"row"}>
+                                <div className={"col-8"}>
+                                    <div>{trainingCenter.name}</div>
+                                    <div>{trainingCenter.postalCode} {trainingCenter.city}</div>
+                                </div>
+
+
+                                <div className={"col-4"}>
                                     {this.renderTrainingCenterLinkGoogleMap(trainingCenter)}
                                 </div>
                             </div>
-
-                            <div className={"col-12 border-top mt-1"}>
-                                {this.renderTrainingCenterLink(trainingCenter)}
-                            </div>
-
                         </div>
+
+
                     </div>
 
 
-                    <div className={"row"}>
-
-                        <div className={"col-12 pl-4 pr-4"}>
-                            <div className={"row h-100"}>
-
-                                <div className={"occurrence-card-menu col-3 h-100"}>
-                                    <div className={"btn-group h-100"}>
-
-                                        <button className={`btn btn-primary outer ${this.state.objectives.css} ${objectivesDisable}`} onClick={this.showObjectives}>
-                                            <div className={"inner"}>
-                                                <BsFillInfoCircleFill/> &nbsp;
-                                                {STRING_QUALIFICATION_ROLES}
-                                            </div>
-                                        </button>
-
-                                        <button className={`btn btn-primary outer ${this.state.jobs.css} ${jobsDisable}`} onClick={this.showJobs}>
-                                            <div className={"inner"}>
-                                                <MdWork/> &nbsp;
-                                                {STRING_QUALIFICATION_ACCESSIBLE_EMPLOYMENT}
-                                            </div>
-                                        </button>
-
-                                        {this.renderButtonLinks()}
-
-                                    </div>
-                                </div>
-
-                                <div className={"col-9"} style={{minHeight: "400px"}}>
-                                    <div className={"text-justify p-3"}
-                                         style={{display: this.state.objectives.display}}>
-                                        <h4>
-                                            {STRING_QUALIFICATION_ROLES}
-                                        </h4>
-                                        {this.renderObjectives(objectives)}
-                                    </div>
-
-                                    <div className={"text-justify p-3"} style={{display: this.state.jobs.display}}>
-                                        <h4>
-                                            {STRING_QUALIFICATION_ACCESSIBLE_EMPLOYMENT}
-                                        </h4>
-                                        {this.renderJobs(jobs)}
-                                    </div>
-
-                                    <div className={"p-3"} style={{display: this.state.links.display}}>
-                                        <h4>
-                                            {STRING_LINKS}
-                                        </h4>
-                                        {this.renderLinks(links)}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </Card.Body>
 
             </Card>

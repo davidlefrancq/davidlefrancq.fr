@@ -24,13 +24,13 @@ class Slider extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener("load", () => {
+        // window.addEventListener("load", () => {
             const slide = this.refSlide.current;
             const canvas = this.refCanvas.current;
             const prevent = this.refBtnPrevent.current;
             const next = this.refBtnNext.current;
             this.slideShow = new SlideGL(slide, canvas, prevent, next, this.props.effect, this.props.callback);
-        });
+        // });
     }
 
     renderImage(image, index) {

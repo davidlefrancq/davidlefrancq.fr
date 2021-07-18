@@ -1,17 +1,22 @@
 :root {
-    --primary-color:rgba(0, 0, 0, 0.95);
-    --secondary-color:rgba(0, 0, 0,0.95);
-    --tertiary-color:rgba(0, 0, 0,0.95);
-    --quaternary-color:rgba(0, 0, 0,0.95);
-    --quiquenary-color:rgba(0, 0, 0,0.95);
+    --bg-color: rgba(0, 0, 0, 0);
+    --primary-color: rgba(0, 0, 0, 0.95);
+    --secondary-color: rgba(0, 0, 0, 0);
+    --tertiary-color: rgba(0, 0, 0, 0.95);
+    --quaternary-color: rgba(0, 0, 0, 0.95);
+    --quiquenary-color: rgba(0, 0, 0, 0.95);
 }
 
-.bg-primary{
+.bg-primary {
     background-color: var(--primary-color) !important;
 }
 
+.bg-dark {
+    background-color: var(--bg-color) !important;
+}
+
 .card {
-    box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.3);
+    /*box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.3);*/
 }
 
 .occurrence-card {
@@ -22,18 +27,41 @@
 }
 
 .occurrence-card .card-header {
-    border-radius: 0 25px 25px 25px;
     background-color: var(--secondary-color);
     color: rgba(255, 255, 255, 1);
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
 }
 
 .occurrence-card .card-body h4 {
     background-color: var(--secondary-color);
-    color: rgba(255, 255, 255, 1);
     padding-top: 6px;
     padding-bottom: 8px;
-    border-radius: 25px 25px 25px 25px;
+}
+
+.occurrence-card .card-body .enterprise-logo {
+    background-color: rgba(255, 255, 255, 0.5);
+    min-width: 160px;
+    min-height: 80px;
+    line-height: 75px;
+    /*border-radius: 40px;*/
     text-align: center;
+    align-items: center;
+    vertical-align: center;
+    vert-align: middle;
+    padding: 0;
+}
+
+.occurrence-card .card-body a .enterprise-logo:hover{
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+.occurrence-card .card-body .enterprise-logo img {
+    max-width: 135px;
+    max-height: 70px;
+    border-radius: 35px;
 }
 
 .occurrence-card .logo {
@@ -84,8 +112,8 @@
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    width: 100%;
-    min-height: 75px;
+    width: 75px;
+    height: 75px;
 }
 
 .google-map-link:hover {
@@ -94,12 +122,10 @@
 
 @keyframes google-map-enter-animation {
     0% {
-        filter: grayscale(65%);
-        border-radius: 0;
+        filter: grayscale(100%);
     }
     100% {
         filter: grayscale(0%);
-        border-radius: 25px;
     }
 }
 
@@ -109,7 +135,7 @@
     height: 100%;
     color: rgba(0, 87, 227, 1);
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);
-    padding-top: 25px;
+    padding-top: 15px;
 }
 
 .google-map-link a:hover {
@@ -120,68 +146,12 @@
 @keyframes google-map-link-enter-animation {
     0% {
         border-radius: 0;
-        padding-top: 25px;
         font-weight: initial;
         font-size: initial;
-        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0);
-        text-shadow: 2px 3px 6px rgba(0, 0, 0, 0);
     }
     100% {
         border-radius: 25px;
-        color: rgba(255, 255, 255, 0.9);
-        padding-top: 17px;
+        color: rgba(63, 108, 191, 1);
         font-weight: bold;
-        font-size: x-large;
-        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
-        text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.8);
     }
-}
-
-.occurrence-card-menu .btn-group .btn-primary {
-    min-width: 80px;
-    padding-bottom: 10px;
-    font-size: large;
-}
-
-.occurrence-card-menu .btn-primary {
-    /*border: 1px solid rgba(0, 87, 227, 1);*/
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    /*color: rgba(0, 87, 227, 1);*/
-    /*border-radius: 25px;*/
-    width: 50px;
-    /*height: 50px;*/
-    /*box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.4);*/
-}
-
-.occurrence-card-menu .btn-primary:hover {
-    border: 1px solid rgba(0, 87, 227, 1);
-    color: white;
-    background-color: rgba(0, 87, 227, 1);
-}
-.occurrence-card-menu {
-    /*margin-top: -75px;*/
-    /*margin-left: -75px;*/
-    /*transform: rotate(25deg);*/
-}
-
-.occurrence-card-menu .btn-group .btn-primary{
-    min-width: 50px !important;
-}
-
-.outer {
-    writing-mode: tb-rl;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 250px;
-
-    margin-top:70px;
-    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.4);
-
-}
-
-.inner {
-    transform: rotate(-90deg);
-    text-align: left;
-    min-width: 150px;
 }

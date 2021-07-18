@@ -1,21 +1,17 @@
 import React, {Component, createRef, Fragment} from 'react';
-import OccurrenceItem from "./OccurrenceItem";
 import CvCarousel from "../Corousel/CvCarousel";
-import DateBar from "../DateBar/DateBar";
-import Step from "../../bo/Step";
 import {connect} from "react-redux";
 import {actions} from '../../actions';
 import DAOFactory from "../../dal/DAOFactory";
 import ScreenDetection from "../../utils/ScreenDetection";
-import {BsBuilding} from 'react-icons/bs';
-import {GiDiploma} from 'react-icons/gi';
-import {OverlayTrigger, Tooltip} from "react-bootstrap";
-import Earth from "../Planets/Earth";
-import {OCCURRENCE_ALL, OCCURRENCE_EXPERIENCE, OCCURRENCE_QUALIFICATION} from "./occurence-type";
-import Occurrence from "../../bo/Occurrence";
 import "./occurrence-list.css";
-import OccurrencesUtils from "../../utils/OccurrencesUtils";
-import VarUtils from "../../utils/VarUtils";
+import Qualification from "../../bo/Qualification";
+import Experience from "../../bo/Experience";
+import OccurrenceItem from "./OccurrenceItem";
+import Timeline from "../Timeline/Timeline";
+import Technologies from "../Technologies/Technologies";
+import {CgWebsite, FaMapMarkerAlt, GrFirefox, MdWeb} from "react-icons/all";
+import LinkGoogleMap from "../LinkGoogleMap/LinkGoogleMap";
 
 const daoFactory = new DAOFactory();
 
@@ -23,644 +19,425 @@ class OccurrenceList extends Component {
 
     constructor(props) {
         super(props);
-        const screenSize = ScreenDetection.getBootstrapSize();
         this.state = {
-            occurrence: {},
-            // style: {
-            //     qualificationDisplay: "",
-            //     experienceDisplay: "",
-            // },
-            screenSize: screenSize,
+            target: 0,
+            dateStart: 0,
+            dateEnd: new Date(),
+            load: "",
+            carouselTitleClassCss: "",
+            carouselTitleDisplay: "",
+            carouselDateClassCss: "",
+            carouselDateDisplay: "",
         };
-        this.refOverlayQualification = createRef();
     }
 
     componentDidMount() {
         const result = daoFactory.getOccurrenceDAO().selectAll();
-        result.then((res) => {
-            const {data} = res;
-            const items = data['hydra:member'];
-
-            this.props.setOccurrences(items);
+        result.then((items) => {
+            this.init(items);
         }, (error) => {
-            // console.log(error);
+            console.error(error);
         });
-
-        // Lorsque l'écran change de résolution
-        window.addEventListener("resize", this.screenResizeEvent);
-        this.screenResizeEvent(true);
     }
 
-    screenResizeEvent = (force) => {
+    init(items) {
+        this.props.setOccurrences(items);
+        this.initDates(items);
+    }
+
+    initDates(items) {
+        let start;
+        let end;
+
+        for (const key in items) {
+            const item = items[key];
+            const {dateStart, dateEnd} = item;
+
+            if (Number.parseInt(key) === 0) {
+
+                if (dateStart && dateStart != "") {
+                    start = new Date(dateStart);
+                }
+                if (dateEnd && dateEnd != "") {
+                    end = new Date(dateEnd);
+                }
+
+            } else {
+
+                if (dateStart && dateStart != "") {
+                    const date = new Date(dateStart);
+                    if (!start) {
+                        start = date;
+                    } else if (date < start) {
+                        start = date;
+                    }
+                }
+
+                if (dateEnd && dateEnd != "") {
+                    const date = new Date(dateEnd);
+                    if (!end) {
+                        end = date;
+                    } else if (date > end) {
+                        end = date;
+                    }
+                }
+            }
+        }
+        const state = {...this.state};
+        state.dateStart = start;
+        state.dateEnd = end;
+        this.setState(state);
+    }
+
+    move = (value) => {
 
         const state = {...this.state};
-        const screenSize = ScreenDetection.getBootstrapSize();
+        state.target += value;
+        if (state.target < 0) {
+            state.target = this.props.occurrences.length - 1;
+        }
+        if (state.target >= this.props.occurrences.length) {
+            state.target = 0;
+        }
+        state.carouselTitleClassCss = "title-show-animation";
+        state.carouselTitleDisplay = "none";
+        state.carouselDateClassCss = "date-show-animation";
+        state.carouselDateDisplay = "none";
+        state.load = "load";
+        this.setState(state);
 
-        if (state.screenSize !== screenSize || force === true) {
-
-            state.screenSize = screenSize;
-
-            // if (screenSize === "col-xl") {
-            //     state.style.qualificationDisplay = "";
-            //     state.style.experienceDisplay = "";
-            // } else {
-            //     if (state.style.qualificationDisplay !== "d-none" && state.style.experienceDisplay !== "d-none") {
-            //         state.style.qualificationDisplay = "";
-            //         state.style.experienceDisplay = "d-none";
-            //     }
-            // }
-
+        setTimeout(() => {
+            const state = {...this.state};
+            state.carouselTitleDisplay = "";
+            state.carouselDateDisplay = "";
             this.setState(state);
+        }, 500);
+
+        setTimeout(() => {
+            const state = {...this.state};
+            state.load = "";
+            state.carouselTitleClassCss = "";
+            state.carouselDateClassCss = "";
+            this.setState(state);
+        }, 1000);
+    }
+
+
+    renderOccurenceType() {
+        const occurrence = this.props.occurrences[this.state.target];
+        let type = "";
+        if (occurrence) {
+            if (occurrence.experience) {
+                type = "Experience Professionnel";
+            }
+            if (occurrence.qualification) {
+                type = "Formation";
+            }
+        }
+        return type;
+    }
+
+    renderOccurenceTitle() {
+        const occurrence = this.props.occurrences[this.state.target];
+        let title = "";
+        if (occurrence) {
+            if (occurrence.experience) {
+                title = occurrence.experience.name;
+            }
+            if (occurrence.qualification) {
+                title = occurrence.qualification.name;
+            }
+        }
+        return title;
+    }
+
+    renderOccurenceLogo() {
+        const occurrence = this.props.occurrences[this.state.target];
+        let logo = null;
+        if (occurrence) {
+            if (occurrence.experience) {
+                logo = occurrence.experience.enterprise.logo;
+            }
+            if (occurrence.qualification) {
+                logo = occurrence.qualification.trainingCenter.logo;
+            }
+        }
+
+        if (logo && logo != "") {
+            return <img style={{height: 75, borderRadius: 40}} src={`./image/${logo}`}/>;
         }
     }
 
-    getStepsDates = () => {
-        const {occurrences} = this.props;
-        let dates = [];
+    renderOccurenceLink() {
+        const occurrence = this.props.occurrences[this.state.target];
+        let link = null;
+        if (occurrence) {
+            if (occurrence.experience) {
+                link = occurrence.experience.enterprise.url;
+            }
+            if (occurrence.qualification) {
+                link = occurrence.qualification.trainingCenter.url;
+            }
+        }
 
-        for (const id in occurrences) {
-            const occurrence = occurrences[id];
+        if (link && link != "") {
+            return (
+                <a href={link} target={"_blank"}>
+                    {this.renderOccurenceLogo()}
+                </a>
+            );
+        }
 
-            let date = OccurrencesUtils.getDate(occurrence)
-            if (date != null && !isNaN(date.getTime())) {
+        return this.renderOccurenceLogo();
+    }
 
-                let dateExist = false;
+    renderDates() {
+        const occurrence = this.props.occurrences[this.state.target];
+        if (occurrence) {
+            const {dateStart, dateEnd} = occurrence;
+            let dates = "";
+            if (occurrence) {
+                const start = new Date(dateStart);
+                const end = new Date(dateEnd);
 
-                dates.forEach((item) => {
+                if (dateStart) {
+                    dates += start.getFullYear();
+                }
 
-                    if (date.getFullYear() === item.title) {
-                        dateExist = true;
+                if (dateEnd) {
+                    if (start.getFullYear() < end.getFullYear()) {
+                        if (dates != "") {
+                            dates += " - ";
+                        }
+                        dates += end.getFullYear();
                     }
-                });
-
-                if (dateExist === false) {
-                    let stepDate = this.initiateStepDate(date);
-                    dates.push(stepDate);
                 }
             }
-        }
-
-        return dates;
-    }
-
-    initiateStepDate = (date) => {
-        let stepDate = new Step(date.getFullYear(), "");
-        stepDate.onClick = (year) => {
-            if (year !== undefined && year !== null) {
-                const occurrence = OccurrencesUtils.getOccurrenceClosestToYear(this.props.occurrences, year);
-                this.setOccurrence(occurrence);
-            }
-        };
-        return stepDate;
-    }
-
-
-    renderOccurrences = () => {
-        const {occurrences} = this.props;
-        const occurrencesIds = Object.keys(occurrences);
-
-        return occurrencesIds.map((key) => {
-            return (
-                <OccurrenceItem key={key} occurrence={occurrences[key]}/>
-            );
-        });
-    }
-
-    renderOcurence = (firstDate, lastDate) => {
-        const {occurrence} = this.props;
-        if (occurrence !== undefined && occurrence !== null) {
-            return (
-                <OccurrenceItem occurrence={occurrence} firstDate={firstDate} lastDate={lastDate}/>
-            );
-        } else {
-            return (
-                <div
-                    className={"border w-100 h-100 bg-light"}
-                    style={{
-                        borderRadius: "25px 0 25px 0",
-                    }}
-                ></div>
-            );
-        }
-    }
-
-    renderDateBar = () => {
-
-        let i = 0;
-        for (let item in this.props.occurrences) {
-            i = i + 1;
-        }
-
-        if (i > 1) {
-            const stepsDates = this.getStepsDates();
-            const {year} = this.props;
-
-            return (
-                <DateBar steps={stepsDates} year={year}/>
-            );
-        }
-    }
-
-    getTargetDateBar() {
-        let dateTarget = null;
-
-        const {occurrence} = this.props;
-        if (VarUtils.isNotUndefinedNull(occurrence)) {
-            const date = OccurrencesUtils.getDate(this.props.occurrence);
-            if (date instanceof Date) {
-                dateTarget = date.getFullYear();
-            }
-        }
-
-        return dateTarget;
-    }
-
-    // showQualification = () => {
-    //     const state = {...this.state};
-    //     state.style.experienceDisplay = "d-none";
-    //     state.style.qualificationDisplay = "";
-    //     this.setState(state);
-    // }
-    //
-    // showExperience = () => {
-    //     const state = {...this.state};
-    //     state.style.experienceDisplay = "";
-    //     state.style.qualificationDisplay = "d-none";
-    //     this.setState(state);
-    // }
-
-    // renderMenu = () => {
-    //     const {screenSize} = this.state
-    //     if (screenSize !== "col-xl") {
-    //         return (
-    //             <Fragment>
-    //                 <div className={"text-center mb-3 p-0"}>
-    //
-    //                     {/* Boutton Diplome */}
-    //                     {this.renderButtonQualification()}
-    //
-    //                     {/* Boutton Experience */}
-    //                     {this.renderButtonExperience()}
-    //
-    //                 </div>
-    //             </Fragment>
-    //         );
-    //     }
-    // }
-
-    // renderButtonExperience() {
-    //     return (
-    //         <button className={"btn btn-secondary m-1 col-5 col-xl-12"}
-    //                 onClick={this.showExperience}
-    //                 style={{fontSize: "large"}}
-    //         >
-    //             <span style={{fontSize: "x-large", marginRight: "5px"}}>
-    //                 <BsBuilding/>
-    //             </span>
-    //             <span> Expérience</span>
-    //         </button>
-    //     );
-    // }
-    //
-    // renderButtonQualification() {
-    //     return (
-    //         <button className={"btn btn-secondary m-1 col-5 col-xl-12"}
-    //                 onClick={this.showQualification}
-    //                 style={{fontSize: "large"}}
-    //         >
-    //             <span style={{fontSize: "x-large"}}>
-    //                 <GiDiploma/>
-    //             </span>
-    //             <span> Diplome</span>
-    //         </button>
-    //     );
-    // }
-
-    renderTooltipQualification = (props) => {
-        return (
-            <Tooltip id="button-tooltip-qualification" {...props}>
-                Diplome
-            </Tooltip>
-        );
-    }
-
-    renderTooltipExperience = (props) => {
-        return (
-            <Tooltip id="button-tooltip-experience" {...props}>
-                Expérience
-                <br/>
-                Professionnelle
-            </Tooltip>
-        );
-    }
-
-    updateOccurenceSelected = (target) => {
-
-        if (target !== undefined && target !== null) {
-            if (this.isItemExistInOccurrences()) {
-
-                const occurrence = this.props.occurrences[target];
-                this.props.setOccurrence(occurrence);
-
-                if (Occurrence.isExperience()) {
-                    this.updateExperienceSelected(occurrence);
-                }
-
-                if (Occurrence.isQualification()) {
-                    this.updateQualificationSelected(occurrence);
-                }
-            }
-        }
-    }
-
-    updateExperienceSelected = (occurrence) => {
-        const targetExperience = this.getTargetExperience(occurrence);
-        if (targetExperience != null && targetExperience >= 0) {
-            this.props.setExperienceSelected(targetExperience);
-        }
-
-    }
-
-    updateQualificationSelected = (occurrence) => {
-        const targetQualification = this.getTargetQailification(occurrence);
-        if (targetQualification != null && targetQualification >= 0) {
-            this.props.setQualificationSelected(targetQualification);
-        }
-    }
-
-
-    isItemExistInOccurrences() {
-        const {occurrences} = this.props;
-        let isExist = false;
-
-        const occurrencesKeys = Object.keys(occurrences);
-        if (occurrencesKeys.length > 0) {
-            isExist = true;
-        }
-
-        return isExist;
-    }
-
-    getTargetExperience(occurrence) {
-
-        const occurrencesExperiences = this.getExperiences();
-        let keyResult = null;
-
-        if (occurrencesExperiences) {
-            const keys = Object.keys(occurrencesExperiences);
-            keys.map((key) => {
-                if (occurrence.id === occurrencesExperiences[key].id) {
-                    keyResult = key;
-                }
-            });
-        }
-
-        return keyResult;
-    }
-
-    getTargetQailification(occurrence) {
-        const occurrencesQualifications = this.getQualifications();
-        let keyResult = null;
-
-        if (occurrencesQualifications) {
-            const keys = Object.keys(occurrencesQualifications);
-            keys.map((key) => {
-                if (occurrence.id === occurrencesQualifications[key].id) {
-                    keyResult = key;
-                }
-            });
-        }
-
-        return keyResult;
-    }
-
-    setOccurrence = (occurrence) => {
-        if (VarUtils.isNotUndefinedNull(occurrence)) {
-
-            const {year} = this.props;
-            const newDate = OccurrencesUtils.getDate(occurrence);
-            const newYear = OccurrencesUtils.getYear(newDate);
-
-            if(eval(year) !== eval(newYear)){
-
-                this.props.setYear(newYear);
-            }
-
-
-            this.props.setOccurrence(occurrence);
-
-            // if (Occurrence.isExperience(occurrence)) {
-            //
-            //     this.props.setExperience(occurrence);
-            //     this.props.setQualification(null);
-            //
-            // }else if (Occurrence.isQualification(occurrence)) {
-            //
-            //     this.props.setExperience(null);
-            //     this.props.setQualification(occurrence);
-            //
-            // }
+            return dates;
         }
     }
 
     renderCvCarouselOccurrence = () => {
         return (
-            <div>
-                <CvCarousel type={OCCURRENCE_ALL} setOccurrence={this.setOccurrence}/>
+            <div className={"mr-auto ml-auto"} style={{
+                position: "relative",
+                width: 1000,
+                height: 421,
+            }}>
+                <CvCarousel
+                    images={this.props.images}
+                    callback={this.move}
+                />
+                <div className={this.state.carouselTitleClassCss} style={{
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                    width: "100%",
+                    backgroundColor: "rgba(0,0,0,0.95)",
+                    paddingTop: 15,
+                    paddingBottom: 0,
+                    paddingLeft: 25,
+                    paddingRight: 15,
+                }}>
+                    <h2 style={{display: this.state.carouselTitleDisplay}}>
+                        <div className={"codeBlue"}>
+                            {this.renderOccurenceType()}
+                            {' { '}
+                        </div>
+                        <div className={"ml-5"} style={{maxWidth: 600}}>
+                            {this.renderOccurenceTitle()}
+                        </div>
+                        <div className={"codeBlue"}>{' }'}</div>
+                        {/*<div style={{*/}
+                        {/*    position: "absolute",*/}
+                        {/*    right: 25,*/}
+                        {/*    top: "20%",*/}
+                        {/*    height: 75,*/}
+                        {/*}}>*/}
+                        {/*    {this.renderOccurenceLink()}*/}
+                        {/*</div>*/}
+                    </h2>
+                </div>
+
+                <div className={this.state.carouselDateClassCss} style={{
+                    position: "absolute",
+                    bottom: "0",
+                    left: "0",
+                    width: "100%",
+                    padding: 2,
+                    textAlign: "center",
+                    fontSize: "x-large",
+                    fontFamily: "monospace",
+                    fontWeight: "bold",
+                    color: "rgba(255,255,255,0.75)",
+                    backgroundColor: "rgba(0,0,0,0.95)",
+                }}>
+                    <div style={{display: this.state.carouselDateDisplay}}>
+                        {'/ '}
+                        {this.renderDates()}
+                        {' /'}
+                    </div>
+                </div>
+
             </div>
         );
     }
 
-    renderQualificationList = () => {
-
-        if (this.props.occurrences.length) {
-
-            const occurrences = this.props.occurrences;
-            const qualifications = OccurrencesUtils.getQualifications(occurrences).sort(OccurrencesUtils.occurrenceRevertSort);
-            const qualificationsKeys = Object.keys(qualifications);
-
-            return qualificationsKeys.map((key) => {
-                const occurrence = qualifications[key];
-                let selected = "";
-                if(occurrence && this.props.occurrence){
-                    if(occurrence.id == this.props.occurrence.id){
-                        selected = "occurrence-list-selected";
-                    }
-                }
-
-                // console.log(occurrence);
-
-                return (
-                    <div key={occurrence.id} className={`occurrence-list pl-2 pr-2 ${selected}`}>
-                        {occurrence.qualification.name}
-                    </div>
-                );
-
-            });
+    renderTimeline() {
+        const occurrence = this.props.occurrences[this.state.target];
+        if (occurrence) {
+            return (
+                <Timeline
+                    firstDate={this.state.dateStart}
+                    lastDate={this.state.dateEnd}
+                    dateStart={occurrence.dateStart}
+                    dateEnd={occurrence.dateEnd}
+                />
+            );
         }
     }
 
-    renderExperienceList = () => {
-        if (this.props.occurrences.length) {
+    renderTechnologies() {
+        const occurrence = this.props.occurrences[this.state.target];
+        if (occurrence) {
+            if (occurrence.experience) {
+                const technologies = occurrence.experience.technologicalCategories;
+                return <Technologies technologies={technologies}/>;
+            }
+        }
+    }
 
-            const occurrences = this.props.occurrences;
-            const experiences = OccurrencesUtils.getExperiences(occurrences).sort(OccurrencesUtils.occurrenceRevertSort);
-            const experiencesKeys = Object.keys(experiences);
+    renderDescription() {
+        const occurrence = this.props.occurrences[this.state.target];
+        if (occurrence) {
 
-            return experiencesKeys.map((key) => {
-                const occurrence = experiences[key];
-                let selected = "";
-                if(occurrence && this.props.occurrence){
-                    if(occurrence.id == this.props.occurrence.id){
-                        selected = "occurrence-list-selected";
-                    }
-                }
+            if (occurrence.experience) {
+                return occurrence.experience.comment;
+            }
 
+            if (occurrence.qualification) {
+                const {objectives, jobs} = occurrence.qualification;
                 return (
-                    <div key={occurrence.id} className={`occurrence-list pl-2 pr-2 ${selected}`}>
-                        {occurrence.experience.enterprise.name}
+                    <div style={{position: "relative"}}>
+                        {objectives}
+                        {this.renderJobsList(jobs)}
                     </div>
                 );
-            });
+            }
+
+        }
+    }
+
+    renderJobsList(jobs) {
+        if (jobs && jobs.length > 0) {
+            return (
+                <div className={"mt-3"} style={{position: "absolute"}}>
+                    <h3 style={{fontSize: "large"}}>Emplois cibles</h3>
+                    <ul>
+                        {this.renderJobs(jobs)}
+                    </ul>
+                </div>
+            );
+        }
+    }
+
+    renderJobs(jobs) {
+        return jobs.map((job, index) => {
+            return this.renderJob(job, index);
+        });
+    }
+
+    renderJob(job, index) {
+        if (job != undefined && job != null && job.name != "") {
+            return (
+                <li key={index}>
+                    {job.name}
+                </li>
+            );
+        }
+    }
+
+    renderInfo() {
+        const occurrence = this.props.occurrences[this.state.target];
+        if (occurrence) {
+
+            if (occurrence.experience) {
+                const {enterprise} = occurrence.experience;
+                const {address, postalCode, city} = enterprise;
+                return (
+                    <div className={"pt-2"}>
+                        {this.renderOccurenceLink()}
+                        <h3 className={"mt-2"} style={{fontSize: "large"}}>{enterprise.name}</h3>
+                        <div>{enterprise.postalCode} {enterprise.city}</div>
+                        <div className={"mt-4 flex text-center"}>
+                            <a className={"ml-3 mr-3"} href={enterprise.url} target={"_blank"}>
+                                <GrFirefox size={32}/>
+                            </a>
+                            <a className={"ml-3 mr-3"} href={"#"}>
+                                <LinkGoogleMap address={address} postalCode={postalCode} city={city}/>
+                            </a>
+                        </div>
+                    </div>
+                );
+
+            } else if (occurrence.qualification) {
+
+                const {trainingCenter} = occurrence.qualification;
+                const {address, postalCode, city} = trainingCenter;
+                return (
+                    <div className={"pt-2"}>
+                        {this.renderOccurenceLink()}
+                        <h3 className={"mt-2"} style={{fontSize: "large"}}>{trainingCenter.name}</h3>
+                        <div>{trainingCenter.postalCode} {trainingCenter.city}</div>
+                        <div className={"mt-4 flex text-center"}>
+                            <a className={"ml-3 mr-3"} href={trainingCenter.url} target={"_blank"}>
+                                <GrFirefox size={32}/>
+                            </a>
+                            <a className={"ml-3 mr-3"} href={"#"}>
+                                <LinkGoogleMap address={address} postalCode={postalCode} city={city}/>
+                            </a>
+                        </div>
+                    </div>
+                );
+            }
         }
     }
 
     renderCvCarousel() {
-        // const {qualificationDisplay, experienceDisplay} = this.state.style;
+
         return (
             <div className={"row"}>
 
-                <div className={`col-12 mb-3`}>
+                <div className={`col-2`}>
+                    {this.renderInfo()}
+                </div>
+
+                <div className={`col-7 mt-0 mb-4 ml-0 mr-0 p-0`}>
                     {this.renderCvCarouselOccurrence()}
                 </div>
 
-                <div className={"col-12 d-none d-xl-block"}>
-
-                    <div className={"row m-0 p-3"}>
-                        <div className={"col-6 p-0"}>
-                            {this.renderQualificationList()}
-                        </div>
-                        <div className={"col-6"}>
-                            {this.renderExperienceList()}
-                        </div>
-                    </div>
-
+                <div className={`col-3 pt-5 pl-4 pr-4 text-justify`}>
+                    {this.renderDescription()}
                 </div>
 
-                {/*<div className={`col-12 mb-3 ${qualificationDisplay}`}>*/}
-                {/*    {this.renderCvCarouselQualification()}*/}
-                {/*</div>*/}
+                <div className={`offset-2 col-7 mt-4 mb-5`}>
+                    {this.renderTimeline()}
+                </div>
 
-                {/*<div className={"col-12 d-none d-xl-block"} style={{height: "25px"}}></div>*/}
+                <div className={`offset-2 col-7 mt-5 pt-3 text-center`}>
+                    {this.renderTechnologies()}
+                </div>
 
-                {/*<div className={`col-12 mb-3 ${experienceDisplay}`}>*/}
-                {/*    {this.renderCvCarouselExperience()}*/}
-                {/*</div>*/}
             </div>
         );
     }
 
-    renderCvCarouselExperience() {
-        // const occurrencesExperiences = this.getExperiences();
-        return (
-            <Fragment>
-                <div style={{height: 0}}>
-                    {/*<OverlayTrigger*/}
-                    {/*    placement="left"*/}
-                    {/*    delay={{show: 250, hide: 400}}*/}
-                    {/*    overlay={this.renderTooltipExperience}*/}
-                    {/*>*/}
-                    <div className={"logo-carousel logo-carousel-experience text-center"}>
-                        <BsBuilding style={{
-                            fontSize: "x-large"
-                        }}/>
-                    </div>
-                    {/*</OverlayTrigger>*/}
-                </div>
-                <CvCarousel type={OCCURRENCE_EXPERIENCE} setOccurrence={this.setOccurrence}/>
-            </Fragment>
-        );
-    }
-
-    renderCvCarouselQualification() {
-        // const occurrencesQualifications = this.getQualifications();
-        return (
-            <Fragment>
-                <div style={{height: 0}}>
-                    {/*<OverlayTrigger*/}
-                    {/*    placement="left"*/}
-                    {/*    delay={{show: 250, hide: 400}}*/}
-                    {/*    overlay={this.renderTooltipQualification}*/}
-                    {/*>*/}
-                    <div ref={this.refOverlayQualification}
-                         className={"logo-carousel logo-carousel-qualification text-center"}>
-                        <GiDiploma style={{
-                            fontSize: "x-large"
-                        }}/>
-                    </div>
-                    {/*</OverlayTrigger>*/}
-                </div>
-                <CvCarousel type={OCCURRENCE_QUALIFICATION} setOccurrence={this.setOccurrence}/>
-            </Fragment>
-        );
-    }
-
-
-    getFirstDate = () => {
-
-        let firstDate = null;
-
-        const {occurrences} = this.props;
-        const keys = Object.keys(occurrences);
-        keys.map((key) => {
-
-            const occurrence = occurrences[key];
-            const type = OccurrencesUtils.getType(occurrence)
-            if (type !== null) {
-
-                // Qualification
-                if (type === OCCURRENCE_QUALIFICATION) {
-
-                    var tmpDate = OccurrencesUtils.getDate(occurrence);
-                    if (tmpDate !== null) {
-
-                        // Date of Qualification
-                        if (firstDate === null) {
-                            firstDate = tmpDate;
-                        } else {
-                            if (OccurrencesUtils.dateCompare(tmpDate, firstDate) < 0) {
-                                firstDate = tmpDate;
-                            }
-                        }
-                    }
-                }
-
-                // Experience
-                if (type === OCCURRENCE_EXPERIENCE) {
-
-                    var tmpDate = OccurrencesUtils.getDate(occurrence);
-                    if (tmpDate !== null) {
-
-                        // Date of Qualification
-                        if (firstDate === null) {
-                            firstDate = tmpDate;
-                        } else {
-                            if (OccurrencesUtils.dateCompare(tmpDate, firstDate) < 0) {
-                                firstDate = tmpDate;
-                            }
-                        }
-                    }
-                }
-
-            }
-        });
-
-        return firstDate;
-    }
-
-    getLastDate = () => {
-
-        let lastDate = null;
-
-        const {occurrences} = this.props;
-        const keys = Object.keys(occurrences);
-        keys.map((key) => {
-
-            const occurrence = occurrences[key];
-            const type = OccurrencesUtils.getType(occurrence)
-            if (type !== null) {
-
-                // Qualification
-                if (type === OCCURRENCE_QUALIFICATION) {
-
-                    var tmpDate = OccurrencesUtils.getDate(occurrence);
-                    if (tmpDate !== null) {
-
-                        // Date of Qualification
-                        if (lastDate === null) {
-                            lastDate = tmpDate;
-                        } else {
-                            if (OccurrencesUtils.dateCompare(tmpDate, lastDate) > 0) {
-                                lastDate = tmpDate;
-                            }
-                        }
-                    }
-                }
-
-                // Experience
-                if (type === OCCURRENCE_EXPERIENCE) {
-
-                    var tmpDate = OccurrencesUtils.getDate(occurrence);
-                    if (tmpDate !== null) {
-
-                        // Date of Qualification
-                        if (lastDate === null) {
-                            lastDate = tmpDate;
-                        } else {
-                            if (OccurrencesUtils.dateCompare(tmpDate, lastDate) > 0) {
-                                lastDate = tmpDate;
-                            }
-                        }
-                    }
-                }
-
-            }
-        });
-
-        return lastDate;
-    }
-
 
     render() {
-
-        const firstDate = this.getFirstDate();
-        const lastDate = this.getLastDate();
-
         return (
-            <Fragment>
-
-                <div className={"row"}>
-
-                    <div className={"col-12"} style={{zIndex: 999, marginTop: "-100px"}}>
-                        <div className={"d-block d-xl-none"} style={{height: "100px"}}></div>
-                        {this.renderDateBar()}
-                    </div>
-
-                    <div className={"col-12"}>
-                        <div className={"container-fluid"}>
-                            <div className={"row pr-4"}>
-                                {/*<div className={"col-12"}>*/}
-                                {/*    {this.renderMenu()}*/}
-                                {/*</div>*/}
-
-                                {/*<div className={"d-none d-xl-block col-xl-3 text-left"}>*/}
-                                {/*    <Earth*/}
-                                {/*        updateOccurenceSelected={this.updateOccurenceSelected}*/}
-                                {/*    />*/}
-                                {/*</div>*/}
-
-                                <div className={"col-12 col-xl-4"}>
-                                    {this.renderCvCarousel()}
-                                </div>
-
-                                <div className={"col-12 col-xl-8 pl-5 pr-5"}>
-                                    {this.renderOcurence(firstDate, lastDate)}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div className={"clearfix"}>
-                    {/*{this.renderOccurrences()}*/}
-                </div>
-
-                <div className={"container"}>
-                    {/*{this.renderOcurence()}*/}
-                </div>
-
-            </Fragment>
+            <div className={"container-fluid"}>
+                {this.renderCvCarousel()}
+            </div>
         );
     }
 }

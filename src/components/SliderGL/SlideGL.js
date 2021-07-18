@@ -46,28 +46,39 @@ class SlideGL {
         this.prevent = prevent;
         this.next = next;
         this.callback = callback;
-        this.initCurtains(canvas);
-        this.initPlane(effect).then(() => {
-            this.curtains.disableDrawing();
-            this.initResolution(slide);
-        }).catch((error) => {
+        this.initCurtains(canvas).then(()=>{
+            this.initPlane(effect).then(() => {
+                this.curtains.disableDrawing();
+                this.initResolution(slide);
+            }).catch((error) => {
+                console.error(error);
+            });
+        }).catch((error)=>{
             console.error(error);
         });
         this.initButtons();
     }
 
     initCurtains = (canvas) => {
-        const curtainsParams = {
-            container: canvas,
-            pixelRatio: Math.min(2, window.devicePixelRatio),
-        };
+        return new Promise((resolve, reject)=>{
+            try{
+                const curtainsParams = {
+                    container: canvas,
+                    pixelRatio: Math.min(2, window.devicePixelRatio),
+                };
 
-        this.curtains = new Curtains(curtainsParams);
+                this.curtains = new Curtains(curtainsParams);
+
+                resolve();
+            }catch (error){
+                reject(error);
+            }
+        });
     }
 
     initPlane = (effect) => {
-        let fragmentShader = this.getEffect(effect);
         return new Promise((resolve, reject) => {
+            let fragmentShader = this.getEffect(effect);
             FileToString.convert(vertexShader).then((vertex) => {
                 FileToString.convert(fragmentShader).then((fragment) => {
 
@@ -146,15 +157,9 @@ class SlideGL {
     initButtons() {
         this.prevent.addEventListener('click', () => {
             this.move(-1);
-            if (this.callback) {
-                this.callback(-1);
-            }
         });
         this.next.addEventListener('click', () => {
             this.move(1);
-            if (this.callback) {
-                this.callback(1);
-            }
         });
         // const nextButton = this.createButton("", () => {
         //     this.move(1);
