@@ -6,7 +6,7 @@ class Job {
     compare(job){
         let result = true;
 
-        if(this.name != job.name){
+        if(this.name !== job.name){
             result = false;
         }
 
@@ -16,7 +16,7 @@ class Job {
     compares(jobs){
         let result = true;
 
-        if(jobs != undefined && jobs != null && jobs.length > 0){
+        if(jobs !== undefined && jobs !== null && jobs.length > 0){
 
             for(const job in jobs){
                 if(!this.compare(job)){

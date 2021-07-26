@@ -5,10 +5,15 @@ import SlideImages from "../../data/image/SlideImages";
 
 class CvCarousel extends Component {
     render() {
-        const {images} = this.props;
+        const {images, displayBtn} = this.props;
         return (
             <div className={"p-0 mt-0 mb-0 ml-auto mr-auto"} style={{width:1000, height:421}}>
-                <Slider images={images} callback={this.props.callback} effect={this.props.effect}/>
+                <Slider
+                    images={images}
+                    callback={this.props.callback}
+                    effect={this.props.effect}
+                    displayBtn={displayBtn}
+                />
             </div>
         );
     }

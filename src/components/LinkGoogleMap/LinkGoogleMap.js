@@ -19,13 +19,10 @@ const LinkGoogleMap = (props) => {
             url = `https://www.google.fr/maps/search/${lat},${lng}`;
         }
 
-        if (address != undefined && address != null && address != "") {
+        if ((city != undefined && city != null && city != "") || (lat && lat)) {
             return (
-                <a
-                    href={url}
-                    target={"_blank"}
-                >
-                    <FaMapMarkerAlt size={32}/>
+                <a href={url} target={"_blank"}>
+                    <FaMapMarkerAlt size={24}/> Google Map
                 </a>
             );
         }

@@ -81,6 +81,7 @@ class Header extends Component {
                             style={{minHeight: 50}}
                             href={"https://drive.google.com/file/d/1iLfuZhBWsX3EjiNebaD-JhMivWHztsfs/view?usp=sharing"}
                             target={"_blank"}
+                            rel={"noopener noreferrer"}
                         >
                             <AiOutlineFilePdf/>
                         </a>
@@ -90,6 +91,7 @@ class Header extends Component {
                             style={{minHeight: 50}}
                             href={"https://www.linkedin.com/in/david-lefrancq/"}
                             target={"_blank"}
+                            rel={"noopener noreferrer"}
                         >
                             <SiLinkedin/>
                         </a>

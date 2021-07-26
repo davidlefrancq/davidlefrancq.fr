@@ -70,7 +70,8 @@ class DataConverter {
         const trainingCenter = this.trainingCenterParser(data);
         const links = this.linksParser(data[5]);
         const jobs = this.jobsParser(data[16]);
-        const qualification = new Qualification(data[3], data[4], data[14], trainingCenter, data[15], jobs, links);
+        const categories = this.technologicalCategoriesParser(data[26]);
+        const qualification = new Qualification(data[3], data[4], data[14], trainingCenter, data[15], jobs, links, categories);
         return qualification;
     }
 
@@ -111,13 +112,20 @@ class DataConverter {
 
     static technologicalCategoriesParser(data) {
         const categories = [];
-        const dataCategories = data.split(";");
-        for (const key in dataCategories) {
-            const dataCategory = dataCategories[key].split(',');
-            const name = dataCategory[0].split("=")[1];
-            const logo = dataCategory[1].split("=")[1];
-            const category = new TechnologicalCategory(name, logo);
-            categories.push(category);
+
+        if (data && data != "") {
+            const dataCategories = data.split(";");
+            console.log("---");
+            console.log(data);
+            console.log(dataCategories);
+            for (const key in dataCategories) {
+                const dataCategory = dataCategories[key].split(',');
+                console.log(dataCategory);
+                const name = dataCategory[0].split("=")[1];
+                const logo = dataCategory[1].split("=")[1];
+                const category = new TechnologicalCategory(name, logo);
+                categories.push(category);
+            }
         }
         return categories;
     }

@@ -49,24 +49,24 @@ class Admin extends Component {
     }
 
     handelDeleteOccurrence = (occurrence) => {
-        const {token,setOccurrences} = this.props;
-        this.daoFactory.getOccurrenceDAO().delete(occurrence,token).then((res) => {
+        const {token, setOccurrences} = this.props;
+        this.daoFactory.getOccurrenceDAO().delete(occurrence, token).then((res) => {
             const occurrences = {...this.props.occurrences};
-            this.deleteOccurrenceInList(occurrences,occurrence);
+            this.deleteOccurrenceInList(occurrences, occurrence);
             setOccurrences(occurrences);
         });
     }
 
-    deleteOccurrenceInList(occurrences,occurrence){
-        const keys = Object.keys(occurrences);
-        keys.map((key)=>{
+    deleteOccurrenceInList(occurrences, occurrence) {
+        for(const key in occurrences){
             const item = occurrences[key];
-            if(item.id != undefined && item.id !=null){
-                if(item.id == occurrence.id){
+            if (item.id !== undefined && item.id !== null) {
+                if (item.id === occurrence.id) {
                     delete occurrences[key];
                 }
             }
-        });
+
+        }
     }
 
     handleNewExperience = () => {
@@ -227,7 +227,7 @@ class Admin extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {isLoggedIn,token} = state.AuthentificationReducer;
+    const {isLoggedIn, token} = state.AuthentificationReducer;
     const {occurrences, occurrence} = state.OccurrencesReducer;
     return {
         isLoggedIn,

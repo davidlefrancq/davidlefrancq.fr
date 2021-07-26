@@ -1,17 +1,13 @@
-import React, {Component, createRef, Fragment} from 'react';
+import React, {Component} from 'react';
 import CvCarousel from "../Corousel/CvCarousel";
 import {connect} from "react-redux";
 import {actions} from '../../actions';
 import DAOFactory from "../../dal/DAOFactory";
-import ScreenDetection from "../../utils/ScreenDetection";
 import "./occurrence-list.css";
-import Qualification from "../../bo/Qualification";
-import Experience from "../../bo/Experience";
-import OccurrenceItem from "./OccurrenceItem";
 import Timeline from "../Timeline/Timeline";
 import Technologies from "../Technologies/Technologies";
-import {CgWebsite, FaMapMarkerAlt, GrFirefox, MdWeb} from "react-icons/all";
-import LinkGoogleMap from "../LinkGoogleMap/LinkGoogleMap";
+
+import InfoEntity from "./InfoEntity";
 
 const daoFactory = new DAOFactory();
 
@@ -28,6 +24,7 @@ class OccurrenceList extends Component {
             carouselTitleDisplay: "",
             carouselDateClassCss: "",
             carouselDateDisplay: "",
+            displayElements: true,
         };
     }
 
@@ -103,6 +100,7 @@ class OccurrenceList extends Component {
         state.carouselTitleDisplay = "none";
         state.carouselDateClassCss = "date-show-animation";
         state.carouselDateDisplay = "none";
+        state.displayElements = false;
         state.load = "load";
         this.setState(state);
 
@@ -118,6 +116,7 @@ class OccurrenceList extends Component {
             state.load = "";
             state.carouselTitleClassCss = "";
             state.carouselDateClassCss = "";
+            state.displayElements = true;
             this.setState(state);
         }, 1000);
     }
@@ -149,46 +148,6 @@ class OccurrenceList extends Component {
             }
         }
         return title;
-    }
-
-    renderOccurenceLogo() {
-        const occurrence = this.props.occurrences[this.state.target];
-        let logo = null;
-        if (occurrence) {
-            if (occurrence.experience) {
-                logo = occurrence.experience.enterprise.logo;
-            }
-            if (occurrence.qualification) {
-                logo = occurrence.qualification.trainingCenter.logo;
-            }
-        }
-
-        if (logo && logo != "") {
-            return <img style={{height: 75, borderRadius: 40}} src={`./image/${logo}`}/>;
-        }
-    }
-
-    renderOccurenceLink() {
-        const occurrence = this.props.occurrences[this.state.target];
-        let link = null;
-        if (occurrence) {
-            if (occurrence.experience) {
-                link = occurrence.experience.enterprise.url;
-            }
-            if (occurrence.qualification) {
-                link = occurrence.qualification.trainingCenter.url;
-            }
-        }
-
-        if (link && link != "") {
-            return (
-                <a href={link} target={"_blank"}>
-                    {this.renderOccurenceLogo()}
-                </a>
-            );
-        }
-
-        return this.renderOccurenceLogo();
     }
 
     renderDates() {
@@ -227,6 +186,7 @@ class OccurrenceList extends Component {
                 <CvCarousel
                     images={this.props.images}
                     callback={this.move}
+                    displayBtn={this.state.displayElements}
                 />
                 <div className={this.state.carouselTitleClassCss} style={{
                     position: "absolute",
@@ -248,14 +208,6 @@ class OccurrenceList extends Component {
                             {this.renderOccurenceTitle()}
                         </div>
                         <div className={"codeBlue"}>{' }'}</div>
-                        {/*<div style={{*/}
-                        {/*    position: "absolute",*/}
-                        {/*    right: 25,*/}
-                        {/*    top: "20%",*/}
-                        {/*    height: 75,*/}
-                        {/*}}>*/}
-                        {/*    {this.renderOccurenceLink()}*/}
-                        {/*</div>*/}
                     </h2>
                 </div>
 
@@ -286,13 +238,21 @@ class OccurrenceList extends Component {
     renderTimeline() {
         const occurrence = this.props.occurrences[this.state.target];
         if (occurrence) {
+
+            let animated = "";
+            if (!this.state.displayElements) {
+                animated = "animated";
+            }
+
             return (
-                <Timeline
-                    firstDate={this.state.dateStart}
-                    lastDate={this.state.dateEnd}
-                    dateStart={occurrence.dateStart}
-                    dateEnd={occurrence.dateEnd}
-                />
+                <div className={`${animated} ml-5 mr-5`}>
+                    <Timeline
+                        firstDate={this.state.dateStart}
+                        lastDate={this.state.dateEnd}
+                        dateStart={occurrence.dateStart}
+                        dateEnd={occurrence.dateEnd}
+                    />
+                </div>
             );
         }
     }
@@ -300,9 +260,24 @@ class OccurrenceList extends Component {
     renderTechnologies() {
         const occurrence = this.props.occurrences[this.state.target];
         if (occurrence) {
-            if (occurrence.experience) {
-                const technologies = occurrence.experience.technologicalCategories;
-                return <Technologies technologies={technologies}/>;
+            let animated = "";
+            if (!this.state.displayElements) {
+                animated = "animated";
+            }
+
+            let technologies;
+            if (occurrence.qualification) {
+                technologies = occurrence.qualification.technologicalCategories;
+            } else if (occurrence.experience) {
+                technologies = occurrence.experience.technologicalCategories;
+            }
+
+            if (technologies && technologies.length > 0) {
+                return (
+                    <div className={`${animated}`}>
+                        <Technologies technologies={technologies}/>
+                    </div>
+                );
             }
         }
     }
@@ -311,14 +286,23 @@ class OccurrenceList extends Component {
         const occurrence = this.props.occurrences[this.state.target];
         if (occurrence) {
 
+            let animated = "";
+            if (!this.state.displayElements) {
+                animated = "animated";
+            }
+
             if (occurrence.experience) {
-                return occurrence.experience.comment;
+                return (
+                    <div className={`${animated}`}>
+                        {occurrence.experience.comment}
+                    </div>
+                );
             }
 
             if (occurrence.qualification) {
                 const {objectives, jobs} = occurrence.qualification;
                 return (
-                    <div style={{position: "relative"}}>
+                    <div className={`${animated}`} style={{position: "relative"}}>
                         {objectives}
                         {this.renderJobsList(jobs)}
                     </div>
@@ -360,45 +344,21 @@ class OccurrenceList extends Component {
     renderInfo() {
         const occurrence = this.props.occurrences[this.state.target];
         if (occurrence) {
+            let entity = null;
+            let animated = "";
+            if (!this.state.displayElements) {
+                animated = "animated";
+            }
 
             if (occurrence.experience) {
-                const {enterprise} = occurrence.experience;
-                const {address, postalCode, city} = enterprise;
-                return (
-                    <div className={"pt-2"}>
-                        {this.renderOccurenceLink()}
-                        <h3 className={"mt-2"} style={{fontSize: "large"}}>{enterprise.name}</h3>
-                        <div>{enterprise.postalCode} {enterprise.city}</div>
-                        <div className={"mt-4 flex text-center"}>
-                            <a className={"ml-3 mr-3"} href={enterprise.url} target={"_blank"}>
-                                <GrFirefox size={32}/>
-                            </a>
-                            <a className={"ml-3 mr-3"} href={"#"}>
-                                <LinkGoogleMap address={address} postalCode={postalCode} city={city}/>
-                            </a>
-                        </div>
-                    </div>
-                );
+                entity = occurrence.experience.enterprise;
 
             } else if (occurrence.qualification) {
+                entity = occurrence.qualification.trainingCenter;
+            }
 
-                const {trainingCenter} = occurrence.qualification;
-                const {address, postalCode, city} = trainingCenter;
-                return (
-                    <div className={"pt-2"}>
-                        {this.renderOccurenceLink()}
-                        <h3 className={"mt-2"} style={{fontSize: "large"}}>{trainingCenter.name}</h3>
-                        <div>{trainingCenter.postalCode} {trainingCenter.city}</div>
-                        <div className={"mt-4 flex text-center"}>
-                            <a className={"ml-3 mr-3"} href={trainingCenter.url} target={"_blank"}>
-                                <GrFirefox size={32}/>
-                            </a>
-                            <a className={"ml-3 mr-3"} href={"#"}>
-                                <LinkGoogleMap address={address} postalCode={postalCode} city={city}/>
-                            </a>
-                        </div>
-                    </div>
-                );
+            if (entity) {
+                return <InfoEntity entity={entity} animated={animated}/>;
             }
         }
     }
@@ -412,7 +372,7 @@ class OccurrenceList extends Component {
                     {this.renderInfo()}
                 </div>
 
-                <div className={`col-7 mt-0 mb-4 ml-0 mr-0 p-0`}>
+                <div className={`col-7 mt-0 mb-0 ml-0 mr-0 p-0`}>
                     {this.renderCvCarouselOccurrence()}
                 </div>
 
@@ -420,12 +380,12 @@ class OccurrenceList extends Component {
                     {this.renderDescription()}
                 </div>
 
-                <div className={`offset-2 col-7 mt-4 mb-5`}>
-                    {this.renderTimeline()}
+                <div className={`offset-2 col-7 mt-3 text-center`} style={{minHeight:50}}>
+                    {this.renderTechnologies()}
                 </div>
 
-                <div className={`offset-2 col-7 mt-5 pt-3 text-center`}>
-                    {this.renderTechnologies()}
+                <div className={`offset-2 col-7 mt-5`}>
+                    {this.renderTimeline()}
                 </div>
 
             </div>
@@ -443,29 +403,31 @@ class OccurrenceList extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {occurrences, occurrence, year} = state.OccurrencesReducer;
-    const experience = state.ExperienceReducer.occurrence;
-    const qualification = state.QualificationReducer.occurrence;
-    return {
-        occurrences,
-        occurrence,
-        experience,
-        qualification,
-        year,
-    };
-};
+        const {occurrences, occurrence, year} = state.OccurrencesReducer;
+        const experience = state.ExperienceReducer.occurrence;
+        const qualification = state.QualificationReducer.occurrence;
+        return {
+            occurrences,
+            occurrence,
+            experience,
+            qualification,
+            year,
+        };
+    }
+;
 
 const mapDispatchToProps = (dispatch) => {
 
-    return {
-        setExperienceSelected: (id) => dispatch(actions.experience.setExperienceSelected(id)),
-        setQualificationSelected: (id) => dispatch(actions.qualification.setQualificationSelected(id)),
-        setOccurrence: (occurrence) => dispatch(actions.occurrences.setOccurrence(occurrence)),
-        setOccurrences: (occurrences) => dispatch(actions.occurrences.setOccurrences(occurrences)),
-        setQualification: (occurrence) => dispatch(actions.qualification.setQualification(occurrence)),
-        setExperience: (occurrence) => dispatch(actions.experience.setExperience(occurrence)),
-        setYear: (year) => dispatch(actions.occurrences.setYear(year)),
-    };
-};
+        return {
+            setExperienceSelected: (id) => dispatch(actions.experience.setExperienceSelected(id)),
+            setQualificationSelected: (id) => dispatch(actions.qualification.setQualificationSelected(id)),
+            setOccurrence: (occurrence) => dispatch(actions.occurrences.setOccurrence(occurrence)),
+            setOccurrences: (occurrences) => dispatch(actions.occurrences.setOccurrences(occurrences)),
+            setQualification: (occurrence) => dispatch(actions.qualification.setQualification(occurrence)),
+            setExperience: (occurrence) => dispatch(actions.experience.setExperience(occurrence)),
+            setYear: (year) => dispatch(actions.occurrences.setYear(year)),
+        };
+    }
+;
 
 export default connect(mapStateToProps, mapDispatchToProps)(OccurrenceList);

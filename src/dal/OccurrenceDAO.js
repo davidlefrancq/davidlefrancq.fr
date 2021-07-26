@@ -26,7 +26,7 @@ class OccurrenceDAO {
                         for (const key in data) {
 
                             const item = data[key];
-                            if (key != 0) {
+                            if (Number.parseInt(key) !== 0) {
                                 const occurence = DataConverter.occurenceParser(item);
                                 occurence.id = key;
                                 occurences.push(occurence);
@@ -48,7 +48,7 @@ class OccurrenceDAO {
     }
 
     selectById(id) {
-        if (id != undefined && id != null) {
+        if (id !== undefined && id !== null) {
             const urlRequest = SELECT_BY_ID.replace('{id}', id);
             return axios.get(urlRequest);
         }
@@ -56,7 +56,7 @@ class OccurrenceDAO {
 
     insert(occurence, token) {
 
-        if (occurence != undefined && occurence != null) {
+        if (occurence !== undefined && occurence !== null) {
             const headers = {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ class OccurrenceDAO {
     }
 
     prepareOccurence(occurence) {
-        if (occurence["@id"] != undefined && occurence["@id"] != null && occurence["@id"] != "") {
+        if (occurence["@id"] !== undefined && occurence["@id"] !== null && occurence["@id"] !== "") {
             occurence.id = occurence["@id"];
         }
         this.prepareExperience(occurence);
@@ -93,8 +93,8 @@ class OccurrenceDAO {
     }
 
     prepareExperience(occurence) {
-        if (occurence.experience != undefined && occurence.experience != null && occurence.experience != "") {
-            if (occurence.experience["@id"] != undefined && occurence.experience["@id"] != null && occurence.experience["@id"] != "") {
+        if (occurence.experience !== undefined && occurence.experience !== null && occurence.experience !== "") {
+            if (occurence.experience["@id"] !== undefined && occurence.experience["@id"] !== null && occurence.experience["@id"] !== "") {
                 occurence.experience.id = occurence.experience["@id"];
             }
             this.prepareEnterprise(occurence.experience.enterprise);
@@ -104,8 +104,8 @@ class OccurrenceDAO {
     }
 
     prepareQualification(occurence) {
-        if (occurence.qualification != undefined && occurence.qualification != null && occurence.qualification != "") {
-            if (occurence.qualification["@id"] != undefined && occurence.qualification["@id"] != null && occurence.qualification["@id"] != "") {
+        if (occurence.qualification !== undefined && occurence.qualification !== null && occurence.qualification !== "") {
+            if (occurence.qualification["@id"] !== undefined && occurence.qualification["@id"] !== null && occurence.qualification["@id"] !== "") {
                 occurence.qualification.id = occurence.qualification["@id"];
             }
             this.prepareTrainingCenter(occurence.qualification.trainingCenter);
@@ -115,8 +115,8 @@ class OccurrenceDAO {
     }
 
     prepareTrainingCenter(trainingCenter) {
-        if (trainingCenter != undefined && trainingCenter != null && trainingCenter != "") {
-            if (trainingCenter["@id"] != undefined && trainingCenter["@id"] != null && trainingCenter["@id"] != "") {
+        if (trainingCenter !== undefined && trainingCenter !== null && trainingCenter !== "") {
+            if (trainingCenter["@id"] !== undefined && trainingCenter["@id"] !== null && trainingCenter["@id"] !== "") {
                 trainingCenter.id = trainingCenter['@id'];
             }
         }
@@ -124,10 +124,10 @@ class OccurrenceDAO {
 
 
     prepareLinks(links) {
-        if (links != undefined && links != null && links != "") {
+        if (links !== undefined && links !== null && links !== "") {
             const keys = Object.keys(links);
             keys.map((key) => {
-                if (links[key]["@id"] != undefined && links[key]["@id"] != null && links[key]["@id"] != "") {
+                if (links[key]["@id"] !== undefined && links[key]["@id"] !== null && links[key]["@id"] !== "") {
                     links[key].id = links[key]["@id"];
                 }
             });
@@ -135,37 +135,37 @@ class OccurrenceDAO {
     }
 
     prepareJobs(jobs) {
-        if (jobs != undefined && jobs != null && jobs != "") {
-            const keys = Object.keys(jobs);
-            keys.map((key) => {
-                if (jobs[key]["@id"] != undefined && jobs[key]["@id"] != null && jobs[key]["@id"] != "") {
-                    jobs[key].id = jobs[key]["@id"];
+        if (jobs !== undefined && jobs !== null && jobs !== "") {
+            for(const key in jobs){
+                const job = jobs[key];
+                if (job["@id"] !== undefined && job["@id"] !== null && job["@id"] !== "") {
+                    job.id = job["@id"];
                 }
-            });
+            }
         }
     }
 
     prepareEnterprise(enterprise) {
-        if (enterprise != undefined && enterprise != null && enterprise != "") {
-            if (enterprise["@id"] != undefined && enterprise["@id"] != null && enterprise["@id"] != "") {
+        if (enterprise !== undefined && enterprise !== null && enterprise !== "") {
+            if (enterprise["@id"] !== undefined && enterprise["@id"] !== null && enterprise["@id"] !== "") {
                 enterprise.id = enterprise['@id'];
             }
         }
     }
 
     prepareTechnologicalCategories(technologicalCategories) {
-        if (technologicalCategories != undefined && technologicalCategories != null && technologicalCategories != "") {
-            const keys = Object.keys(technologicalCategories);
-            keys.map((key) => {
-                if (technologicalCategories[key]["@id"] != undefined && technologicalCategories[key]["@id"] != null && technologicalCategories[key]["@id"] != "") {
-                    technologicalCategories[key].id = technologicalCategories[key]["@id"];
+        if (technologicalCategories !== undefined && technologicalCategories !== null && technologicalCategories !== "") {
+            for(const key in technologicalCategories){
+                const technological = technologicalCategories[key];
+                if (technological["@id"] !== undefined && technological["@id"] !== null && technological["@id"] !== "") {
+                    technological.id = technological["@id"];
                 }
-            });
+            }
         }
     }
 
     delete(occurence, token) {
-        if (occurence != undefined && occurence != null) {
+        if (occurence !== undefined && occurence !== null) {
             const headers = {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ class OccurrenceDAO {
         const data = new FormData()
         data.append('file', file)
 
-        if (file != undefined && file != null) {
+        if (file !== undefined && file !== null) {
             const headers = {
                 'Authorization': `Bearer ${token}`,
             }

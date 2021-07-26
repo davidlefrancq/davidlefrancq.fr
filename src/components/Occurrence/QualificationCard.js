@@ -408,7 +408,7 @@ class QualificationCard extends Component {
         const {dateStart, dateEnd, qualification} = this.props.occurrence;
         const {name, img, level, trainingCenter, objectives, jobs, links} = qualification;
 
-        const objectivesDisable = (objectives && objectives != "") ? "" : "disabled";
+        const objectivesDisable = (objectives && objectives !== "") ? "" : "disabled";
         const jobsDisable = jobs.length > 0 ? "" : "disabled";
 
         return (

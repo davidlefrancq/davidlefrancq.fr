@@ -46,6 +46,12 @@ class Slider extends Component {
     }
 
     render() {
+
+        let btnAnimation = "";
+        if(!this.props.displayBtn){
+            btnAnimation = "animated";
+        }
+
         return (
             <div className={"slider-scene"}>
                 <div ref={this.refSlide}
@@ -53,10 +59,10 @@ class Slider extends Component {
                 >
 
                     {this.renderImages()}
-                    <button ref={this.refBtnPrevent} className={"btn-slide"}>
+                    <button ref={this.refBtnPrevent} className={`btn-slide ${btnAnimation}`}>
                         <FaBackward className={"icon-slide"} size={32}/>
                     </button>
-                    <button ref={this.refBtnNext} className={"btn-slide"}>
+                    <button ref={this.refBtnNext} className={`btn-slide ${btnAnimation}`} >
                         <FaForward className={"icon-slide"} size={32}/>
                     </button>
                 </div>
