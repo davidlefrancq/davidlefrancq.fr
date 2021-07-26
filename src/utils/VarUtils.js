@@ -4,11 +4,11 @@ class VarUtils{
 
         let isNotUndefinedNull = true;
 
-        if(e == undefined){
+        if(e === undefined){
             isNotUndefinedNull = false;
         }
 
-        if(e == null){
+        if(e === null){
             isNotUndefinedNull = false;
         }
 

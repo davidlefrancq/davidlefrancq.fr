@@ -1,77 +1,94 @@
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    /*background-color: #41484e;*/
-    /*background-image: url("https://w.wallhaven.cc/full/47/wallhaven-47w99o.jpg");*/
-    /*background-repeat: no-repeat;*/
-    /*background-position: center;*/
-    /*background-size: cover;*/
-    /*background-attachment: fixed;*/
     overflow-x: hidden;
-    /*overflow-y: hidden;*/
+}
+
+#root {
+    background-color: rgba(0, 0, 0, 0.65);
 }
 
 .App {
-    background-color: rgba(255, 255, 255, 0);
-    padding-left: 0;
-    padding-right: 0;
+    margin-bottom: 0;
 }
 
-.bg-dark {
-    background-color: rgba(0, 0, 0, 0.9) !important;
+h1, h2, h3, h4, h5, h6 {
+    color: chocolate;
 }
 
-.jumbotron {
-    position: relative;
+.codeBlue {
+    font-size: large;
+    color: steelblue;
 }
 
-.jumbotron .utils {
-    position: absolute;
-    top: 45%;
-    right: 5%;
-    z-index: 1000;
+.codeOrange {
+    font-size: large;
+    color: chocolate;
 }
 
-.jumbotron .utils a, .jumbotron .utils button {
-    font-size: x-large;
-    box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.5);
-    padding: 10px 35px 10px 35px;
-    margin-left: 10px;
+.codeLightBlue {
+    font-size: large;
+    color: #44baed;
 }
 
-.jumbotron a:hover, .jumbotron .utils button:hover {
-    font-weight: bold;
-    box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.8);
+.title-show-animation {
+    animation-name: title-show-animation;
+    animation-delay: 0s;
+    animation-duration: 0.975s;
+    animation-iteration-count: initial;
+    animation-timing-function: ease-in;
+    overflow: hidden;
 }
 
-.msg-copy-email {
-    position: absolute;
-    background-color: rgba(255,255,255,1);
-    width: 200px;
-    top: -45px;
-    right: -45px;
-    opacity: 0;
-    border-radius: 5px;
-    box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.8);
-    z-index: 1001;
-
-    animation: msg-copy-animation ease-in 5s;
-}
-
-.msg-copy-email-disabled {
-    display: none;
-
-}
-
-@keyframes msg-copy-animation {
+@keyframes title-show-animation {
     0% {
-        opacity: 1;
+        opacity: 0;
     }
-    60%{
-        opacity: 1;
-    }
-    99% {
+    60% {
         opacity: 0;
     }
     100% {
-        display: none;
+        opacity: 1;
     }
 }
+
+.date-show-animation {
+    animation-name: date-show-animation;
+    animation-delay: 0s;
+    animation-duration: 0.975s;
+    animation-iteration-count: initial;
+    animation-timing-function: ease-in;
+    overflow: hidden;
+}
+@keyframes date-show-animation {
+    0% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/*@keyframes date-show-animation {*/
+/*    0% {*/
+/*        opacity: 0;*/
+/*        padding: 0;*/
+/*        height: 0;*/
+/*    }*/
+/*    70% {*/
+/*        opacity: 1;*/
+/*        padding: 0;*/
+/*        height: 0;*/
+/*    }*/
+/*    100% {*/
+/*        padding: 2px;*/
+/*        height: 34px;*/
+/*    }*/
+/*}*/
