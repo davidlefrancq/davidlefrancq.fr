@@ -1,9 +1,9 @@
-FROM node:alpine as build
+FROM node:latest as build
 
 COPY ./ /app
 WORKDIR /app
 RUN npm install
-RUN npm build
+RUN npm run build
 
 FROM debian
 
