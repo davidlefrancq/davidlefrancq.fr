@@ -17,6 +17,8 @@ const LogoEntity = (props) => {
                     {renderLogo()}
                 </a>
             );
+        }else{
+            return renderLogo();
         }
     }
 
