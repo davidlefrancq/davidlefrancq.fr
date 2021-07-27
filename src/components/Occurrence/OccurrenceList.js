@@ -269,6 +269,7 @@ class OccurrenceList extends Component {
             if (technologies && technologies.length > 0) {
                 return (
                     <div className={`p-2 rounded ${animated}`} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
+                        <h3 style={{fontSize:"large"}}>Techno(s)</h3>
                         <Technologies technologies={technologies}/>
                     </div>
                 );
