@@ -268,7 +268,7 @@ class OccurrenceList extends Component {
 
             if (technologies && technologies.length > 0) {
                 return (
-                    <div className={`p-2 rounded ${animated}`} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
+                    <div className={`p-3 rounded ${animated}`} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
                         <h3 style={{fontSize:"large"}}>Techno(s)</h3>
                         <Technologies technologies={technologies}/>
                     </div>
@@ -288,7 +288,7 @@ class OccurrenceList extends Component {
 
             if (occurrence.experience) {
                 return (
-                    <div className={`p-2 rounded ${animated}`} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
+                    <div className={`p-3 rounded ${animated}`} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
                         <h3 style={{fontSize:"large"}}>Description</h3>
                         {occurrence.experience.comment}
                     </div>
@@ -299,7 +299,7 @@ class OccurrenceList extends Component {
                 const {objectives, jobs} = occurrence.qualification;
                 return (
                     <div className={`${animated}`} style={{position: "relative"}}>
-                        <div className={"p-2 rounded"} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
+                        <div className={"p-3 rounded"} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
                             <h3 style={{fontSize:"large"}}>Description</h3>
                             {objectives}
                         </div>
@@ -314,7 +314,7 @@ class OccurrenceList extends Component {
     renderJobsList(jobs) {
         if (jobs && jobs.length > 0) {
             return (
-                <div className={"mt-3 p-2 rounded"} style={{backgroundColor:"rgba(0,0,0,0.5)", position: "absolute"}}>
+                <div className={"mt-3 p-3 rounded"} style={{backgroundColor:"rgba(0,0,0,0.5)", position: "absolute"}}>
                     <h3 style={{fontSize: "large"}}>Emplois cibles</h3>
                     <ul className={"pr-3"}>
                         {this.renderJobs(jobs)}
@@ -372,27 +372,32 @@ class OccurrenceList extends Component {
         return (
             <div className={"row"}>
 
-                <div className={`col-2`}>
+                <div className={`col-12 col-md-2`}>
                     {this.renderInfo()}
 
-                    <div className={`mt-4`} style={{minHeight:50}}>
+                    <div className={`d-none d-md-block mt-4`} style={{minHeight:50}}>
                         {this.renderTechnologies()}
                     </div>
 
                 </div>
 
-                <div className={`col-7 mt-2 mb-0 ml-0 mr-0 rounded`}>
+                <div className={`col-12 col-md-7 mt-2 mb-0 ml-0 mr-0 rounded`}>
                     {this.renderCvCarouselOccurrence()}
 
                     <div className={`mt-3`}>
-                        <div className={`p-2 rounded ${animated}`} style={{minHeight:100, backgroundColor:"rgba(0,0,0,0.5)"}}>
+                        <div className={`p-3 rounded ${animated}`} style={{minHeight:115, backgroundColor:"rgba(0,0,0,0.5)"}}>
                             {this.renderTimeline()}
                         </div>
                     </div>
 
                 </div>
 
-                <div className={`col-3 mt-2 mb-0 ml-0 mr-0 text-justify`}>
+                <div className={`col-12 col-md-3 mt-2 mb-0 ml-0 mr-0 text-justify`}>
+
+                    <div className={`d-block d-md-none mt-4 mb-4`} style={{minHeight:50}}>
+                        {this.renderTechnologies()}
+                    </div>
+
                     {this.renderDescription()}
                 </div>
 
