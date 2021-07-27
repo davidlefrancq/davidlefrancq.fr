@@ -374,7 +374,7 @@ class OccurrenceList extends Component {
                 <div className={`col-2`}>
                     {this.renderInfo()}
 
-                    <div className={`mt-3`} style={{minHeight:50}}>
+                    <div className={`mt-4`} style={{minHeight:50}}>
                         {this.renderTechnologies()}
                     </div>
 
