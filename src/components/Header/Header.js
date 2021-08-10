@@ -49,7 +49,7 @@ class Header extends Component {
                 className={"shadow"}
             >
 
-                <Jumbotron className={"mb-0 pt-4 pb-3 shadow-none border-bottom"}>
+                <Jumbotron className={"mb-0 pt-4 pb-3"}>
                     <div className={"row"}>
                         <div className={"col-auto mt-3"}>
                             {"Class Title { "}

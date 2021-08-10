@@ -6,7 +6,7 @@ const Technologies = (props) => {
     const renderTechnology = (technology, index) => {
         const {name} = technology;
         return (
-            <div key={index} className={"d-inline m-3"}>
+            <div key={index} className={"m-3"}>
                 <TechnoIcon name={name}/>
                 {name}
             </div>

@@ -180,15 +180,14 @@ class OccurrenceList extends Component {
         return (
             <div className={"mr-auto ml-auto"} style={{
                 position: "relative",
-                width: 1000,
-                height: 421,
+                width: "100%",
             }}>
                 <CvCarousel
                     images={this.props.images}
                     callback={this.move}
                     displayBtn={this.state.displayElements}
                 />
-                <div className={this.state.carouselTitleClassCss} style={{
+                <div className={`${this.state.carouselTitleClassCss}`} style={{
                     position: "absolute",
                     top: "0",
                     left: "0",
@@ -211,7 +210,7 @@ class OccurrenceList extends Component {
                     </h2>
                 </div>
 
-                <div className={this.state.carouselDateClassCss} style={{
+                <div className={`${this.state.carouselDateClassCss}`} style={{
                     position: "absolute",
                     bottom: "0",
                     left: "0",
@@ -239,13 +238,8 @@ class OccurrenceList extends Component {
         const occurrence = this.props.occurrences[this.state.target];
         if (occurrence) {
 
-            let animated = "";
-            if (!this.state.displayElements) {
-                animated = "animated";
-            }
-
             return (
-                <div className={`${animated} ml-5 mr-5`}>
+                <div className={`mt-3 ml-5 mr-5`}>
                     <Timeline
                         firstDate={this.state.dateStart}
                         lastDate={this.state.dateEnd}
@@ -274,7 +268,8 @@ class OccurrenceList extends Component {
 
             if (technologies && technologies.length > 0) {
                 return (
-                    <div className={`${animated}`}>
+                    <div className={`p-3 rounded ${animated}`} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
+                        <h3 style={{fontSize:"large"}}>Techno(s)</h3>
                         <Technologies technologies={technologies}/>
                     </div>
                 );
@@ -293,7 +288,8 @@ class OccurrenceList extends Component {
 
             if (occurrence.experience) {
                 return (
-                    <div className={`${animated}`}>
+                    <div className={`p-3 rounded ${animated}`} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
+                        <h3 style={{fontSize:"large"}}>Description</h3>
                         {occurrence.experience.comment}
                     </div>
                 );
@@ -303,7 +299,10 @@ class OccurrenceList extends Component {
                 const {objectives, jobs} = occurrence.qualification;
                 return (
                     <div className={`${animated}`} style={{position: "relative"}}>
-                        {objectives}
+                        <div className={"p-3 rounded"} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
+                            <h3 style={{fontSize:"large"}}>Description</h3>
+                            {objectives}
+                        </div>
                         {this.renderJobsList(jobs)}
                     </div>
                 );
@@ -315,9 +314,9 @@ class OccurrenceList extends Component {
     renderJobsList(jobs) {
         if (jobs && jobs.length > 0) {
             return (
-                <div className={"mt-3"} style={{position: "absolute"}}>
+                <div className={"mt-3 p-3 rounded"} style={{backgroundColor:"rgba(0,0,0,0.5)", position: "absolute"}}>
                     <h3 style={{fontSize: "large"}}>Emplois cibles</h3>
-                    <ul>
+                    <ul className={"pr-3"}>
                         {this.renderJobs(jobs)}
                     </ul>
                 </div>
@@ -365,33 +364,46 @@ class OccurrenceList extends Component {
 
     renderCvCarousel() {
 
+        let animated = "";
+        if (!this.state.displayElements) {
+            animated = "animated";
+        }
+
         return (
             <div className={"row"}>
 
-                <div className={`col-2`}>
+                <div className={`col-12 col-md-2`}>
                     {this.renderInfo()}
+
+                    <div className={`d-none d-md-block mt-4`} style={{minHeight:50}}>
+                        {this.renderTechnologies()}
+                    </div>
+
                 </div>
 
-                <div className={`col-7 mt-0 mb-0 ml-0 mr-0 p-0`}>
+                <div className={`col-12 col-md-7 mt-2 mb-0 ml-0 mr-0 rounded`}>
                     {this.renderCvCarouselOccurrence()}
+
+                    <div className={`mt-3`}>
+                        <div className={`p-3 rounded ${animated}`} style={{minHeight:115, backgroundColor:"rgba(0,0,0,0.5)"}}>
+                            {this.renderTimeline()}
+                        </div>
+                    </div>
+
                 </div>
 
-                <div className={`col-3 pt-5 pl-4 pr-4 text-justify`}>
+                <div className={`col-12 col-md-3 mt-2 mb-0 ml-0 mr-0 text-justify`}>
+
+                    <div className={`d-block d-md-none mt-4 mb-4`} style={{minHeight:50}}>
+                        {this.renderTechnologies()}
+                    </div>
+
                     {this.renderDescription()}
-                </div>
-
-                <div className={`offset-2 col-7 mt-3 text-center`} style={{minHeight:50}}>
-                    {this.renderTechnologies()}
-                </div>
-
-                <div className={`offset-2 col-7 mt-5`}>
-                    {this.renderTimeline()}
                 </div>
 
             </div>
         );
     }
-
 
     render() {
         return (
