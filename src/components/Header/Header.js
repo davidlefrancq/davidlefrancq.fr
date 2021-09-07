@@ -49,29 +49,17 @@ class Header extends Component {
                 className={"shadow"}
             >
 
-                <Jumbotron className={"mb-0 pt-4 pb-3"}>
+                <Jumbotron className={"mb-2 pt-4 pb-3"}>
                     <div className={"row"}>
-                        <div className={"col-auto mt-3"}>
-                            {"Class Title { "}
-                        </div>
                         <h1 className={"col-auto"}>
                             Concepteur Développeur Informatique
                         </h1>
-                        <div className={"col-auto mt-3"}>
-                            {"}"}
-                        </div>
                     </div>
                     <div className={"row"}>
-                        <div className={"col-auto mt-3"}>
-                            {"Class Name { "}
-                        </div>
                         <div className={"col-auto"}>
-                            <p style={{fontSize: "xx-large"}}>
+                            <p className={"codeOrange"} style={{fontSize: "xx-large"}}>
                                 David Lefrancq
                             </p>
-                        </div>
-                        <div className={"col-auto mt-3"}>
-                            {"}"}
                         </div>
                     </div>
 
