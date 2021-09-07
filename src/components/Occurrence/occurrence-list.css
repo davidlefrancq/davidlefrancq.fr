@@ -138,6 +138,110 @@
     }
 }
 
+div .left-animated{
+    opacity: 1;
+    animation-name: div-left-animated;
+    animation-delay: 0s;
+    animation-duration: 0.975s;
+    animation-iteration-count: initial;
+    animation-timing-function:ease-in;
+}
+
+@keyframes div-left-animated {
+    0% {
+        opacity: 0;
+    }
+    70% {
+        opacity: 0;
+        margin-left: -100px;
+        margin-right: 100px;
+    }
+    100% {
+        opacity: 1;
+        margin-left: initial;
+        margin-right: initial;
+        /*margin-right: initial;*/
+    }
+}
+
+div .right-animated{
+    opacity: 1;
+    animation-name: div-right-animated;
+    animation-delay: 0s;
+    animation-duration: 0.975s;
+    animation-iteration-count: initial;
+    animation-timing-function:ease-in;
+}
+
+@keyframes div-right-animated {
+    0% {
+        opacity: 0;
+    }
+    70% {
+        opacity: 0;
+        margin-left: 100px;
+        margin-right: -100px;
+    }
+    100% {
+        opacity: 1;
+        margin-left: initial;
+        margin-right: initial;
+        /*margin-right: initial;*/
+    }
+}
+
+div .top-animated{
+    opacity: 1;
+    animation-name: div-top-animated;
+    animation-delay: 0s;
+    animation-duration: 0.975s;
+    animation-iteration-count: initial;
+    animation-timing-function:ease-in;
+}
+
+@keyframes div-top-animated {
+    0% {
+        opacity: 0;
+    }
+    70% {
+        opacity: 0;
+        margin-bottom: 150px;
+        margin-top: -150px;
+    }
+    100% {
+        opacity: 1;
+        margin-left: initial;
+        margin-right: initial;
+        /*margin-right: initial;*/
+    }
+}
+
+div .bottom-animated{
+    opacity: 1;
+    animation-name: div-bottom-animated;
+    animation-delay: 0s;
+    animation-duration: 0.975s;
+    animation-iteration-count: initial;
+    animation-timing-function:ease-in;
+}
+
+@keyframes div-bottom-animated {
+    0% {
+        opacity: 0;
+    }
+    70% {
+        opacity: 0;
+        margin-bottom: -100px;
+        margin-top: 100px;
+    }
+    100% {
+        opacity: 1;
+        margin-left: initial;
+        margin-right: initial;
+        /*margin-right: initial;*/
+    }
+}
+
 .animated{
     opacity: 1;
     animation-name: animated;
@@ -146,7 +250,6 @@
     animation-iteration-count: initial;
     animation-timing-function:ease-in;
 }
-
 
 @keyframes animated {
     0% {

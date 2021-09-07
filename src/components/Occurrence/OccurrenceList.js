@@ -177,6 +177,12 @@ class OccurrenceList extends Component {
     }
 
     renderCvCarouselOccurrence = () => {
+
+        let animated = "";
+        if (!this.state.displayElements) {
+            animated = "top-animated";
+        }
+
         return (
             <div className={"mr-auto ml-auto"} style={{
                 position: "relative",
@@ -187,48 +193,46 @@ class OccurrenceList extends Component {
                     callback={this.move}
                     displayBtn={this.state.displayElements}
                 />
-                <div className={`${this.state.carouselTitleClassCss}`} style={{
+                <div className={`${this.state.carouselTitleClassCss} ${animated}`} style={{
                     position: "absolute",
-                    top: "0",
-                    left: "0",
-                    width: "100%",
+                    top: "36%",
+                    left: "20%",
+                    width: "60%",
                     backgroundColor: "rgba(0,0,0,0.95)",
-                    paddingTop: 15,
-                    paddingBottom: 0,
-                    paddingLeft: 25,
-                    paddingRight: 15,
+                    padding:15,
+                    borderRadius: 15,
                 }}>
                     <h2 style={{display: this.state.carouselTitleDisplay}}>
-                        <div className={"codeBlue"}>
+                        <div className={"codeOrange"}>
                             {this.renderOccurenceType()}
-                            {' { '}
+                            {` ( ${this.renderDates()} ) { `}
                         </div>
                         <div className={"ml-5"} style={{maxWidth: 600}}>
                             {this.renderOccurenceTitle()}
                         </div>
-                        <div className={"codeBlue"}>{' }'}</div>
+                        <div className={"codeOrange"}>{' }'}</div>
                     </h2>
                 </div>
 
-                <div className={`${this.state.carouselDateClassCss}`} style={{
-                    position: "absolute",
-                    bottom: "0",
-                    left: "0",
-                    width: "100%",
-                    padding: 2,
-                    textAlign: "center",
-                    fontSize: "x-large",
-                    fontFamily: "monospace",
-                    fontWeight: "bold",
-                    color: "rgba(255,255,255,0.75)",
-                    backgroundColor: "rgba(0,0,0,0.95)",
-                }}>
-                    <div style={{display: this.state.carouselDateDisplay}}>
-                        {'/ '}
-                        {this.renderDates()}
-                        {' /'}
-                    </div>
-                </div>
+                {/*<div className={`${this.state.carouselDateClassCss}`} style={{*/}
+                {/*    position: "absolute",*/}
+                {/*    bottom: "0",*/}
+                {/*    left: "0",*/}
+                {/*    width: "100%",*/}
+                {/*    padding: 2,*/}
+                {/*    textAlign: "center",*/}
+                {/*    fontSize: "x-large",*/}
+                {/*    fontFamily: "monospace",*/}
+                {/*    fontWeight: "bold",*/}
+                {/*    color: "rgba(255,255,255,0.75)",*/}
+                {/*    backgroundColor: "rgba(0,0,0,0.95)",*/}
+                {/*}}>*/}
+                {/*    <div style={{display: this.state.carouselDateDisplay}}>*/}
+                {/*        {'/ '}*/}
+                {/*        {this.renderDates()}*/}
+                {/*        {' /'}*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
             </div>
         );
@@ -238,208 +242,218 @@ class OccurrenceList extends Component {
         const occurrence = this.props.occurrences[this.state.target];
         if (occurrence) {
 
+            let animated = "";
+            if (!this.state.displayElements) {
+                animated = "bottom-animated";
+            }
+
             return (
-                <div className={`mt-3 ml-5 mr-5`}>
-                    <Timeline
-                        firstDate={this.state.dateStart}
-                        lastDate={this.state.dateEnd}
-                        dateStart={occurrence.dateStart}
-                        dateEnd={occurrence.dateEnd}
-                    />
+                <div className={`p-3 rounded ${animated}`} style={{minHeight: 115, backgroundColor: "rgba(0,0,0,0.5)"}}>
+                    <div className={`mt-3 ml-5 mr-5`}>
+                        <Timeline
+                            firstDate={this.state.dateStart}
+                            lastDate={this.state.dateEnd}
+                            dateStart={occurrence.dateStart}
+                            dateEnd={occurrence.dateEnd}
+                        />
+                    </div>
                 </div>
             );
         }
     }
 
-    renderTechnologies() {
-        const occurrence = this.props.occurrences[this.state.target];
-        if (occurrence) {
-            let animated = "";
-            if (!this.state.displayElements) {
-                animated = "animated";
-            }
+renderTechnologies() {
+    const
+    occurrence = this.props.occurrences[this.state.target];
 
-            let technologies;
-            if (occurrence.qualification) {
-                technologies = occurrence.qualification.technologicalCategories;
-            } else if (occurrence.experience) {
-                technologies = occurrence.experience.technologicalCategories;
-            }
-
-            if (technologies && technologies.length > 0) {
-                return (
-                    <div className={`p-3 rounded ${animated}`} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
-                        <h3 style={{fontSize:"large"}}>Techno(s)</h3>
-                        <Technologies technologies={technologies}/>
-                    </div>
-                );
-            }
+    if(occurrence) {
+        let animated = "";
+        if (!this.state.displayElements) {
+            animated = "left-animated";
         }
-    }
 
-    renderDescription() {
-        const occurrence = this.props.occurrences[this.state.target];
-        if (occurrence) {
-
-            let animated = "";
-            if (!this.state.displayElements) {
-                animated = "animated";
-            }
-
-            if (occurrence.experience) {
-                return (
-                    <div className={`p-3 rounded ${animated}`} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
-                        <h3 style={{fontSize:"large"}}>Description</h3>
-                        {occurrence.experience.comment}
-                    </div>
-                );
-            }
-
-            if (occurrence.qualification) {
-                const {objectives, jobs} = occurrence.qualification;
-                return (
-                    <div className={`${animated}`} style={{position: "relative"}}>
-                        <div className={"p-3 rounded"} style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
-                            <h3 style={{fontSize:"large"}}>Description</h3>
-                            {objectives}
-                        </div>
-                        {this.renderJobsList(jobs)}
-                    </div>
-                );
-            }
-
+        let technologies;
+        if (occurrence.qualification) {
+            technologies = occurrence.qualification.technologicalCategories;
+        } else if (occurrence.experience) {
+            technologies = occurrence.experience.technologicalCategories;
         }
-    }
 
-    renderJobsList(jobs) {
-        if (jobs && jobs.length > 0) {
+        if (technologies && technologies.length > 0) {
             return (
-                <div className={"mt-3 p-3 rounded"} style={{backgroundColor:"rgba(0,0,0,0.5)", position: "absolute"}}>
-                    <h3 style={{fontSize: "large"}}>Emplois cibles</h3>
-                    <ul className={"pr-3"}>
-                        {this.renderJobs(jobs)}
-                    </ul>
+                <div className={`p-3 rounded ${animated}`} style={{backgroundColor: "rgba(0,0,0,0.5)"}}>
+                    <h3 style={{fontSize: "large"}}>Techno(s)</h3>
+                    <Technologies technologies={technologies}/>
                 </div>
             );
         }
     }
+}
 
-    renderJobs(jobs) {
-        return jobs.map((job, index) => {
-            return this.renderJob(job, index);
-        });
-    }
-
-    renderJob(job, index) {
-        if (job != undefined && job != null && job.name != "") {
-            return (
-                <li key={index}>
-                    {job.name}
-                </li>
-            );
-        }
-    }
-
-    renderInfo() {
-        const occurrence = this.props.occurrences[this.state.target];
-        if (occurrence) {
-            let entity = null;
-            let animated = "";
-            if (!this.state.displayElements) {
-                animated = "animated";
-            }
-
-            if (occurrence.experience) {
-                entity = occurrence.experience.enterprise;
-
-            } else if (occurrence.qualification) {
-                entity = occurrence.qualification.trainingCenter;
-            }
-
-            if (entity) {
-                return <InfoEntity entity={entity} animated={animated}/>;
-            }
-        }
-    }
-
-    renderCvCarousel() {
+renderDescription()
+{
+    const occurrence = this.props.occurrences[this.state.target];
+    if (occurrence) {
 
         let animated = "";
         if (!this.state.displayElements) {
-            animated = "animated";
+            animated = "right-animated";
         }
 
-        return (
-            <div className={"row"}>
-
-                <div className={`col-12 col-md-2`}>
-                    {this.renderInfo()}
-
-                    <div className={`d-none d-md-block mt-4`} style={{minHeight:50}}>
-                        {this.renderTechnologies()}
-                    </div>
-
+        if (occurrence.experience) {
+            return (
+                <div className={`p-3 rounded ${animated}`} style={{backgroundColor: "rgba(0,0,0,0.5)"}}>
+                    <h3 style={{fontSize: "large"}}>Description</h3>
+                    {occurrence.experience.comment}
                 </div>
+            );
+        }
 
-                <div className={`col-12 col-md-7 mt-2 mb-0 ml-0 mr-0 rounded`}>
-                    {this.renderCvCarouselOccurrence()}
-
-                    <div className={`mt-3`}>
-                        <div className={`p-3 rounded ${animated}`} style={{minHeight:115, backgroundColor:"rgba(0,0,0,0.5)"}}>
-                            {this.renderTimeline()}
-                        </div>
+        if (occurrence.qualification) {
+            const {objectives, jobs} = occurrence.qualification;
+            return (
+                <div className={`${animated}`} style={{position: "relative"}}>
+                    <div className={"p-3 rounded"} style={{backgroundColor: "rgba(0,0,0,0.5)"}}>
+                        <h3 style={{fontSize: "large"}}>Description</h3>
+                        {objectives}
                     </div>
-
+                    {this.renderJobsList(jobs)}
                 </div>
+            );
+        }
 
-                <div className={`col-12 col-md-3 mt-2 mb-0 ml-0 mr-0 text-justify`}>
-
-                    <div className={`d-block d-md-none mt-4 mb-4`} style={{minHeight:50}}>
-                        {this.renderTechnologies()}
-                    </div>
-
-                    {this.renderDescription()}
-                </div>
-
-            </div>
-        );
     }
+}
 
-    render() {
+renderJobsList(jobs)
+{
+    if (jobs && jobs.length > 0) {
         return (
-            <div className={"container-fluid"}>
-                {this.renderCvCarousel()}
+            <div className={"mt-3 p-3 rounded"} style={{backgroundColor: "rgba(0,0,0,0.5)", position: "absolute"}}>
+                <h3 style={{fontSize: "large"}}>Emplois cibles</h3>
+                <ul className={"pr-3"}>
+                    {this.renderJobs(jobs)}
+                </ul>
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => {
-        const {occurrences, occurrence, year} = state.OccurrencesReducer;
-        const experience = state.ExperienceReducer.occurrence;
-        const qualification = state.QualificationReducer.occurrence;
-        return {
-            occurrences,
-            occurrence,
-            experience,
-            qualification,
-            year,
-        };
+renderJobs(jobs)
+{
+    return jobs.map((job, index) => {
+        return this.renderJob(job, index);
+    });
+}
+
+renderJob(job, index)
+{
+    if (job != undefined && job != null && job.name != "") {
+        return (
+            <li key={index}>
+                {job.name}
+            </li>
+        );
     }
+}
+
+renderInfo()
+{
+    const occurrence = this.props.occurrences[this.state.target];
+    if (occurrence) {
+        let entity = null;
+        let animated = "";
+        if (!this.state.displayElements) {
+            animated = "left-animated";
+        }
+
+        if (occurrence.experience) {
+            entity = occurrence.experience.enterprise;
+
+        } else if (occurrence.qualification) {
+            entity = occurrence.qualification.trainingCenter;
+        }
+
+        if (entity) {
+            return <InfoEntity entity={entity} animated={animated}/>;
+        }
+    }
+}
+
+renderCvCarousel()
+{
+    return (
+        <div className={"row"}>
+
+            <div className={`col-12 col-md-2`}>
+                {this.renderInfo()}
+
+                <div className={`d-none d-md-block mt-4`} style={{minHeight: 50}}>
+                    {this.renderTechnologies()}
+                </div>
+
+            </div>
+
+            <div className={`col-12 col-md-7 mt-2 mb-0 ml-0 mr-0 rounded`}>
+                {this.renderCvCarouselOccurrence()}
+
+                <div className={`mt-3`}>
+                    {this.renderTimeline()}
+                </div>
+
+            </div>
+
+            <div className={`col-12 col-md-3 mt-2 mb-0 ml-0 mr-0 text-justify`}>
+
+                <div className={`d-block d-md-none mt-4 mb-4`} style={{minHeight: 50}}>
+                    {this.renderTechnologies()}
+                </div>
+
+                {this.renderDescription()}
+            </div>
+
+        </div>
+    );
+}
+
+render()
+{
+    return (
+        <div className={"container-fluid"}>
+            {this.renderCvCarousel()}
+        </div>
+    );
+}
+}
+
+const mapStateToProps = (state) =>
+{
+    const {occurrences, occurrence, year} = state.OccurrencesReducer;
+    const experience = state.ExperienceReducer.occurrence;
+    const qualification = state.QualificationReducer.occurrence;
+    return {
+        occurrences,
+        occurrence,
+        experience,
+        qualification,
+        year,
+    };
+}
 ;
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) =>
+{
 
-        return {
-            setExperienceSelected: (id) => dispatch(actions.experience.setExperienceSelected(id)),
-            setQualificationSelected: (id) => dispatch(actions.qualification.setQualificationSelected(id)),
-            setOccurrence: (occurrence) => dispatch(actions.occurrences.setOccurrence(occurrence)),
-            setOccurrences: (occurrences) => dispatch(actions.occurrences.setOccurrences(occurrences)),
-            setQualification: (occurrence) => dispatch(actions.qualification.setQualification(occurrence)),
-            setExperience: (occurrence) => dispatch(actions.experience.setExperience(occurrence)),
-            setYear: (year) => dispatch(actions.occurrences.setYear(year)),
-        };
-    }
+    return {
+        setExperienceSelected: (id) => dispatch(actions.experience.setExperienceSelected(id)),
+        setQualificationSelected: (id) => dispatch(actions.qualification.setQualificationSelected(id)),
+        setOccurrence: (occurrence) => dispatch(actions.occurrences.setOccurrence(occurrence)),
+        setOccurrences: (occurrences) => dispatch(actions.occurrences.setOccurrences(occurrences)),
+        setQualification: (occurrence) => dispatch(actions.qualification.setQualification(occurrence)),
+        setExperience: (occurrence) => dispatch(actions.experience.setExperience(occurrence)),
+        setYear: (year) => dispatch(actions.occurrences.setYear(year)),
+    };
+}
 ;
 
 export default connect(mapStateToProps, mapDispatchToProps)(OccurrenceList);
