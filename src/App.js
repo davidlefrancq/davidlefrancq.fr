@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import './App.css';
 import OccurenceList from "./components/Occurrence/OccurrenceList";
 import Header from "./components/Header/Header";
-import NewQualification from "./components/Occurrence/edit/EditQualification";
+// import NewQualification from "./components/Occurrence/edit/EditQualification";
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
-import Admin from "./components/admin";
+// import Admin from "./components/admin";
 import SlideImages from "./data/image/SlideImages";
 
 class App extends Component {
@@ -20,10 +20,12 @@ class App extends Component {
     }
 
     componentDidMount() {
-        document.body.classList.add("bg-dark");
-        document.body.classList.add("text-light");
-
+        this.darkThemeInitialize();
         this.initResizeObserver();
+    }
+
+    darkThemeInitialize(){
+        document.body.classList.add("text-light");
     }
 
     initResizeObserver(){
@@ -56,9 +58,9 @@ class App extends Component {
                         <Route exact path={"/"}>
                             <OccurenceList images={this.state.images}/>
                         </Route>
-                        <Route exact path={"/admin"}>
-                            <Admin/>
-                        </Route>
+                        {/*<Route exact path={"/admin"}>*/}
+                        {/*    <Admin/>*/}
+                        {/*</Route>*/}
                     </Switch>
 
                 </div>

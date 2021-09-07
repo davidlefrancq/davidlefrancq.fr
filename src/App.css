@@ -17,7 +17,15 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
+    color: rgba(26, 100, 162, 1);
+}
+
+a{
     color: chocolate;
+}
+
+a:hover{
+    color: #a64800;
 }
 
 .codeBlue {
@@ -28,6 +36,7 @@ h1, h2, h3, h4, h5, h6 {
 .codeOrange {
     font-size: large;
     color: chocolate;
+
 }
 
 .codeLightBlue {
@@ -64,6 +73,7 @@ h1, h2, h3, h4, h5, h6 {
     animation-timing-function: ease-in;
     overflow: hidden;
 }
+
 @keyframes date-show-animation {
     0% {
         opacity: 0;
