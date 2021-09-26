@@ -46,28 +46,28 @@ class Header extends Component {
 
         return (
             <div
-                className={"shadow"}
+                className={"mb-3"}
             >
 
-                <Jumbotron className={"mb-2 pt-4 pb-3"}>
+                <Jumbotron className={"pb-0 mb-2 pt-4 pb-3"}>
                     <div className={"row"}>
-                        <h1 className={"col-auto"}>
+                        <h1 className={"col-auto"} style={{fontSize:"x-large"}}>
+
                             Concepteur Développeur Informatique
-                        </h1>
-                    </div>
-                    <div className={"row"}>
-                        <div className={"col-auto"}>
-                            <p className={"codeOrange"} style={{fontSize: "xx-large"}}>
+
+                            <span className={"ml-4 codeOrange"} style={{fontSize: "x-large"}}>
                                 David Lefrancq
-                            </p>
-                        </div>
+                            </span>
+
+                        </h1>
                     </div>
 
                     <div className={"utils"}>
                         <a
                             className={"p-1 btn btn-danger"}
                             style={{minHeight: 50}}
-                            href={"https://drive.google.com/file/d/1iLfuZhBWsX3EjiNebaD-JhMivWHztsfs/view?usp=sharing"}
+                            href={"https://drive.google.com/file/d/1MPOvY3JhS3YT_sHjnBlH-8ETMBrZitap/view?usp=sharing"}
+                            // href={"https://drive.google.com/file/d/1iLfuZhBWsX3EjiNebaD-JhMivWHztsfs/view?usp=sharing"}
                             target={"_blank"}
                             rel={"noopener noreferrer"}
                         >

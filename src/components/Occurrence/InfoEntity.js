@@ -12,12 +12,12 @@ const InfoEntity = (props) => {
     const renderLink = () => {
         if (urlTitle && urlTitle != "") {
             return (
-                <div className={"d-none d-md-block mt-4 p-3 rounded"} style={{backgroundColor: "rgba(0,0,0,0.5)"}}>
-                    <a className={"ml-3 mr-3"} href={url} target={"_blank"}>
-                        <GrFirefox size={24}/>
+                // <div className={"d-none d-md-block mt-4 p-3 rounded"} style={{backgroundColor: "rgba(0,0,0,0.5)"}}>
+                    <a className={"ml-3 mt-3"} style={{fontSize:"medium"}} href={url} target={"_blank"}>
+                        <GrFirefox size={18}/>
                         <span style={{marginLeft: 5}}>{urlTitle}</span>
                     </a>
-                </div>
+                // </div>
             );
         }
     };
@@ -25,11 +25,11 @@ const InfoEntity = (props) => {
     const renderGoogleMapLink = () => {
         if ((city && city != "")|| (Number.parseInt(lat) && Number.parseInt(lng))) {
             return (
-                <div className={"d-none d-md-block mt-4 p-3 rounded"} style={{backgroundColor: "rgba(0,0,0,0.5)"}}>
-                    <div className={"ml-3"}>
+                // <div className={"d-none d-md-block mt-4 p-3 rounded"} style={{backgroundColor: "rgba(0,0,0,0.5)"}}>
+                    <div className={"ml-3 mt-3"}>
                         <LinkGoogleMap address={address} postalCode={postalCode} city={city} lat={lat} lng={lng}/>
                     </div>
-                </div>
+                // </div>
             );
         }
     }
@@ -37,15 +37,16 @@ const InfoEntity = (props) => {
     return (
         <div className={`mt-2 ${animated}`}>
 
-            <div className={"p-3 rounded"} style={{backgroundColor: "rgba(0,0,0,0.5)"}}>
+            <div className={"p-3 rounded"} style={{backgroundColor: "rgba(33,33,33,1)"}}>
                 <LogoEntity url={url} logo={logo}/>
                 <h3 className={"mt-2"} style={{fontSize: "large"}}>{name}</h3>
-                <div>{postalCode} {city}</div>
+                <div className={"mb-2"}>{postalCode} {city}</div>
+
+                {renderLink()}
+
+                {renderGoogleMapLink()}
+
             </div>
-
-            {renderLink()}
-
-            {renderGoogleMapLink()}
 
         </div>
     );

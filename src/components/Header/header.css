@@ -1,10 +1,10 @@
 .jumbotron {
     position: relative;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(33,33,33,1);
     border-radius: 0;
+    /*border-bottom: 1px solid rgba(255,255,255,0.5);*/
     margin-top:0;
     margin-bottom: 25px;
-    box-shadow: 1px 0px 10px rgba(0,0,0,0.1);
     color: chocolate;
 }
 
@@ -17,14 +17,14 @@
 
 .jumbotron .utils a, .jumbotron .utils button {
     font-size: x-large;
-    box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.5);
+    /*box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.5);*/
     padding: 10px 35px 10px 35px;
     margin-left: 10px;
 }
 
 .jumbotron a:hover, .jumbotron .utils button:hover {
     font-weight: bold;
-    box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.8);
+    /*box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.8);*/
 }
 
 .jumbotron .utils .btn-danger{

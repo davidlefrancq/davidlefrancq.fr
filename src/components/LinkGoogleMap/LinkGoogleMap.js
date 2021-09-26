@@ -21,8 +21,8 @@ const LinkGoogleMap = (props) => {
 
         if ((city != undefined && city != null && city != "") || (lat && lat)) {
             return (
-                <a href={url} target={"_blank"}>
-                    <FaMapMarkerAlt size={24}/> Google Map
+                <a href={url} target={"_blank"} style={{fontSize:"medium"}}>
+                    <FaMapMarkerAlt size={18}/> Google Map
                 </a>
             );
         }

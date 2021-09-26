@@ -49,7 +49,7 @@ class Slider extends Component {
 
         let btnAnimation = "";
         if(!this.props.displayBtn){
-            btnAnimation = "animated";
+            btnAnimation = "top-animated";
         }
 
         return (

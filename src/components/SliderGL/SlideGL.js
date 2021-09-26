@@ -4,7 +4,6 @@ import FileToString from "./FileToString";
 import vertexShader from "./glsl/vertexShader.glsl";
 import fragmentShaderCircle from "./glsl/fragmentShaderCircle.glsl";
 import fragmentShaderSquare from "./glsl/fragmentShaderSquare.glsl";
-import {AiOutlineLogout} from "react-icons/all";
 
 export const SLIDEGL_EFFECT_CIRCLE = "SLIDEGL_EFFECT_CIRCLE";
 export const SLIDEGL_EFFECT_SQUARE = "SLIDEGL_EFFECT_SQUARE";

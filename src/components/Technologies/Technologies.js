@@ -6,7 +6,7 @@ const Technologies = (props) => {
     const renderTechnology = (technology, index) => {
         const {name} = technology;
         return (
-            <div key={index} className={"m-3"}>
+            <div key={index} className={"m-3 float-left"} style={{minHeight:30}}>
                 <TechnoIcon name={name}/>
                 {name}
             </div>
@@ -20,7 +20,7 @@ const Technologies = (props) => {
     }
 
     return (
-        <div>
+        <div className={"clearfix"}>
             {renderTechnologies()}
         </div>
     );
