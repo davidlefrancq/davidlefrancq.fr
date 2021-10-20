@@ -13,7 +13,7 @@ class Enterprise {
     compare(enterprise){
         let result = true;
 
-        if(this.name != enterprise.name){
+        if(this.name !== enterprise.name){
             result = false;
         }
 

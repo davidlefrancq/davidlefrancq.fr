@@ -24,6 +24,8 @@ class DataConverter {
             case "experience":
                 occurence.experience = DataConverter.experienceParser(data);
                 break;
+            default:
+
         }
         return occurence;
     }
@@ -31,10 +33,10 @@ class DataConverter {
     static qualificationFinalDate(data) {
         let result = "";
 
-        if (data[2] == "qualification") {
+        if (data[2] === "qualification") {
 
             let dateEnd = this.dateParser(data[1]);
-            if (!dateEnd && dateEnd != "") {
+            if (!dateEnd && dateEnd !== "") {
 
                 const date = new Date(Date.now());
 
@@ -59,7 +61,7 @@ class DataConverter {
 
     static dateParser(data) {
         let result = null;
-        if (data && data != "") {
+        if (data && data !== "") {
             const dateSplited = data.split("/")
             result = `${dateSplited[2]}-${dateSplited[1]}-${dateSplited[0]}T00:00:00+00:00`;
         }
@@ -76,7 +78,7 @@ class DataConverter {
     }
 
     static jobsParser(data) {
-        if (data && data != "") {
+        if (data && data !== "") {
             return data.split(";").map((item) => {
                 return new Job(item.trim());
             });
@@ -113,7 +115,7 @@ class DataConverter {
     static technologicalCategoriesParser(data) {
         const categories = [];
 
-        if (data && data != "") {
+        if (data && data !== "") {
             const dataCategories = data.split(";");
             console.log("---");
             console.log(data);

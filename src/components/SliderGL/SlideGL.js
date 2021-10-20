@@ -1,4 +1,3 @@
-import React from "react";
 import {Curtains, Plane} from "curtainsjs";
 import FileToString from "./FileToString";
 import vertexShader from "./glsl/vertexShader.glsl";

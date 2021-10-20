@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import OccurenceList from "./components/Occurrence/OccurrenceList";
 import Header from "./components/Header/Header";
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import SlideImages from "./data/image/SlideImages";
 
 class App extends Component {

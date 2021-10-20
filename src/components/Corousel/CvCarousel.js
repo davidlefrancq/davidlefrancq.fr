@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import Slider from "../SliderGL/Slider";
-import SlideImages from "../../data/image/SlideImages";
-
 
 class CvCarousel extends Component {
     render() {

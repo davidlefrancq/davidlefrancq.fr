@@ -52,16 +52,16 @@ class OccurrenceList extends Component {
 
             if (Number.parseInt(key) === 0) {
 
-                if (dateStart && dateStart != "") {
+                if (dateStart && dateStart !== "") {
                     start = new Date(dateStart);
                 }
-                if (dateEnd && dateEnd != "") {
+                if (dateEnd && dateEnd !== "") {
                     end = new Date(dateEnd);
                 }
 
             } else {
 
-                if (dateStart && dateStart != "") {
+                if (dateStart && dateStart !== "") {
                     const date = new Date(dateStart);
                     if (!start) {
                         start = date;
@@ -70,7 +70,7 @@ class OccurrenceList extends Component {
                     }
                 }
 
-                if (dateEnd && dateEnd != "") {
+                if (dateEnd && dateEnd !== "") {
                     const date = new Date(dateEnd);
                     if (!end) {
                         end = date;
@@ -165,7 +165,7 @@ class OccurrenceList extends Component {
 
                 if (dateEnd) {
                     if (start.getFullYear() < end.getFullYear()) {
-                        if (dates != "") {
+                        if (dates !== "") {
                             dates += " - ";
                         }
                         dates += end.getFullYear();
@@ -325,7 +325,7 @@ class OccurrenceList extends Component {
     }
 
     renderJob(job, index) {
-        if (job != undefined && job != null && job.name != "") {
+        if (job !== undefined && job !== null && job.name !== "") {
             return (
                 <li key={index}>
                     {job.name}

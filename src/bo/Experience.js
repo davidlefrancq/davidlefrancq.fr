@@ -14,7 +14,7 @@ class Experience {
     compare(experience){
         let result = true;
 
-        if(this.name != experience.name){
+        if(this.name !== experience.name){
             result = false;
         }
 
@@ -30,7 +30,7 @@ class Experience {
             }
         }
 
-        if(this.workstudy != experience.workstudy){
+        if(this.workstudy !== experience.workstudy){
             result = false;
         }
 
@@ -45,13 +45,13 @@ class Experience {
 
     compareTechnologicalCategories(technologicalCategories){
         let result = true;
-        if(this.technologicalCategories != undefined && this.technologicalCategories != null){
+        if(this.technologicalCategories !== undefined && this.technologicalCategories != null){
 
-            if(technologicalCategories == undefined || technologicalCategories == null){
+            if(technologicalCategories === undefined || technologicalCategories === null){
                 result = false;
             }else{
 
-                if(technologicalCategories.length == 0){
+                if(technologicalCategories.length === 0){
                     result = false;
                 }else{
 
@@ -72,13 +72,13 @@ class Experience {
 
     compareLinks(links){
         let result = true;
-        if(this.links != undefined && this.links != null){
+        if(this.links !== undefined && this.links !== null){
 
-            if(links == undefined || links == null){
+            if(links === undefined || links === null){
                 result = false;
             }else{
 
-                if(links.length == 0){
+                if(links.length === 0){
                     result = false;
                 }else{
 

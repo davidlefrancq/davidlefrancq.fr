@@ -5,15 +5,15 @@ const LogoEntity = (props) => {
     const {url, logo} = props;
 
     const renderLogo = () => {
-        if (logo && logo != "") {
-            return <img style={{height: 75, borderRadius: 40}} src={`./image/${logo}`}/>;
+        if (logo && logo !== "") {
+            return <img style={{height: 75, borderRadius: 40}} src={`./image/${logo}`} alt={""} />;
         }
     }
 
     const renderLink = () => {
-        if(url && url != ""){
+        if(url && url !== ""){
             return(
-                <a href={url} target={"_blank"}>
+                <a href={url} target={"_blank"} rel={"noopener noreferrer"}>
                     {renderLogo()}
                 </a>
             );

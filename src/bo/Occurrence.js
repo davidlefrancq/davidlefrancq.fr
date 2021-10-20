@@ -1,5 +1,3 @@
-import VarUtils from "../utils/VarUtils";
-
 class Occurrence {
 
     constructor(dateStart, dateEnd, qualification, experience) {
@@ -43,10 +41,10 @@ class Occurrence {
     static getYear(occurrence){
         let year = null;
 
-        if(occurrence != undefined && occurrence != null){
-            if(occurrence.dateEnd != undefined && occurrence.dateEnd != null){
+        if(occurrence !== undefined && occurrence !== null){
+            if(occurrence.dateEnd !== undefined && occurrence.dateEnd !== null){
                 year = eval(new Date(occurrence.dateEnd).getFullYear());
-            }else if(occurrence.dateStart != undefined && occurrence.dateStart != null){
+            }else if(occurrence.dateStart !== undefined && occurrence.dateStart !== null){
                 year = eval(new Date(occurrence.dateStart).getFullYear());
             }
         }
@@ -95,8 +93,8 @@ class Occurrence {
     static isExperience(occurrence) {
         let isExperience = false;
 
-        if (occurrence != undefined && occurrence != null) {
-            if (occurrence.experience != undefined && occurrence.experience != null) {
+        if (occurrence !== undefined && occurrence !== null) {
+            if (occurrence.experience !== undefined && occurrence.experience !== null) {
                 isExperience = true;
             }
         }
@@ -107,8 +105,8 @@ class Occurrence {
     static isQualification(occurrence) {
         let isQualification = false;
 
-        if (occurrence != undefined && occurrence != null) {
-            if (occurrence.qualification != undefined && occurrence.qualification != null) {
+        if (occurrence !== undefined && occurrence !== null) {
+            if (occurrence.qualification !== undefined && occurrence.qualification !== null) {
                 isQualification = true;
             }
         }

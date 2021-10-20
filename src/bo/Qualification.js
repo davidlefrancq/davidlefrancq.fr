@@ -14,41 +14,41 @@ class Qualification {
     compare(qualification) {
         let result = true;
 
-        if (this.name != qualification.name) {
+        if (this.name !== qualification.name) {
             result = false;
         }
 
-        if (this.img != qualification.img) {
+        if (this.img !== qualification.img) {
             result = false;
         }
 
-        if (this.level != qualification.level) {
+        if (this.level !== qualification.level) {
             result = false;
         }
 
-        if (this.trainingCenter != null) {
+        if (this.trainingCenter !== null) {
             if (!this.trainingCenter.compare(qualification.trainingCenter)) {
                 result = false;
             }
         }
 
-        if (this.objectives != qualification.objectives) {
+        if (this.objectives !== qualification.objectives) {
             result = false;
         }
 
-        if (this.jobs != null) {
+        if (this.jobs !== null) {
             if (!this.compareJobs(qualification.jobs)) {
                 result = false;
             }
         }
 
-        if (this.links != null) {
+        if (this.links !== null) {
             if (!this.compareLinks(qualification.links)) {
                 result = false;
             }
         }
 
-        if(this.technologicalCategories != null){
+        if(this.technologicalCategories !== null){
             if(!this.compareTechnologicalCategories(qualification.technologicalCategories)){
                 result = false;
             }
@@ -59,13 +59,13 @@ class Qualification {
 
     compareJobs(jobs) {
         let result = true;
-        if (this.jobs != undefined && this.jobs != null) {
+        if (this.jobs !== undefined && this.jobs !== null) {
 
-            if (jobs == undefined || jobs == null) {
+            if (jobs === undefined || jobs === null) {
                 result = false;
             } else {
 
-                if (jobs.length == 0) {
+                if (jobs.length === 0) {
                     result = false;
                 } else {
 
@@ -86,13 +86,13 @@ class Qualification {
 
     compareLinks(links) {
         let result = true;
-        if (this.links != undefined && this.links != null) {
+        if (this.links !== undefined && this.links !== null) {
 
-            if (links == undefined || links == null) {
+            if (links === undefined || links === null) {
                 result = false;
             } else {
 
-                if (links.length == 0) {
+                if (links.length === 0) {
                     result = false;
                 } else {
 
@@ -113,13 +113,13 @@ class Qualification {
 
     compareTechnologicalCategories(technologicalCategories){
         let result = true;
-        if(this.technologicalCategories != undefined && this.technologicalCategories != null){
+        if(this.technologicalCategories !== undefined && this.technologicalCategories !== null){
 
-            if(technologicalCategories == undefined || technologicalCategories == null){
+            if(technologicalCategories === undefined || technologicalCategories === null){
                 result = false;
             }else{
 
-                if(technologicalCategories.length == 0){
+                if(technologicalCategories.length === 0){
                     result = false;
                 }else{
 

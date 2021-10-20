@@ -8,11 +8,11 @@ class TechnologicalCategory {
     compare(technologicalCategory){
         let result = true;
 
-        if(this.name != technologicalCategory.name){
+        if(this.name !== technologicalCategory.name){
             result = false;
         }
 
-        if(this.logo != technologicalCategory.logo){
+        if(this.logo !== technologicalCategory.logo){
             result = false;
         }
 
@@ -22,7 +22,7 @@ class TechnologicalCategory {
     compares(technologicalCategories){
         let result = true;
 
-        if(technologicalCategories != undefined && technologicalCategories != null && technologicalCategories.length > 0){
+        if(technologicalCategories !== undefined && technologicalCategories !== null && technologicalCategories.length > 0){
 
             for(const technologicalCategory in technologicalCategories){
                 if(!this.compare(technologicalCategory)){

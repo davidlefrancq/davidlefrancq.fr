@@ -10,10 +10,10 @@ const InfoEntity = (props) => {
     let urlTitle = url.split("/")[2];
 
     const renderLink = () => {
-        if (urlTitle && urlTitle != "") {
+        if (urlTitle && urlTitle !== "") {
             return (
                 // <div className={"d-none d-md-block mt-4 p-3 rounded"} style={{backgroundColor: "rgba(0,0,0,0.5)"}}>
-                    <a className={"ml-3 mt-3"} style={{fontSize:"medium"}} href={url} target={"_blank"}>
+                    <a className={"ml-3 mt-3"} style={{fontSize:"medium"}} href={url} target={"_blank"} rel={"noopener noreferrer"}>
                         <GrFirefox size={18}/>
                         <span style={{marginLeft: 5}}>{urlTitle}</span>
                     </a>
@@ -23,7 +23,7 @@ const InfoEntity = (props) => {
     };
 
     const renderGoogleMapLink = () => {
-        if ((city && city != "")|| (Number.parseInt(lat) && Number.parseInt(lng))) {
+        if ((city && city !== "")|| (Number.parseInt(lat) && Number.parseInt(lng))) {
             return (
                 // <div className={"d-none d-md-block mt-4 p-3 rounded"} style={{backgroundColor: "rgba(0,0,0,0.5)"}}>
                     <div className={"ml-3 mt-3"}>

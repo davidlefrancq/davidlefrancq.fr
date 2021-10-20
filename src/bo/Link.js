@@ -8,11 +8,11 @@ class Link {
     compare(link){
         let result = true;
 
-        if(this.name != link.name){
+        if(this.name !== link.name){
             result = false;
         }
 
-        if(this.url != link.url){
+        if(this.url !== link.url){
             result = false;
         }
 
@@ -22,7 +22,7 @@ class Link {
     compares(links){
         let result = true;
 
-        if(links != undefined && links != null && links.length > 0){
+        if(links !== undefined && links !== null && links.length > 0){
 
             for(const link in links){
                 if(!this.compare(link)){

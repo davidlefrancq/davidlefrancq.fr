@@ -4,7 +4,6 @@ import {
     AiOutlineWindows,
     BsFileCode,
     DiJqueryLogo,
-    DiNodejs,
     FaAndroid,
     FaCss3Alt,
     FaDocker,
@@ -21,14 +20,12 @@ import {
     FaSymfony,
     FaWindows,
     FcDebian, GiArchiveResearch,
-    GiCircuitry,
     GiElephant,
     GiLaserPrecision,
     GiLogicGateAnd,
     GiProcessor,
     GiWifiRouter,
     GoCircuitBoard,
-    GrUpdate,
     HiUserGroup, IoIosSpeedometer, MdDashboard, MdDeviceHub,
     MdLocalHospital,
     RiDatabase2Fill,
@@ -287,14 +284,6 @@ class TechnoIcon extends Component {
         return (
             <div className={"d-inline m-2"}>
                 <FaNodeJs size={size}/>
-            </div>
-        );
-    }
-
-    ethereum() {
-        return (
-            <div className={"d-inline m-2"}>
-                <FaEthereum size={size}/>
             </div>
         );
     }

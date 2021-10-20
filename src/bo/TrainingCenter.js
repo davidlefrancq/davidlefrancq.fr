@@ -14,35 +14,35 @@ class TrainingCenter {
     compare(trainingCenter){
         let result = true;
 
-        if(this.name != trainingCenter.name){
+        if(this.name !== trainingCenter.name){
             result = false;
         }
 
-        if(this.logo != trainingCenter.logo){
+        if(this.logo !== trainingCenter.logo){
             result = false;
         }
 
-        if(this.address != trainingCenter.address){
+        if(this.address !== trainingCenter.address){
             result = false;
         }
 
-        if(this.postalCode != trainingCenter.postalCode){
+        if(this.postalCode !== trainingCenter.postalCode){
             result = false;
         }
 
-        if(this.city != trainingCenter.city){
+        if(this.city !== trainingCenter.city){
             result = false;
         }
 
-        if(this.url != trainingCenter.url){
+        if(this.url !== trainingCenter.url){
             result = false;
         }
 
-        if(this.lat != trainingCenter.lat){
+        if(this.lat !== trainingCenter.lat){
             result = false;
         }
 
-        if(this.lng != trainingCenter.lng){
+        if(this.lng !== trainingCenter.lng){
             result = false;
         }
 
