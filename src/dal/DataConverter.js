@@ -117,12 +117,8 @@ class DataConverter {
 
         if (data && data !== "") {
             const dataCategories = data.split(";");
-            console.log("---");
-            console.log(data);
-            console.log(dataCategories);
             for (const key in dataCategories) {
                 const dataCategory = dataCategories[key].split(',');
-                console.log(dataCategory);
                 const name = dataCategory[0].split("=")[1];
                 const logo = dataCategory[1].split("=")[1];
                 const category = new TechnologicalCategory(name, logo);

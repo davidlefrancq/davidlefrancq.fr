@@ -43,9 +43,9 @@ class Occurrence {
 
         if(occurrence !== undefined && occurrence !== null){
             if(occurrence.dateEnd !== undefined && occurrence.dateEnd !== null){
-                year = eval(new Date(occurrence.dateEnd).getFullYear());
+                year = new Date(occurrence.dateEnd).getFullYear();
             }else if(occurrence.dateStart !== undefined && occurrence.dateStart !== null){
-                year = eval(new Date(occurrence.dateStart).getFullYear());
+                year = new Date(occurrence.dateStart).getFullYear();
             }
         }
 
